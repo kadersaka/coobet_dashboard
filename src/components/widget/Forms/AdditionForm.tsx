@@ -1,8 +1,8 @@
 import { FC } from "react";
-import Modal from "./Modal";
-import AppInput from "./Input";
-import useLoginForm from "@/hooks/forms/useLogin.hook";
-import AppButton from "./Button";
+import Modal from "../Form/Modal";
+import AppInput from "../Form/Input";
+import useLoginForm from "@/hooks/forms/useLoginForm.hook";
+import AppButton from "../Form/Button";
 
 interface AdditionFormProps {
   id: string;
@@ -10,13 +10,10 @@ interface AdditionFormProps {
 
 const AdditionForm: FC<AdditionFormProps> = ({ id }) => {
   const { formData, formErrors, onInputDataChange, onFormSubmit } =
-    useLoginForm({
-      email: "",
-      password: "",
-    });
+    useLoginForm();
   return (
     <Modal id={id}>
-      <div className=" dark:border-strokedark  ">
+      <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
           <div className="mb-4">
             <AppInput

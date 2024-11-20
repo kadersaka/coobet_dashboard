@@ -1,0 +1,73 @@
+import { FC, useState } from "react";
+import Modal from "./Modal";
+import AppButton from "./Button";
+import { delay, toggleModal } from "@/utils/functions.util";
+import useInterfaceStore from "@/store/useInterface.store";
+import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
+
+interface DeletionConfirmationProps {
+  id: string;
+  message: string;
+  successMessage: string;
+  objectId: string;
+  onDelete: (id: string) => Promise<boolean | undefined>;
+}
+
+const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
+  id,
+  message,
+  successMessage,
+  objectId,
+  onDelete,
+}) => {
+  const setActionResultMessage = useInterfaceStore(
+    (state) => state.setActionResultMessage,
+  );
+  const [deleting, setDeleting] = useState(false);
+
+  return (
+    <Modal id={id}>
+      <div className=" flex flex-col items-center justify-center self-center p-3 text-[14px]  text-black dark:text-white sm:text-[15px] md:text-[16px] lg:text-[17px]">
+        <p className="text-md my-5 text-center font-medium">{message}</p>
+        <div className="mb-1 mt-4 flex w-full flex-row items-center justify-evenly">
+          <AppButton
+            name="Fermer"
+            width="w-[150px]"
+            onClick={() => {
+              toggleModal("action-result-message");
+            }}
+          />
+          {deleting ? (
+            <ProcessingLoader />
+          ) : (
+            <AppButton
+              name="Supprimer"
+              width="w-[150px]"
+              color="bg-red-500"
+              onClick={async () => {
+                setDeleting(true);
+
+                const deleted = await onDelete(objectId);
+
+                if (deleted == true) {
+                  toggleModal(id);
+                  setActionResultMessage(successMessage);
+                  toggleModal("action-result-message");
+                  await delay({ milliseconds: 1500 });
+                  toggleModal("action-result-message");
+                } else {
+                  setActionResultMessage("Une erreur s'est produite");
+                  toggleModal("action-result-message");
+                }
+
+                setDeleting(false);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
+export default DeletionConfirmation;

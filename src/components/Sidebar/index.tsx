@@ -9,6 +9,7 @@ import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import {
   LayoutDashboard,
+  User,
   ArrowLeftRight,
   MessageCircleQuestion,
   Bell,
@@ -32,6 +33,11 @@ const menuGroups = [
         label: "Dashboard",
         route: "#",
         //  children: [{ label: "eCommerce", route: "/" }],
+      },
+      {
+        icon: <User />,
+        label: "Utilisateurs",
+        route: "/users",
       },
       {
         icon: <ArrowLeftRight />,

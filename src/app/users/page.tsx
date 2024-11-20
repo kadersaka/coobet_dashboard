@@ -8,12 +8,12 @@ import AppButton from "@/components/widget/Form/Button";
 import { toggleModal } from "@/utils/functions.util";
 import AdditionForm from "@/components/widget/Forms/AdditionForm";
 
-interface TransactionsPageProps {}
+interface UsersPageProps {}
 
-const TransactionsPage: FC<TransactionsPageProps> = () => {
+const UsersPage: FC<UsersPageProps> = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Transactions">
+      <Breadcrumb pageName="Utilisateurs">
         <AppButton
           name="Ajouter"
           width="w-[150px]"
@@ -76,4 +76,68 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
   );
 };
 
-export default TransactionsPage;
+export default UsersPage;
+
+{
+  /* <div className="flex flex-col gap-10">
+        <div className="overflow-hidden rounded-sm text-black dark:text-white">
+          <div className="max-w-full overflow-x-auto">
+            <div className="min-w-[1170px]">
+              <div className="grid grid-cols-12 bg-bodydark1 px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11">
+                <div className="col-span-3">
+                  <h5 className="font-bold">Name</h5>
+                </div>
+
+                <div className="col-span-3">
+                  <h5 className="font-bold">Title</h5>
+                </div>
+
+                <div className="col-span-3">
+                  <h5 className="font-bold">Email</h5>
+                </div>
+
+                <div className="col-span-2">
+                  <h5 className="font-bold">Role</h5>
+                </div>
+                <div className="col-span-2">
+                  <h5 className="font-bold"></h5>
+                </div>
+              </div>
+              
+
+              
+              <div className="bg-white dark:bg-boxdark">
+                
+
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-12 items-center border-t border-[#EEEEEE] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11"
+                  >
+                    <div className="col-span-3">
+                      <p className="">Musharof Chowdhury</p>
+                    </div>
+
+                    <div className="col-span-3">
+                      <p className="">Multidisciplinary Web Entrepreneur</p>
+                    </div>
+
+                    <div className="col-span-3">
+                      <p className="">musharof@example.com</p>
+                    </div>
+
+                    <div className="col-span-2">
+                      <p className="">Owner</p>
+                    </div>
+
+                    <div className="col-span-1">
+                      <MultipleActionButton />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */
+}

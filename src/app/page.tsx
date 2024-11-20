@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div>
+    <div className="dark:bg-meta-4">
       <DefaultLayout>
         <ECommerce />
       </DefaultLayout>

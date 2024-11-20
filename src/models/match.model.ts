@@ -1,7 +1,7 @@
 interface MatchJson {
   id?: string;
-  club_home: string;
-  club_foreign: string;
+  club_home: ClubJson;
+  club_foreign: ClubJson;
   start_date: string;
   club_home_goal: string | null;
   club_foreign_goal: string | null;
@@ -9,15 +9,15 @@ interface MatchJson {
 
 class Match {
   id?: string;
-  clubHome: string;
-  clubForeign: string;
+  clubHome: Club;
+  clubForeign: Club;
   startDate: Date;
   clubHomeGoal: string | null;
   clubForeignGoal: string | null;
 
   constructor(
-    clubHome: string,
-    clubForeign: string,
+    clubHome: Club,
+    clubForeign: Club,
     startDate: Date,
     clubHomeGoal: string | null,
     clubForeignGoal: string | null,
@@ -28,12 +28,13 @@ class Match {
     this.startDate = startDate;
     this.clubHomeGoal = clubHomeGoal;
     this.clubForeignGoal = clubForeignGoal;
+    this.id = id;
   }
 
   static fromJson(json: MatchJson): Match {
     return new Match(
-      json.club_home,
-      json.club_foreign,
+      Club.fromJson(json.club_home),
+      Club.fromJson(json.club_foreign),
       new Date(json.start_date),
       json.club_home_goal,
       json.club_foreign_goal,
@@ -44,8 +45,8 @@ class Match {
   toJson(): MatchJson {
     return {
       id: this.id,
-      club_home: this.clubHome,
-      club_foreign: this.clubForeign,
+      club_home: this.clubHome.toJson(),
+      club_foreign: this.clubForeign.toJson(),
       start_date: this.startDate.toISOString(),
       club_home_goal: this.clubHomeGoal,
       club_foreign_goal: this.clubForeignGoal,

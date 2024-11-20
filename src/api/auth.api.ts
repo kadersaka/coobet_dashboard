@@ -2,8 +2,6 @@ import User, { UserJson } from "@/models/user.model";
 import AppConstants from "@/utils/constants.util";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-
 interface AuthPromiseResponse {
   data?: UserJson;
   refresh?: string;
@@ -25,31 +23,15 @@ interface AuthData {
 }
 
 class AuthAPI {
-  static async register(data: User): Promise<AuthPromiseResponse | undefined> {
-    let promiseResponse: AuthPromiseResponse | undefined = undefined;
-
-    await axios
-      .post(`${AppConstants.baseUrl}/auth/register`, data.toJson())
-      .then((response) => {
-        promiseResponse = response.data;
-      })
-      .catch((error) => {
-        promiseResponse = error.response.data;
-        console.error(error);
-      });
-
-    return promiseResponse;
-  }
-
   static async login(data: AuthData): Promise<AuthPromiseResponse | undefined> {
     let promiseResponse: AuthPromiseResponse | undefined = undefined;
-    console.log("Login");
 
-    console.log("URL", `http://api.coobet.codelabbenin.com/auth/login `);
+    //  console.log(` ============> BASE URL ${AppConstants.baseUrl} `);
 
     await axios
-      .post(`http://api.coobet.codelabbenin.com/auth/login`, data, {
-        withCredentials: true,
+      .post(`http://api.coobet.codelabbenin.com/auth/login`, {
+        email_or_phone: data.email,
+        password: data.password,
       })
       .then((response) => {
         promiseResponse = response.data;

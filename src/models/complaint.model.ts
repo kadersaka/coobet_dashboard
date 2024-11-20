@@ -1,4 +1,4 @@
-interface ClaimJSON {
+export interface ComplaintJson {
   id?: string;
   email: string;
   fullname: string;
@@ -6,7 +6,7 @@ interface ClaimJSON {
   user: string;
 }
 
-class Claim {
+class Complaint {
   id?: string;
   email: string;
   fullname: string;
@@ -27,8 +27,8 @@ class Claim {
     this.id = id;
   }
 
-  static fromJson(json: ClaimJSON): Claim {
-    return new Claim(
+  static fromJson(json: ComplaintJson): Complaint {
+    return new Complaint(
       json.email,
       json.fullname,
       json.message,
@@ -37,7 +37,7 @@ class Claim {
     );
   }
 
-  toJson(): ClaimJSON {
+  toJson(): ComplaintJson {
     return {
       id: this.id,
       email: this.email,
@@ -48,4 +48,4 @@ class Claim {
   }
 }
 
-export default Claim;
+export default Complaint;

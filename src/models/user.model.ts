@@ -1,7 +1,7 @@
 export interface UserJson {
   id?: string;
-  firstname: string;
-  lastname: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone_indicative: string;
   phone: string;
@@ -85,8 +85,8 @@ class User {
 
   static fromJson(json: UserJson): User {
     return new User(
-      json.firstname,
-      json.lastname,
+      json.first_name,
+      json.last_name,
       json.email,
       json.phone_indicative,
       json.phone,
@@ -107,8 +107,8 @@ class User {
   toJson(): UserJson {
     return {
       id: this.id,
-      firstname: this.firstname,
-      lastname: this.lastname,
+      first_name: this.firstname,
+      last_name: this.lastname,
       email: this.email,
       phone_indicative: this.phoneIndicative,
       phone: this.phone,

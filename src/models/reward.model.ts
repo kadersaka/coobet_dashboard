@@ -1,7 +1,5 @@
 import User, { UserJson } from "./user.model";
-import { json } from "stream/consumers";
-
-interface RewardJson {
+export interface RewardJson {
   id?: string;
   user: UserJson;
   amount: string;
@@ -33,3 +31,5 @@ class Reward {
     };
   }
 }
+
+export default Reward;

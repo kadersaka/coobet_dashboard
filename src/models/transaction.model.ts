@@ -1,5 +1,4 @@
-import TransactionsPage from "../app/transactions/page";
-interface TransactionJson {
+export interface TransactionJson {
   id?: string;
   amount: string;
   user: string;

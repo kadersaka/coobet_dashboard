@@ -3,18 +3,17 @@
 import React from "react";
 import AppInput from "@/components/widget/Form/Input";
 import AppButton from "@/components/widget/Form/Button";
-import useLoginForm from "@/hooks/forms/useLogin.hook";
+import useLoginForm from "@/hooks/forms/useLoginForm.hook";
+import ActionResult from "@/components/widget/Form/ActionResultMessage";
 
 const SignIn: React.FC = () => {
   const { formData, formErrors, onInputDataChange, onFormSubmit } =
-    useLoginForm({
-      email: "",
-      password: "",
-    });
+    useLoginForm();
 
   return (
     <div className=" flex h-screen w-screen items-center justify-center rounded-sm shadow-default dark:border-strokedark dark:bg-boxdark ">
-      <div className="rounded-md' w-full bg-white shadow-lg dark:border-strokedark xl:w-1/3 ">
+      <div className="rounded-md' mx-7 w-full bg-white shadow-lg dark:border-strokedark md:mx-0 md:w-1/2 xl:w-1/3 ">
+        <ActionResult />
         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
           <form onSubmit={onFormSubmit}>
             <div className="mb-4">
