@@ -6,69 +6,70 @@ import MultipleActionButton from "@/components/widget/Form/EditDeleteButton";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
 import { toggleModal } from "@/utils/functions.util";
-import ClubForm from "@/components/widget/Forms/ClubForm";
-import useClubStore from "@/store/useClub.store";
+import MatchForm from "@/components/widget/Forms/MatchForm";
+import useMatchStore from "@/store/useMatch.store";
 import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
 import Image from "next/image";
 import DeletionConfirmation from "@/components/widget/Form/DeletionConfirmation";
 import ActionResult from "@/components/widget/Form/ActionResultMessage";
 import { useSearchParams } from "next/navigation";
 import useSearchStore from "@/store/useSearchStore.store";
-import { Club } from "lucide-react";
-import useClubForm from "@/hooks/forms/useClubForm.hook";
 import Loader from "@/components/common/Loader";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
+import useMatchForm from "@/hooks/forms/useMatchForm.hook";
 
-interface ClubsPageProps {}
+interface MatchsPageProps {}
 
-const ClubsPage: FC<ClubsPageProps> = () => {
+const MatchsPage: FC<MatchsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useClubForm("club-form");
+  const { resetFormData, resetFormErrors } = useMatchForm("match-form");
   const {
-    paginatedClubs,
+    paginatedMatches,
     page,
     loading,
-    fetchClubs,
-    deleteClub,
+    fetchMatches,
+    deleteMatch,
     increasePage,
     decreasePage,
-  } = useClubStore();
+  } = useMatchStore();
 
   useEffect(() => {
-    fetchClubs(searchValue);
-  }, [fetchClubs, searchValue]);
+    fetchMatches(searchValue);
+  }, [fetchMatches, searchValue]);
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Clubs" onClick={() => fetchClubs(searchValue)}>
+      <Breadcrumb pageName="Matchs" onClick={() => fetchMatches(searchValue)}>
         <AppButton
           name="Ajouter"
           width="w-[150px]"
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("club-form");
+            toggleModal("match-form");
           }}
         />
       </Breadcrumb>
-      <ClubForm id="club-form" />
+      <MatchForm id="match-form" />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
         <div className="min-w-[1170px]' rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="flex   bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white ">
-            {["Nom", "Logo", ""].map((column, index) => (
-              <div
-                key={index}
-                className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 ${
-                  index === 1 ? "text-center" : ""
-                }`}
-              >
-                {column}
-              </div>
-            ))}
+            {["Logo 1", "Club 1", "Score 1", "Score 2", "Club 2", "Logo 1"].map(
+              (column, index) => (
+                <div
+                  key={index}
+                  className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 ${
+                    index === 0 || index === 5 ? "text-center" : ""
+                  }`}
+                >
+                  {column}
+                </div>
+              ),
+            )}
           </div>
 
           {/* Table Body */}
@@ -78,25 +79,49 @@ const ClubsPage: FC<ClubsPageProps> = () => {
             </div>
           ) : (
             <div className="w-full  bg-white dark:bg-boxdark">
-              {paginatedClubs?.results?.map((club, index) => (
+              {paginatedMatches?.results.map((match, index) => (
                 <div
                   key={index}
                   className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark  `}
                 >
-                  {/* Club Name */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {club.name}
-                  </div>
-
-                  {/* Club Logo */}
+                  {/* Match Logo 1 */}
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
                     <Image
-                      src={club.logo as string}
-                      alt={club.name}
+                      src={match.clubHome.logo as string}
+                      alt={match.name}
                       width={50}
                       height={50}
                       className="mx-auto"
                     />
+                  </div>
+                  {/* Match Club 1 */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    {match.clubHome.name}
+                  </div>
+
+                  {/* Match Score 1 */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    {match.clubHomeGoal}
+                  </div>
+
+                  {/* Match Logo 2 */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    <Image
+                      src={match.clubHome.logo as string}
+                      alt={match.name}
+                      width={50}
+                      height={50}
+                      className="mx-auto"
+                    />
+                  </div>
+                  {/* Match Club 2 */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    {match.clubHome.name}
+                  </div>
+
+                  {/* Match Score 2 */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    {match.clubHomeGoal}
                   </div>
 
                   {/* Actions */}
@@ -104,28 +129,28 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                     className={`flex-1 px-5 py-4 text-end lg:px-7.5 2xl:px-11`}
                   >
                     <EditDeleteButton
-                      onEdit={() => toggleModal(`club-form-${club.id}`)}
+                      onEdit={() => toggleModal(`match-form-${match.id}`)}
                       onDelete={() => {
-                        toggleModal(`delete-dialog-${club.id}`);
+                        toggleModal(`delete-dialog-${match.id}`);
                       }}
                     />
                   </div>
 
                   {/* Update Form*/}
-                  <ClubForm
-                    key={`club-form-${club.id}`}
-                    id={`club-form-${club.id}`}
-                    club={club}
+                  <MatchForm
+                    key={`match-form-${match.id}`}
+                    id={`match-form-${match.id}`}
+                    Match={match}
                   />
 
                   {/*Deletion dialog*/}
                   <DeletionConfirmation
-                    key={`deletion-confirmation-${club.id}`}
-                    id={`delete-dialog-${club.id}`}
-                    message="Êtes-vous sûr de vouloir supprimer ce club"
-                    successMessage="Le club a été supprimé avec succès"
-                    objectId={club.id!}
-                    onDelete={deleteClub}
+                    key={`deletion-confirmation-${match.id}`}
+                    id={`delete-dialog-${match.id}`}
+                    message="Êtes-vous sûr de vouloir supprimer ce match"
+                    successMessage="Le match a été supprimé avec succès"
+                    objectId={match.id!}
+                    onDelete={deleteMatch}
                   />
                 </div>
               ))}
@@ -135,30 +160,30 @@ const ClubsPage: FC<ClubsPageProps> = () => {
       </div>
 
       <div className="my-5 flex items-center justify-evenly xsm:my-10 md:my-8">
-        {paginatedClubs.previous ? (
+        {paginatedMatches.previous ? (
           <AppButton
             name="Précédent"
             width="w-[150px]"
             color={`bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white`}
             onClick={() => {
               decreasePage();
-              fetchClubs(searchValue);
+              fetchMatches(searchValue);
             }}
           />
         ) : (
-          <span className="w-1"></span>
+          <span className="w-1"> </span>
         )}
 
-        <PageCounter totalPage={paginatedClubs.count} currentPage={page} />
+        <PageCounter totalPage={paginatedMatches.count} currentPage={page} />
 
-        {paginatedClubs.next ? (
+        {paginatedMatches.next ? (
           <AppButton
             name="Suivant"
             width="w-[150px]"
             color={`bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white`}
             onClick={() => {
               increasePage();
-              fetchClubs(searchValue);
+              fetchMatches(searchValue);
             }}
           />
         ) : (
@@ -169,4 +194,4 @@ const ClubsPage: FC<ClubsPageProps> = () => {
   );
 };
 
-export default ClubsPage;
+export default MatchsPage;

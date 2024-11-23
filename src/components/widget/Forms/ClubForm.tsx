@@ -17,13 +17,20 @@ const ClubForm: FC<ClubFormProps> = ({ id, club }) => {
     processing,
     formData,
     formErrors,
+    resetFormData,
     resetFormErrors,
     onInputDataChange,
     onFormSubmit,
   } = useClubForm(id, club);
 
   return (
-    <Modal id={id} onClose={resetFormErrors}>
+    <Modal
+      id={id}
+      onClose={() => {
+        resetFormData();
+        resetFormErrors();
+      }}
+    >
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
           <div className="mb-4">

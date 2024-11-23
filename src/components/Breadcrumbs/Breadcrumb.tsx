@@ -4,13 +4,18 @@ interface BreadcrumbProps {
   pageName: string;
 
   children?: ReactNode;
+
+  onClick?: () => void;
 }
-const Breadcrumb = ({ pageName, children }: BreadcrumbProps) => {
+const Breadcrumb = ({ pageName, children, onClick }: BreadcrumbProps) => {
   return (
     <div
-      className={`mb-10 flex  items-center justify-between gap-3 sm:flex-row md:mb-16 `}
+      className={`mb-5 flex  items-center justify-between gap-3 sm:flex-row md:mb-8 `}
     >
-      <span className="flex items-center text-title-md2 font-semibold text-black dark:text-white">
+      <span
+        className="flex items-center text-title-md2 font-semibold text-black dark:text-white"
+        onClick={onClick}
+      >
         {pageName}
       </span>
 

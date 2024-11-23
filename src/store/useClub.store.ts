@@ -91,7 +91,7 @@ const useClubStore = create<ClubStore>()(
       },
 
       addClub: async (club: Club) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           const addedClub = await ClubApi.add(club);
           set((state) => {
@@ -115,13 +115,11 @@ const useClubStore = create<ClubStore>()(
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
       updateClub: async (club: Club) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           const updatedClub = await ClubApi.update(club);
 
@@ -153,13 +151,11 @@ const useClubStore = create<ClubStore>()(
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
       deleteClub: async (clubId: string) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           await ClubApi.remove(clubId);
           set((state) => ({
@@ -178,8 +174,6 @@ const useClubStore = create<ClubStore>()(
             set({ error: "An unknown error occurred" });
           }
           return false;
-        } finally {
-          set({ loading: false });
         }
       },
     }),

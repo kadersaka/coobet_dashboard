@@ -1,3 +1,6 @@
+import { ChampionshipJson } from "@/interfaces/championship.interface";
+import Championship from "@/models/championship.model";
+
 export interface PaginatedChampionshipJson {
   count: number;
   next: string | null;

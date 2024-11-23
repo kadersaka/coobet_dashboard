@@ -1,35 +1,74 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import ChampionshipApi from "@/api/championship.api";
+import PaginatedChampionship from "@/models/paginated_championship.model";
+import Championship from "@/models/championship.model";
 
 interface ChampionshipStore {
-  championships: Championship[];
+  paginatedChampionships: PaginatedChampionship;
   loading: boolean;
   error: string | null;
-  fetchChampionships: (searchField?: string, page?: number) => Promise<void>;
-  addChampionship: (championship: Championship) => Promise<void>;
-  updateChampionship: (
-    championshipId: string,
-    championship: Championship,
+  page: number;
+  pageSize: number;
+  setPage: (newPage: number) => void;
+  increasePage: () => void;
+  decreasePage: () => void;
+  setPageSize: (newPageSize: number) => void;
+  fetchChampionships: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ) => Promise<void>;
-  deleteChampionship: (championshipId: string) => Promise<void>;
+  addChampionship: (
+    championship: Championship,
+  ) => Promise<Championship | undefined>;
+  updateChampionship: (
+    championship: Championship,
+  ) => Promise<Championship | undefined>;
+  deleteChampionship: (championshipId: string) => Promise<boolean | undefined>;
 }
 
 const useChampionshipStore = create<ChampionshipStore>()(
   persist(
     (set, get) => ({
-      championships: [],
+      paginatedChampionships: new PaginatedChampionship(0, null, null, []),
       loading: false,
       error: null,
+      page: 1,
+      pageSize: 10,
 
-      fetchChampionships: async (searchField: string = "", page = 1) => {
+      setPage: (newPage: number) => {
+        set({ page: newPage });
+      },
+
+      increasePage: () => {
+        set((state) => ({
+          page: state.page + 1,
+        }));
+      },
+
+      decreasePage: () => {
+        set((state) => ({
+          page: state.page - 1,
+        }));
+      },
+
+      setPageSize: (newPageSize: number) => {
+        set({ pageSize: newPageSize });
+      },
+
+      fetchChampionships: async (searchField = "", page, pageSize) => {
         set({ loading: true, error: null });
         try {
           const paginatedChampionships = await ChampionshipApi.findMany(
             searchField,
-            page,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
           );
-          set({ championships: paginatedChampionships.results });
+
+          set((state) => ({
+            paginatedChampionships: paginatedChampionships,
+          }));
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
@@ -42,66 +81,93 @@ const useChampionshipStore = create<ChampionshipStore>()(
       },
 
       addChampionship: async (championship: Championship) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
-          await ChampionshipApi.add(championship);
-          set((state) => ({
-            championships: [...state.championships, championship],
-          }));
+          const addedChampionship = await ChampionshipApi.add(championship);
+          set((state) => {
+            const championshipsList = state.paginatedChampionships.results;
+
+            championshipsList.push(addedChampionship);
+
+            return {
+              paginatedChampionships: new PaginatedChampionship(
+                state.paginatedChampionships.count,
+                state.paginatedChampionships.next,
+                state.paginatedChampionships.previous,
+                championshipsList,
+              ),
+            };
+          });
+          return addedChampionship;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
-      updateChampionship: async (
-        championshipId: string,
-        championship: Championship,
-      ) => {
-        set({ loading: true, error: null });
+      updateChampionship: async (championship: Championship) => {
+        set({ error: null });
         try {
-          const updatedChampionship = await ChampionshipApi.update(
-            championshipId,
-            championship,
-          );
-          set((state) => ({
-            championships: state.championships.map((c) =>
-              c.id === championshipId ? updatedChampionship : c,
-            ),
-          }));
+          const updatedChampionship =
+            await ChampionshipApi.update(championship);
+
+          set((state) => {
+            const championshipsList = state.paginatedChampionships.results;
+
+            const unUpdatedChampionshipIndex = championshipsList.findIndex(
+              (ch) => ch.id === championship.id,
+            );
+
+            if (unUpdatedChampionshipIndex !== -1) {
+              championshipsList[unUpdatedChampionshipIndex] =
+                updatedChampionship;
+            }
+
+            return {
+              paginatedChampionships: new PaginatedChampionship(
+                state.paginatedChampionships.count,
+                state.paginatedChampionships.next,
+                state.paginatedChampionships.previous,
+                championshipsList,
+              ),
+            };
+          });
+
+          return updatedChampionship;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
       deleteChampionship: async (championshipId: string) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           await ChampionshipApi.remove(championshipId);
           set((state) => ({
-            championships: state.championships.filter(
-              (championship) => championship.id !== championshipId,
+            paginatedChampionships: new PaginatedChampionship(
+              state.paginatedChampionships.count,
+              state.paginatedChampionships.next,
+              state.paginatedChampionships.previous,
+              state.paginatedChampionships.results.filter(
+                (championship) => championship.id !== championshipId,
+              ),
             ),
           }));
+          return true;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
+          return false;
         }
       },
     }),

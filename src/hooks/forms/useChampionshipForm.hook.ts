@@ -1,0 +1,147 @@
+import {
+  ChampionshipFormData,
+  ChampionshipFormErrors,
+} from "@/interfaces/championship.interface";
+import Championship from "@/models/championship.model";
+import useChampionshipStore from "@/store/useChampionship.store";
+import useInterfaceStore from "@/store/useInterface.store";
+import { delay, toggleModal } from "@/utils/functions.util";
+import { useEffect, useState } from "react";
+
+const useChampionshipForm = (modalId: string, initialData?: Championship) => {
+  const { addChampionship, updateChampionship } = useChampionshipStore();
+
+  const [formData, setFormData] = useState<ChampionshipFormData>({
+    name: initialData?.name ?? "",
+    sport: initialData?.sport ?? "",
+  });
+
+  const [formErrors, setFormErrors] = useState<ChampionshipFormErrors>({
+    name: null,
+    sport: null,
+  });
+
+  const [processing, setProcessing] = useState<boolean>(false);
+
+  const resetFormData = () => {
+    setFormData({
+      name: "",
+      sport: "",
+    });
+  };
+
+  const resetFormErrors = () => {
+    setFormErrors({
+      name: null,
+      sport: null,
+    });
+  };
+
+  const setActionResultMessage = useInterfaceStore(
+    (state) => state.setActionResultMessage,
+  );
+
+  const onInputDataChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLInputElement>,
+  ) => {
+    const { name, value, files } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: name === "logo" ? files?.[0] : value,
+    });
+  };
+
+  const validateForm = () => {
+    const errors: ChampionshipFormErrors = {
+      name: null,
+      sport: null,
+    };
+
+    if (!formData.name.trim()) {
+      errors.name = "Le nom du championnat est requis";
+    } else if (formData.name.length < 3) {
+      errors.name = "Le nom doit contenir au moins trois caractères";
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+      errors.name =
+        "Le nom doit contenir uniquement des lettres et des espaces";
+    }
+
+    if (!formData.sport.trim()) {
+      errors.sport = "Le sport du championnat est requis";
+    } else if (formData.sport.length < 3) {
+      errors.name = "Le sport doit contenir au moins trois caractères";
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+      errors.name =
+        "Le sport doit contenir uniquement des lettres et des espaces";
+    }
+
+    setFormErrors(errors);
+
+    return Object.values(errors).every((error) => !error);
+  };
+
+  const onFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      setProcessing(true);
+
+      try {
+        const championship = new Championship(
+          formData.name,
+          formData.sport,
+          initialData?.id,
+        );
+
+        if (championship?.id) {
+          const updatedChampionship = await updateChampionship(championship);
+
+          if (updatedChampionship) {
+            resetFormData();
+            toggleModal(modalId);
+            setActionResultMessage(
+              "Le championnat a été mis à jour avec succès",
+            );
+            toggleModal("action-result-message");
+            await delay({ milliseconds: 1000 });
+            toggleModal("action-result-message");
+          } else {
+            setActionResultMessage("Une erreur s'est produite");
+            toggleModal("action-result-message");
+          }
+        } else {
+          const newChampionship = await addChampionship(championship);
+
+          if (newChampionship) {
+            resetFormData();
+            toggleModal(modalId);
+            setActionResultMessage("Le championnat a été ajouté avec succès");
+            toggleModal("action-result-message");
+            await delay({ milliseconds: 1000 });
+            toggleModal("action-result-message");
+          } else {
+            setActionResultMessage("Une erreur s'est produite");
+            toggleModal("action-result-message");
+          }
+        }
+      } catch (error) {
+        console.error("Error handling form submission:", error);
+      }
+
+      setProcessing(false);
+    }
+  };
+
+  return {
+    processing,
+    formData,
+    formErrors,
+    resetFormData,
+    resetFormErrors,
+    onInputDataChange,
+    onFormSubmit,
+  };
+};
+
+export default useChampionshipForm;

@@ -1,13 +1,30 @@
 import { FC, ReactNode, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-interface AppSelectProps {
-  label?: string;
-  icon?: ReactNode;
+export interface SelectItemProps {
+  name: string;
+  value: string;
 }
 
-const AppSelect: FC<AppSelectProps> = ({ label, icon }) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+interface AppSelectProps {
+  id: string;
+  name: string;
+  label?: string;
+  icon?: ReactNode;
+  items: SelectItemProps[];
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const AppSelect: FC<AppSelectProps> = ({
+  id,
+  name,
+  label,
+  icon,
+  items,
+  value,
+  onChange,
+}) => {
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
   const changeTextColor = () => {
@@ -17,7 +34,7 @@ const AppSelect: FC<AppSelectProps> = ({ label, icon }) => {
   return (
     <div>
       {label && (
-        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+        <label className="mb-2.5 block font-medium text-black dark:text-white">
           {label}
         </label>
       )}
@@ -30,9 +47,11 @@ const AppSelect: FC<AppSelectProps> = ({ label, icon }) => {
         )}
 
         <select
-          value={selectedOption}
+          id={id}
+          name={name}
+          value={value}
           onChange={(e) => {
-            setSelectedOption(e.target.value);
+            onChange(e);
             changeTextColor();
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
@@ -40,17 +59,18 @@ const AppSelect: FC<AppSelectProps> = ({ label, icon }) => {
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
-            Select Country
+            {label}
           </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
-          </option>
+
+          {items.map((item, index) => (
+            <option
+              key={index}
+              value={item.name}
+              className="text-body dark:text-bodydark"
+            >
+              {item.name}
+            </option>
+          ))}
         </select>
 
         <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">

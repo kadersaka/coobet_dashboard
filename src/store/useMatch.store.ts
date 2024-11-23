@@ -1,29 +1,70 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import MatchApi from "@/api/match.api";
+import PaginatedMatch from "@/models/paginated_match.model";
+import Match from "@/models/match.model";
 
 interface MatchStore {
-  matches: Match[];
+  paginatedMatches: PaginatedMatch;
   loading: boolean;
   error: string | null;
-  fetchMatches: (searchField?: string, page?: number) => Promise<void>;
-  addMatch: (match: Match) => Promise<void>;
-  updateMatch: (matchId: string, match: Match) => Promise<void>;
-  deleteMatch: (matchId: string) => Promise<void>;
+  page: number;
+  pageSize: number;
+  setPage: (newPage: number) => void;
+  increasePage: () => void;
+  decreasePage: () => void;
+  setPageSize: (newPageSize: number) => void;
+  fetchMatches: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<void>;
+  addMatch: (match: Match) => Promise<Match | undefined>;
+  updateMatch: (match: Match) => Promise<Match | undefined>;
+  deleteMatch: (matchId: string) => Promise<boolean | undefined>;
 }
 
 const useMatchStore = create<MatchStore>()(
   persist(
     (set, get) => ({
-      matches: [],
+      paginatedMatches: new PaginatedMatch(0, null, null, []),
       loading: false,
       error: null,
+      page: 1,
+      pageSize: 10,
 
-      fetchMatches: async (searchField = "", page = 1) => {
+      setPage: (newPage: number) => {
+        set({ page: newPage });
+      },
+
+      increasePage: () => {
+        set((state) => ({
+          page: state.page + 1,
+        }));
+      },
+
+      decreasePage: () => {
+        set((state) => ({
+          page: state.page - 1,
+        }));
+      },
+
+      setPageSize: (newPageSize: number) => {
+        set({ pageSize: newPageSize });
+      },
+
+      fetchMatches: async (searchField = "", page, pageSize) => {
         set({ loading: true, error: null });
         try {
-          const paginatedMatches = await MatchApi.findMany(searchField, page);
-          set({ matches: paginatedMatches.results });
+          const paginatedMatches = await MatchApi.findMany(
+            searchField,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
+          );
+
+          set((state) => ({
+            paginatedMatches: paginatedMatches,
+          }));
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
@@ -36,56 +77,79 @@ const useMatchStore = create<MatchStore>()(
       },
 
       addMatch: async (match: Match) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
-          await MatchApi.add(match);
-          set((state) => ({ matches: [...state.matches, match] }));
+          const addedMatch = await MatchApi.add(match);
+          set((state) => {
+            return {
+              paginatedMatches: new PaginatedMatch(
+                state.paginatedMatches.count,
+                state.paginatedMatches.next,
+                state.paginatedMatches.previous,
+                [...state.paginatedMatches.results, addedMatch],
+              ),
+            };
+          });
+          return addedMatch;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
-      updateMatch: async (matchId: string, match: Match) => {
-        set({ loading: true, error: null });
+      updateMatch: async (match: Match) => {
+        set({ error: null });
         try {
-          const updatedMatch = await MatchApi.update(matchId, match);
-          set((state) => ({
-            matches: state.matches.map((m) =>
-              m.id === matchId ? updatedMatch : m,
-            ),
-          }));
+          const updatedMatch = await MatchApi.update(match);
+
+          set((state) => {
+            return {
+              paginatedMatches: new PaginatedMatch(
+                state.paginatedMatches.count,
+                state.paginatedMatches.next,
+                state.paginatedMatches.previous,
+                state.paginatedMatches.results.map((match) =>
+                  match.id === updatedMatch.id ? updatedMatch : match,
+                ),
+              ),
+            };
+          });
+
+          return updatedMatch;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
       deleteMatch: async (matchId: string) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           await MatchApi.remove(matchId);
           set((state) => ({
-            matches: state.matches.filter((match) => match.id !== matchId),
+            paginatedMatches: new PaginatedMatch(
+              state.paginatedMatches.count - 1,
+              state.paginatedMatches.next,
+              state.paginatedMatches.previous,
+              state.paginatedMatches.results.filter(
+                (match) => match.id !== matchId,
+              ),
+            ),
           }));
+          return true;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
+          return false;
         }
       },
     }),

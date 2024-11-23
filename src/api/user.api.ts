@@ -1,21 +1,32 @@
 import api from "@/utils/api.util";
-import User, { UserJson } from "../models/user.model";
+import User from "../models/user.model";
 import PaginatedUser, {
-  PaginatedUserJson,
+  PaginatedUsersJson,
 } from "@/models/paginated_user.model";
+import { UserJson } from "@/interfaces/user.interface";
+import axios from "axios";
 
 class UserApi {
   private static route: string = "/users";
 
   static async findMany(
-    searchField: string = "",
-    page: number = 1,
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ): Promise<PaginatedUser> {
     try {
-      const response = await api.get<PaginatedUserJson>(
-        `${this.route}?search_field=${searchField}&page=${page}`,
+      const token = localStorage.getItem("access");
+
+      const response = await await axios.get<PaginatedUsersJson>(
+        `http://api.coobet.codelabbenin.com/auth/users?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-      return PaginatedUser.fromJson(response);
+      return PaginatedUser.fromJson(response.data);
     } catch (error) {
       console.error("Error fetching paginated users:", error);
       throw error;
@@ -43,23 +54,44 @@ class UserApi {
     }
   }
 
-  static async update(userId: string, user: User): Promise<User> {
+  static async update(user: User): Promise<User> {
     try {
       const userJson = user.toJson();
       const response = await api.put<UserJson>(
-        `${this.route}/${userId}`,
+        `${this.route}/${user.id}`,
         userJson,
       );
       return User.fromJson(response);
     } catch (error) {
-      console.error(`Error updating user with ID ${userId}:`, error);
+      console.error(`Error updating user with ID ${user.id}:`, error);
       throw error;
     }
   }
 
-  static async remove(userId: string): Promise<void> {
+  static async block(user: User): Promise<void> {
     try {
-      await api.delete<void>(`${this.route}/${userId}`);
+      await api.post<void>(`block/${user.isBlock ? "deblock" : "block"}`, {
+        user_id: user.id,
+      });
+    } catch (error) {
+      console.error(`Error blocking user with ID ${user.id}:`, error);
+      throw error;
+    }
+  }
+
+  static async remove(userId: string, adminPassword: string): Promise<void> {
+    const token = localStorage.getItem("access");
+    try {
+      await axios.post(
+        "http://api.coobet.codelabbenin.com/auth/delete_acount",
+        { passwor: adminPassword, user_id: userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
     } catch (error) {
       console.error(`Error deleting user with ID ${userId}:`, error);
       throw error;

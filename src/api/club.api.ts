@@ -16,7 +16,7 @@ class ClubApi {
   ): Promise<PaginatedClub> {
     try {
       const response = await api.get<PaginatedClubJson>(
-        `${this.route}?search_field=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedClub.fromJson(response);
     } catch (error) {

@@ -1,8 +1,4 @@
-interface ChampionshipJson {
-  id?: string;
-  name: string;
-  sport: string;
-}
+import { ChampionshipJson } from "@/interfaces/championship.interface";
 
 class Championship {
   id?: string;
@@ -26,3 +22,5 @@ class Championship {
     };
   }
 }
+
+export default Championship;

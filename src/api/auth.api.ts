@@ -1,4 +1,5 @@
-import User, { UserJson } from "@/models/user.model";
+import { UserJson } from "@/interfaces/user.interface";
+import User from "@/models/user.model";
 import AppConstants from "@/utils/constants.util";
 import axios from "axios";
 
@@ -25,8 +26,6 @@ interface AuthData {
 class AuthAPI {
   static async login(data: AuthData): Promise<AuthPromiseResponse | undefined> {
     let promiseResponse: AuthPromiseResponse | undefined = undefined;
-
-    //  console.log(` ============> BASE URL ${AppConstants.baseUrl} `);
 
     await axios
       .post(`http://api.coobet.codelabbenin.com/auth/login`, {

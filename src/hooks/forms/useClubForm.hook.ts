@@ -87,7 +87,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
     return Object.values(errors).every((error) => !error);
   };
 
-  const onFormSubmit = async (e: React.FormEvent, clubId?: string) => {
+  const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
@@ -113,7 +113,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
             toggleModal(modalId);
             setActionResultMessage("Le club a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1500 });
+            await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
           } else {
             setActionResultMessage("Une erreur s'est produite");
@@ -127,7 +127,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
             toggleModal(modalId);
             setActionResultMessage("Le club a été ajouté avec succès");
             toggleModal("action-result-message");
-            delay({ milliseconds: 1500 });
+            delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
           } else {
             setActionResultMessage("Une erreur s'est produite");

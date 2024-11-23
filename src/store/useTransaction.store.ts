@@ -1,36 +1,74 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import Transaction from "@/models/transaction.model";
 import TransactionApi from "@/api/transaction.api";
+import PaginatedTransaction from "@/models/paginated_transaction.model";
+import Transaction from "@/models/transaction.model";
 
 interface TransactionStore {
-  transactions: Transaction[];
+  paginatedTransactions: PaginatedTransaction;
   loading: boolean;
   error: string | null;
-  fetchTransactions: (searchField?: string, page?: number) => Promise<void>;
-  addTransaction: (transaction: Transaction) => Promise<void>;
-  updateTransaction: (
-    transactionId: string,
-    transaction: Transaction,
+  page: number;
+  pageSize: number;
+  setPage: (newPage: number) => void;
+  increasePage: () => void;
+  decreasePage: () => void;
+  setPageSize: (newPageSize: number) => void;
+  fetchTransactions: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ) => Promise<void>;
-  deleteTransaction: (transactionId: string) => Promise<void>;
+  addTransaction: (
+    transaction: Transaction,
+  ) => Promise<Transaction | undefined>;
+  updateTransaction: (
+    transaction: Transaction,
+  ) => Promise<Transaction | undefined>;
+  deleteTransaction: (transactionId: string) => Promise<boolean | undefined>;
 }
 
 const useTransactionStore = create<TransactionStore>()(
   persist(
     (set, get) => ({
-      transactions: [],
+      paginatedTransactions: new PaginatedTransaction(0, null, null, []),
       loading: false,
       error: null,
+      page: 1,
+      pageSize: 10,
 
-      fetchTransactions: async (searchField = "", page = 1) => {
+      setPage: (newPage: number) => {
+        set({ page: newPage });
+      },
+
+      increasePage: () => {
+        set((state) => ({
+          page: state.page + 1,
+        }));
+      },
+
+      decreasePage: () => {
+        set((state) => ({
+          page: state.page - 1,
+        }));
+      },
+
+      setPageSize: (newPageSize: number) => {
+        set({ pageSize: newPageSize });
+      },
+
+      fetchTransactions: async (searchField = "", page, pageSize) => {
         set({ loading: true, error: null });
         try {
           const paginatedTransactions = await TransactionApi.findMany(
             searchField,
-            page,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
           );
-          set({ transactions: paginatedTransactions.results });
+
+          set({
+            paginatedTransactions,
+          });
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
@@ -43,66 +81,91 @@ const useTransactionStore = create<TransactionStore>()(
       },
 
       addTransaction: async (transaction: Transaction) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
-          await TransactionApi.add(transaction);
-          set((state) => ({
-            transactions: [...state.transactions, transaction],
-          }));
+          const addedTransaction = await TransactionApi.add(transaction);
+          set((state) => {
+            const transactionsList = state.paginatedTransactions.results;
+
+            transactionsList.push(addedTransaction);
+
+            return {
+              paginatedTransactions: new PaginatedTransaction(
+                state.paginatedTransactions.count,
+                state.paginatedTransactions.next,
+                state.paginatedTransactions.previous,
+                transactionsList,
+              ),
+            };
+          });
+          return addedTransaction;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
-      updateTransaction: async (
-        transactionId: string,
-        transaction: Transaction,
-      ) => {
-        set({ loading: true, error: null });
+      updateTransaction: async (transaction: Transaction) => {
+        set({ error: null });
         try {
-          const updatedTransaction = await TransactionApi.update(
-            transactionId,
-            transaction,
-          );
-          set((state) => ({
-            transactions: state.transactions.map((t) =>
-              t.id === transactionId ? updatedTransaction : t,
-            ),
-          }));
+          const updatedTransaction = await TransactionApi.update(transaction);
+
+          set((state) => {
+            const transactionsList = state.paginatedTransactions.results;
+
+            const unUpdatedTransactionIndex = transactionsList.findIndex(
+              (t) => t.id === transaction.id,
+            );
+
+            if (unUpdatedTransactionIndex !== -1) {
+              transactionsList[unUpdatedTransactionIndex] = updatedTransaction;
+            }
+
+            return {
+              paginatedTransactions: new PaginatedTransaction(
+                state.paginatedTransactions.count,
+                state.paginatedTransactions.next,
+                state.paginatedTransactions.previous,
+                transactionsList,
+              ),
+            };
+          });
+
+          return updatedTransaction;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
       deleteTransaction: async (transactionId: string) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           await TransactionApi.remove(transactionId);
           set((state) => ({
-            transactions: state.transactions.filter(
-              (transaction) => transaction.id !== transactionId,
+            paginatedTransactions: new PaginatedTransaction(
+              state.paginatedTransactions.count,
+              state.paginatedTransactions.next,
+              state.paginatedTransactions.previous,
+              state.paginatedTransactions.results.filter(
+                (transaction) => transaction.id !== transactionId,
+              ),
             ),
           }));
+          return true;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
+          return false;
         }
       },
     }),

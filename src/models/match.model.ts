@@ -1,26 +1,21 @@
-interface MatchJson {
-  id?: string;
-  club_home: ClubJson;
-  club_foreign: ClubJson;
-  start_date: string;
-  club_home_goal: string | null;
-  club_foreign_goal: string | null;
-}
+import { ClubJson } from "@/interfaces/club.interface";
+import Club from "./club.model";
+import { MatchJson } from "@/interfaces/match.interface";
 
 class Match {
   id?: string;
   clubHome: Club;
   clubForeign: Club;
   startDate: Date;
-  clubHomeGoal: string | null;
-  clubForeignGoal: string | null;
+  clubHomeGoal: number | null;
+  clubForeignGoal: number | null;
 
   constructor(
     clubHome: Club,
     clubForeign: Club,
     startDate: Date,
-    clubHomeGoal: string | null,
-    clubForeignGoal: string | null,
+    clubHomeGoal: number | null,
+    clubForeignGoal: number | null,
     id?: string,
   ) {
     this.clubHome = clubHome;
@@ -53,3 +48,5 @@ class Match {
     };
   }
 }
+
+export default Match;

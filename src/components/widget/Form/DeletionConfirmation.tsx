@@ -10,6 +10,7 @@ interface DeletionConfirmationProps {
   message: string;
   successMessage: string;
   objectId: string;
+  deleteText?: string;
   onDelete: (id: string) => Promise<boolean | undefined>;
 }
 
@@ -18,6 +19,7 @@ const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
   message,
   successMessage,
   objectId,
+  deleteText,
   onDelete,
 }) => {
   const setActionResultMessage = useInterfaceStore(
@@ -34,14 +36,14 @@ const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
             name="Fermer"
             width="w-[150px]"
             onClick={() => {
-              toggleModal("action-result-message");
+              toggleModal(id);
             }}
           />
           {deleting ? (
             <ProcessingLoader />
           ) : (
             <AppButton
-              name="Supprimer"
+              name={deleteText ?? `Supprimer `}
               width="w-[150px]"
               color="bg-red-500"
               onClick={async () => {
@@ -53,7 +55,7 @@ const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
                   toggleModal(id);
                   setActionResultMessage(successMessage);
                   toggleModal("action-result-message");
-                  await delay({ milliseconds: 1500 });
+                  await delay({ milliseconds: 1000 });
                   toggleModal("action-result-message");
                 } else {
                   setActionResultMessage("Une erreur s'est produite");

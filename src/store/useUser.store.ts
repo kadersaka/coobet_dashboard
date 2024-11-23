@@ -2,30 +2,67 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import User from "@/models/user.model";
 import UserApi from "@/api/user.api";
+import PaginatedUsers from "@/models/paginated_user.model";
 
 interface UserStore {
-  users: User[];
+  paginatedUsers: PaginatedUsers;
   loading: boolean;
   error: string | null;
-  fetchUsers: (searchField?: string, page?: number) => Promise<void>;
-  addUser: (user: User) => Promise<void>;
-  updateUser: (userId: string, user: User) => Promise<void>;
-  deleteUser: (userId: string) => Promise<void>;
+  page: number;
+  pageSize: number;
+  setPage: (newPage: number) => void;
+  setPageSize: (newPageSize: number) => void;
+  increasePage: () => void;
+  decreasePage: () => void;
+  fetchUsers: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<void>;
+  addUser: (user: User) => Promise<User | undefined>;
+  updateUser: (user: User) => Promise<User | undefined>;
+  blockUser: (userId: string) => Promise<boolean | undefined>;
+  deleteUser: (
+    userId: string,
+    adminPassword: string,
+  ) => Promise<boolean | undefined>;
 }
 
 const useUsersStore = create<UserStore>()(
   persist(
     (set, get) => ({
-      users: [],
+      paginatedUsers: new PaginatedUsers(0, null, null, []),
       loading: false,
       error: null,
+      page: 1,
+      pageSize: 10,
 
-      // Fetch users with optional search and pagination
-      fetchUsers: async (searchField = "", page = 1) => {
+      setPage: (newPage: number) => set({ page: newPage }),
+
+      increasePage: () =>
+        set((state) => ({
+          page: state.page + 1,
+        })),
+
+      decreasePage: () =>
+        set((state) => ({
+          page: state.page - 1,
+        })),
+
+      setPageSize: (newPageSize: number) => set({ pageSize: newPageSize }),
+
+      fetchUsers: async (searchField = "", page, pageSize) => {
         set({ loading: true, error: null });
         try {
-          const paginatedUsers = await UserApi.findMany(searchField, page);
-          set({ users: paginatedUsers.results });
+          const paginatedUsers = await UserApi.findMany(
+            searchField,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
+          );
+
+          set((state) => ({
+            paginatedUsers: paginatedUsers,
+          }));
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
@@ -37,58 +74,103 @@ const useUsersStore = create<UserStore>()(
         }
       },
 
-      // Add a user
       addUser: async (user: User) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
-          await UserApi.add(user);
-          set((state) => ({ users: [...state.users, user] }));
+          const addedUser = await UserApi.add(user);
+          set((state) => ({
+            paginatedUsers: new PaginatedUsers(
+              state.paginatedUsers.count + 1,
+              state.paginatedUsers.next,
+              state.paginatedUsers.previous,
+              [...state.paginatedUsers.results, addedUser],
+            ),
+          }));
+          return addedUser;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
-      // Update a user
-      updateUser: async (userId: string, user: User) => {
-        set({ loading: true, error: null });
+      updateUser: async (user: User) => {
+        set({ error: null });
         try {
-          const updatedUser = await UserApi.update(userId, user);
+          const updatedUser = await UserApi.update(user);
           set((state) => ({
-            users: state.users.map((u) => (u.id === userId ? updatedUser : u)),
+            paginatedUsers: new PaginatedUsers(
+              state.paginatedUsers.count,
+              state.paginatedUsers.next,
+              state.paginatedUsers.previous,
+              state.paginatedUsers.results.map((u) =>
+                u.id === user.id ? updatedUser : u,
+              ),
+            ),
           }));
+          return updatedUser;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
         }
       },
 
-      // Delete a user
-      deleteUser: async (userId: string) => {
-        set({ loading: true, error: null });
+      blockUser: async (userId: string) => {
+        set({ error: null });
         try {
-          await UserApi.remove(userId);
-          set((state) => ({
-            users: state.users.filter((user) => user.id !== userId),
-          }));
+          const user = get().paginatedUsers.results.find(
+            (user) => user.id === userId,
+          );
+          await UserApi.block(user!);
+          set((state) => {
+            user!.isBlock = !user!.isBlock;
+            return {
+              paginatedUsers: new PaginatedUsers(
+                state.paginatedUsers.count,
+                state.paginatedUsers.next,
+                state.paginatedUsers.previous,
+                state.paginatedUsers.results.map((u) =>
+                  u.id === user!.id ? user! : u,
+                ),
+              ),
+            };
+          });
+          return true;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
+          return false;
+        }
+      },
+
+      deleteUser: async (userId: string, adminPassword: string) => {
+        set({ error: null });
+        try {
+          await UserApi.remove(userId, adminPassword);
+          set((state) => ({
+            paginatedUsers: new PaginatedUsers(
+              state.paginatedUsers.count - 1,
+              state.paginatedUsers.next,
+              state.paginatedUsers.previous,
+              state.paginatedUsers.results.filter((user) => user.id !== userId),
+            ),
+          }));
+          return true;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+          return false;
         }
       },
     }),

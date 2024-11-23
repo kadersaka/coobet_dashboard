@@ -2,11 +2,18 @@ import { FC, ReactNode, useState } from "react";
 import { Edit, Trash2Icon } from "lucide-react";
 
 interface EditDeleteButtonProps {
+  editText?: string;
   onEdit: () => void;
+  deleteText?: string;
   onDelete: () => void;
 }
 
-const EditDeleteButton: FC<EditDeleteButtonProps> = ({ onEdit, onDelete }) => {
+const EditDeleteButton: FC<EditDeleteButtonProps> = ({
+  editText,
+  onEdit,
+  deleteText,
+  onDelete,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -31,7 +38,7 @@ const EditDeleteButton: FC<EditDeleteButtonProps> = ({ onEdit, onDelete }) => {
                 onEdit();
               }}
             >
-              Editer
+              {editText ?? "Editer"}
               <Edit className="text-green-500" size={15} />
             </a>
             <a
@@ -41,7 +48,7 @@ const EditDeleteButton: FC<EditDeleteButtonProps> = ({ onEdit, onDelete }) => {
                 onDelete();
               }}
             >
-              Supprimer
+              {deleteText ?? "Supprimer"}
               <Trash2Icon className="text-red-500" size={15} />
             </a>
           </div>

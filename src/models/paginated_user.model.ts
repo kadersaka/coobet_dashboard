@@ -1,13 +1,14 @@
-import User, { UserJson } from "./user.model";
+import { UserJson } from "@/interfaces/user.interface";
+import User from "./user.model";
 
-export interface PaginatedUserJson {
+export interface PaginatedUsersJson {
   count: number;
   next: string | null;
   previous: string | null;
   results: UserJson[];
 }
 
-class PaginatedUser {
+class PaginatedUsers {
   count: number;
   next: string | null;
   previous: string | null;
@@ -25,8 +26,8 @@ class PaginatedUser {
     this.results = results;
   }
 
-  static fromJson(json: PaginatedUserJson): PaginatedUser {
-    return new PaginatedUser(
+  static fromJson(json: PaginatedUsersJson): PaginatedUsers {
+    return new PaginatedUsers(
       json.count,
       json.next,
       json.previous,
@@ -34,7 +35,7 @@ class PaginatedUser {
     );
   }
 
-  toJson(): PaginatedUserJson {
+  toJson(): PaginatedUsersJson {
     return {
       count: this.count,
       next: this.next,
@@ -44,4 +45,4 @@ class PaginatedUser {
   }
 }
 
-export default PaginatedUser;
+export default PaginatedUsers;

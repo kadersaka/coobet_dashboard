@@ -1,18 +1,22 @@
 import PaginatedChampionship, {
   PaginatedChampionshipJson,
 } from "@/models/paginated_championship.model";
+import { ChampionshipJson } from "@/interfaces/championship.interface";
+
 import api from "@/utils/api.util";
+import Championship from "@/models/championship.model";
 
 class ChampionshipApi {
-  private static route: string = "/championships";
+  private static route: string = "/championnat";
 
   static async findMany(
-    searchField: string = "",
-    page: number = 1,
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ): Promise<PaginatedChampionship> {
     try {
       const response = await api.get<PaginatedChampionshipJson>(
-        `${this.route}?search_field=${searchField}&page=${page}`,
+        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedChampionship.fromJson(response);
     } catch (error) {
@@ -50,20 +54,17 @@ class ChampionshipApi {
     }
   }
 
-  static async update(
-    championshipId: string,
-    championship: Championship,
-  ): Promise<Championship> {
+  static async update(championship: Championship): Promise<Championship> {
     try {
       const championshipJson = championship.toJson();
       const response = await api.put<ChampionshipJson>(
-        `${this.route}/${championshipId}`,
+        `${this.route}/${championship.id}`,
         championshipJson,
       );
       return Championship.fromJson(response);
     } catch (error) {
       console.error(
-        `Error updating championship with ID ${championshipId}:`,
+        `Error updating championship with ID ${championship.id}:`,
         error,
       );
       throw error;

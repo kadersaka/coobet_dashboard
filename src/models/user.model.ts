@@ -1,30 +1,15 @@
-export interface UserJson {
-  id?: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_indicative: string;
-  phone: string;
-  date_joined: string;
-  is_block: boolean;
-  preference_notification?: string;
-  last_login?: string;
-  user_app_id?: string;
-  referral_code?: string;
-  referral_link?: string;
-  access?: string;
-  refresh?: string;
-}
+import { UserJson } from "@/interfaces/user.interface";
 
 class User {
   id?: string;
   firstname: string;
   lastname: string;
-  email: string;
-  phoneIndicative: string;
-  phone: string;
-  dateJoined: Date;
-  isBlock: boolean;
+  fullname?: string;
+  email?: string;
+  phoneIndicative?: string;
+  phone?: string;
+  dateJoined?: Date;
+  isBlock?: boolean;
   preferenceNotification?: string;
   lastLogin?: Date;
   userAppId?: string;
@@ -36,11 +21,12 @@ class User {
   constructor(
     firstname: string,
     lastname: string,
-    email: string,
-    phoneIndicative: string,
-    phone: string,
-    dateJoined: Date,
-    isBlock: boolean,
+    fullname?: string,
+    email?: string,
+    phoneIndicative?: string,
+    phone?: string,
+    dateJoined?: Date,
+    isBlock?: boolean,
     preferenceNotification?: string,
     lastLogin?: Date,
     userAppId?: string,
@@ -52,6 +38,7 @@ class User {
   ) {
     this.firstname = firstname;
     this.lastname = lastname;
+    this.fullname = fullname;
     this.email = email;
     this.phoneIndicative = phoneIndicative;
     this.phone = phone;
@@ -87,10 +74,12 @@ class User {
     return new User(
       json.first_name,
       json.last_name,
+      json.fullname,
       json.email,
+
       json.phone_indicative,
       json.phone,
-      new Date(json.date_joined),
+      json.date_joined != null ? new Date(json.date_joined) : undefined,
       json.is_block,
       json.preference_notification,
       json.last_login != null ? new Date(json.last_login!) : undefined,
@@ -109,10 +98,11 @@ class User {
       id: this.id,
       first_name: this.firstname,
       last_name: this.lastname,
+      fullname: this.fullname,
       email: this.email,
       phone_indicative: this.phoneIndicative,
       phone: this.phone,
-      date_joined: this.dateJoined.toISOString(),
+      date_joined: this.dateJoined?.toISOString(),
       is_block: this.isBlock,
       preference_notification: this.preferenceNotification,
       last_login:

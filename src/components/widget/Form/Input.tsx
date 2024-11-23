@@ -29,9 +29,8 @@ const AppInput: FC<AppInputProps> = ({
   // onKeyDown,
 }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle file input changes
     if (e.target.files) {
-      onChange(e); // Pass the file to the parent
+      onChange(e);
     }
   };
 

@@ -1,19 +1,21 @@
 import api from "@/utils/api.util";
-import Transaction, { TransactionJson } from "@/models/transaction.model";
+import Transaction from "@/models/transaction.model";
 import PaginatedTransaction, {
   PaginatedTransactionJson,
 } from "@/models/paginated_transaction.model";
+import { TransactionJson } from "@/interfaces/transaction.interface";
 
 class TransactionApi {
-  private static route: string = "/transactions";
+  private static route: string = "/transaction";
 
   static async findMany(
-    searchField: string = "",
-    page: number = 1,
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ): Promise<PaginatedTransaction> {
     try {
       const response = await api.get<PaginatedTransactionJson>(
-        `${this.route}?search_field=${searchField}&page=${page}`,
+        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedTransaction.fromJson(response);
     } catch (error) {
@@ -51,20 +53,17 @@ class TransactionApi {
     }
   }
 
-  static async update(
-    transactionId: string,
-    transaction: Transaction,
-  ): Promise<Transaction> {
+  static async update(transaction: Transaction): Promise<Transaction> {
     try {
       const transactionJson = transaction.toJson();
       const response = await api.put<TransactionJson>(
-        `${this.route}/${transactionId}`,
+        `${this.route}/${transaction.id}`,
         transactionJson,
       );
       return Transaction.fromJson(response);
     } catch (error) {
       console.error(
-        `Error updating transaction with ID ${transactionId}:`,
+        `Error updating transaction with ID ${transaction.id}:`,
         error,
       );
       throw error;

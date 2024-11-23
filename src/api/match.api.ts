@@ -1,3 +1,5 @@
+import { MatchJson } from "@/interfaces/match.interface";
+import Match from "@/models/match.model";
 import PaginatedMatch, {
   PaginatedMatchJson,
 } from "@/models/paginated_match.model";
@@ -7,12 +9,13 @@ class MatchApi {
   private static route: string = "/matches";
 
   static async findMany(
-    searchField: string = "",
-    page: number = 1,
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ): Promise<PaginatedMatch> {
     try {
       const response = await api.get<PaginatedMatchJson>(
-        `${this.route}?search_field=${searchField}&page=${page}`,
+        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedMatch.fromJson(response);
     } catch (error) {
@@ -42,16 +45,16 @@ class MatchApi {
     }
   }
 
-  static async update(matchId: string, match: Match): Promise<Match> {
+  static async update(match: Match): Promise<Match> {
     try {
       const matchJson = match.toJson();
       const response = await api.put<MatchJson>(
-        `${this.route}/${matchId}`,
+        `${this.route}/${match.id}`,
         matchJson,
       );
       return Match.fromJson(response);
     } catch (error) {
-      console.error(`Error updating match with ID ${matchId}:`, error);
+      console.error(`Error updating match with ID ${match.id}:`, error);
       throw error;
     }
   }
