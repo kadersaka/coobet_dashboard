@@ -20,6 +20,12 @@ interface ClubStore {
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
+  researchClubs: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<PaginatedClub | undefined>;
+  researchAddClub: (club: Club) => Promise<Club | undefined>;
   addClub: (club: Club) => Promise<Club | undefined>;
   updateClub: (club: Club) => Promise<Club | undefined>;
   deleteClub: (clubId: string) => Promise<boolean | undefined>;
@@ -54,6 +60,7 @@ const useClubStore = create<ClubStore>()(
       },
 
       fetchClubs: async (searchField = "", page, pageSize) => {
+        console.log(" ==========> Fetch Clubs");
         set({ loading: true, error: null });
         try {
           const paginatedClubs = await ClubApi.findMany(
@@ -90,7 +97,45 @@ const useClubStore = create<ClubStore>()(
         }
       },
 
+      researchClubs: async (searchField = "", page, pageSize) => {
+        console.log(" ==========> Fetch Clubs");
+        set({ loading: true, error: null });
+        try {
+          const paginatedClubs = await ClubApi.findMany(
+            searchField,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
+          );
+
+          return paginatedClubs;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        } finally {
+          set({ loading: false });
+        }
+      },
+      researchAddClub: async (club: Club) => {
+        console.log(" ======> Add Club");
+        set({ error: null });
+        try {
+          const addedClub = await ClubApi.add(club);
+
+          return addedClub;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        }
+      },
+
       addClub: async (club: Club) => {
+        console.log(" ======> Add Club");
         set({ error: null });
         try {
           const addedClub = await ClubApi.add(club);

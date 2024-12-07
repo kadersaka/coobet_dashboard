@@ -4,7 +4,7 @@ import PaginatedClub, {
   PaginatedClubJson,
 } from "@/models/paginated_club.model";
 import api from "@/utils/api.util";
-import { createFile } from "@/utils/functions.util";
+import { downloadFile } from "@/utils/functions.util";
 
 class ClubApi {
   private static route: string = "/club";
@@ -37,7 +37,7 @@ class ClubApi {
 
   static async add(club: Club): Promise<Club> {
     try {
-      const file = await createFile({
+      const file = await downloadFile({
         url: club.logo as string,
       });
 
@@ -63,7 +63,7 @@ class ClubApi {
 
   static async update(club: Club): Promise<Club> {
     try {
-      const file = await createFile({
+      const file = await downloadFile({
         url: club.logo as string,
       });
 

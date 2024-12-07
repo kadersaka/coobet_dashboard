@@ -58,12 +58,14 @@ const MatchsPage: FC<MatchsPageProps> = () => {
         <div className="min-w-[1170px]' rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="flex   bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white ">
-            {["Logo 1", "Club 1", "Score 1", "Score 2", "Club 2", "Logo 1"].map(
+            {["Logo", "Club", "Score", "Score", "Club", "Logo", ""].map(
               (column, index) => (
                 <div
                   key={index}
                   className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 ${
-                    index === 0 || index === 5 ? "text-center" : ""
+                    index === 0 || index === 2 || index === 3 || index === 5
+                      ? "text-center"
+                      : ""
                   }`}
                 >
                   {column}
@@ -85,10 +87,10 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark  `}
                 >
                   {/* Match Logo 1 */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
                     <Image
                       src={match.clubHome.logo as string}
-                      alt={match.name}
+                      alt={match.clubHome.name}
                       width={50}
                       height={50}
                       className="mx-auto"
@@ -100,28 +102,29 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   </div>
 
                   {/* Match Score 1 */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
                     {match.clubHomeGoal}
                   </div>
 
-                  {/* Match Logo 2 */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
-                    <Image
-                      src={match.clubHome.logo as string}
-                      alt={match.name}
-                      width={50}
-                      height={50}
-                      className="mx-auto"
-                    />
+                  {/* Match Score 2 */}
+                  <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
+                    {match.clubHomeGoal}
                   </div>
+
                   {/* Match Club 2 */}
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
                     {match.clubHome.name}
                   </div>
 
-                  {/* Match Score 2 */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {match.clubHomeGoal}
+                  {/* Match Logo 2 */}
+                  <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
+                    <Image
+                      src={match.clubHome.logo as string}
+                      alt={match.clubHome.name}
+                      width={50}
+                      height={50}
+                      className="mx-auto"
+                    />
                   </div>
 
                   {/* Actions */}

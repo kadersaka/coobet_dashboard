@@ -1,23 +1,19 @@
-export interface ComplaintJson {
-  id?: string;
-  email: string;
-  fullname: string;
-  message: string;
-  user: string;
-}
+import { UserJson } from "@/interfaces/user.interface";
+import User from "./user.model";
+import { ComplaintJson } from "@/interfaces/complaint.interface";
 
 class Complaint {
   id?: string;
   email: string;
   fullname: string;
   message: string;
-  user: string;
+  user: User;
 
   constructor(
     email: string,
     fullname: string,
     message: string,
-    user: string,
+    user: User,
     id?: string,
   ) {
     this.email = email;
@@ -32,7 +28,7 @@ class Complaint {
       json.email,
       json.fullname,
       json.message,
-      json.user,
+      User.fromJson(json.user),
       json.id,
     );
   }
@@ -43,7 +39,7 @@ class Complaint {
       email: this.email,
       fullname: this.fullname,
       message: this.message,
-      user: this.user,
+      user: this.user.toJson(),
     };
   }
 }

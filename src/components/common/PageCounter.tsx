@@ -12,7 +12,7 @@ const PageCounter: FC<PageCounterProps> = ({ totalPage, currentPage }) => {
         index + 1 == currentPage ? (
           <span
             key={index}
-            className="mx-1.5 flex h-8 w-8 flex-1 items-center justify-center rounded-full bg-primary text-lg font-extrabold text-white
+            className="mx-1.5 flex flex-1 items-center justify-center rounded-full bg-primary px-3 py-1 text-lg font-extrabold text-white
           "
           >
             {index + 1}

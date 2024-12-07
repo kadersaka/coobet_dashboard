@@ -6,6 +6,11 @@ import AppButton from "../Form/Button";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import Match from "@/models/match.model";
 import useMatchForm from "@/hooks/forms/useMatchForm.hook";
+import ItemSelector from "../Form/ItemSelector";
+import ClubApi from "@/api/club.api";
+import useClubStore from "@/store/useClub.store";
+import Club from "@/models/club.model";
+import { downloadFile } from "@/utils/functions.util";
 
 interface MatchFormProps {
   id: string;
@@ -23,6 +28,8 @@ const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
     onFormSubmit,
   } = useMatchForm(id, Match);
 
+  const { researchAddClub, researchClubs } = useClubStore();
+
   return (
     <Modal
       id={id}
@@ -33,6 +40,20 @@ const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
     >
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
+          <div className="mb-4">
+            {/* =====> ITEM SELECTOR <===== */}
+            <ItemSelector
+              modalId="Club1"
+              onModalClose={() => {}}
+              onItemSelected={() => {}}
+              defautItem={new Club("", "", new Date())}
+              addItemfn={researchAddClub}
+              getItemsfn={researchClubs}
+              itemName={"Club"}
+              placeholder="Sélectionner un club"
+              item={null}
+            />
+          </div>
           <div className="mb-4">
             <AppInput
               label="But 1"

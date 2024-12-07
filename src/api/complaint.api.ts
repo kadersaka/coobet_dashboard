@@ -1,20 +1,22 @@
 import api from "@/utils/api.util";
-import Complaint, { ComplaintJson } from "@/models/complaint.model";
+import Complaint from "@/models/complaint.model";
 import PaginatedClub from "@/models/paginated_club.model";
 import PaginatedComplaint, {
   PaginatedComplaintJson,
 } from "@/models/paginated_complaint.model";
+import { ComplaintJson } from "@/interfaces/complaint.interface";
 
 class ComplaintApi {
   private static route: string = "/complaints";
 
   static async findMany(
-    searchField: string = "",
-    page: number = 1,
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
   ): Promise<PaginatedComplaint> {
     try {
       const response = await api.get<PaginatedComplaintJson>(
-        `${this.route}?search_field=${searchField}&page=${page}`,
+        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedComplaint.fromJson(response);
     } catch (error) {
@@ -46,19 +48,16 @@ class ComplaintApi {
     }
   }
 
-  static async update(
-    complaintId: string,
-    complaint: Complaint,
-  ): Promise<Complaint> {
+  static async update(complaint: Complaint): Promise<Complaint> {
     try {
       const complaintJson = complaint.toJson();
       const response = await api.put<ComplaintJson>(
-        `${this.route}/${complaintId}`,
+        `${this.route}/${complaint.id}`,
         complaintJson,
       );
       return Complaint.fromJson(response);
     } catch (error) {
-      console.error(`Error updating complaint with ID ${complaintId}:`, error);
+      console.error(`Error updating complaint with ID ${complaint.id}:`, error);
       throw error;
     }
   }

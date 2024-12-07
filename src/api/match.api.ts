@@ -6,7 +6,7 @@ import PaginatedMatch, {
 import api from "@/utils/api.util";
 
 class MatchApi {
-  private static route: string = "/matches";
+  private static route: string = "/match";
 
   static async findMany(
     searchField?: string,

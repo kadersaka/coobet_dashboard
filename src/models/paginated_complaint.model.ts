@@ -1,4 +1,5 @@
-import Complaint, { ComplaintJson } from "./complaint.model";
+import { ComplaintJson } from "@/interfaces/complaint.interface";
+import Complaint from "./complaint.model";
 
 export interface PaginatedComplaintJson {
   count: number;

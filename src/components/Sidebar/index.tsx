@@ -68,7 +68,7 @@ const menuGroups = [
       {
         icon: <MessageCircleQuestion />,
         label: "Plaintes / Réclamations",
-        route: "/complaints-claims",
+        route: "/complaints",
       },
       {
         icon: <Bell />,

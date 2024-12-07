@@ -1,74 +1,69 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import Complaint from "@/models/complaint.model";
 import ComplaintApi from "@/api/complaint.api";
+import PaginatedComplaint from "@/models/paginated_complaint.model";
+import Complaint from "@/models/complaint.model";
 
 interface ComplaintStore {
-  complaints: Complaint[];
+  paginatedComplaints: PaginatedComplaint;
   loading: boolean;
   error: string | null;
-  fetchComplaints: (searchField?: string, page?: number) => Promise<void>;
-  addComplaint: (complaint: Complaint) => Promise<void>;
-  updateComplaint: (complaintId: string, complaint: Complaint) => Promise<void>;
-  deleteComplaint: (complaintId: string) => Promise<void>;
+  page: number;
+  pageSize: number;
+  setPage: (newPage: number) => void;
+  increasePage: () => void;
+  decreasePage: () => void;
+  setPageSize: (newPageSize: number) => void;
+  fetchComplaints: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<void>;
+  addComplaint: (complaint: Complaint) => Promise<Complaint | undefined>;
+  updateComplaint: (complaint: Complaint) => Promise<Complaint | undefined>;
+  deleteComplaint: (complaintId: string) => Promise<boolean | undefined>;
 }
 
 const useComplaintStore = create<ComplaintStore>()(
   persist(
     (set, get) => ({
-      complaints: [],
+      paginatedComplaints: new PaginatedComplaint(0, null, null, []),
       loading: false,
       error: null,
+      page: 1,
+      pageSize: 10,
 
-      // Fetch complaints with optional search and pagination
-      fetchComplaints: async (searchField = "", page = 1) => {
+      setPage: (newPage: number) => {
+        set({ page: newPage });
+      },
+
+      increasePage: () => {
+        set((state) => ({
+          page: state.page + 1,
+        }));
+      },
+
+      decreasePage: () => {
+        set((state) => ({
+          page: state.page - 1,
+        }));
+      },
+
+      setPageSize: (newPageSize: number) => {
+        set({ pageSize: newPageSize });
+      },
+
+      fetchComplaints: async (searchField = "", page, pageSize) => {
         set({ loading: true, error: null });
         try {
           const paginatedComplaints = await ComplaintApi.findMany(
             searchField,
-            page,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
           );
-          set({ complaints: paginatedComplaints.results });
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
-          } else {
-            set({ error: "An unknown error occurred" });
-          }
-        } finally {
-          set({ loading: false });
-        }
-      },
 
-      // Add a complaint
-      addComplaint: async (complaint: Complaint) => {
-        set({ loading: true, error: null });
-        try {
-          await ComplaintApi.add(complaint);
-          set((state) => ({ complaints: [...state.complaints, complaint] }));
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
-          } else {
-            set({ error: "An unknown error occurred" });
-          }
-        } finally {
-          set({ loading: false });
-        }
-      },
-
-      // Update a complaint
-      updateComplaint: async (complaintId: string, complaint: Complaint) => {
-        set({ loading: true, error: null });
-        try {
-          const updatedComplaint = await ComplaintApi.update(
-            complaintId,
-            complaint,
-          );
           set((state) => ({
-            complaints: state.complaints.map((c) =>
-              c.id === complaintId ? updatedComplaint : c,
-            ),
+            paginatedComplaints: paginatedComplaints,
           }));
         } catch (error: unknown) {
           if (error instanceof Error) {
@@ -81,24 +76,92 @@ const useComplaintStore = create<ComplaintStore>()(
         }
       },
 
-      // Delete a complaint
+      addComplaint: async (complaint: Complaint) => {
+        set({ error: null });
+        try {
+          const addedComplaint = await ComplaintApi.add(complaint);
+          set((state) => {
+            const complaintsList = state.paginatedComplaints.results;
+
+            complaintsList.push(addedComplaint);
+
+            return {
+              paginatedComplaints: new PaginatedComplaint(
+                state.paginatedComplaints.count,
+                state.paginatedComplaints.next,
+                state.paginatedComplaints.previous,
+                complaintsList,
+              ),
+            };
+          });
+          return addedComplaint;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        }
+      },
+
+      updateComplaint: async (complaint: Complaint) => {
+        set({ error: null });
+        try {
+          const updatedComplaint = await ComplaintApi.update(complaint);
+
+          set((state) => {
+            const complaintsList = state.paginatedComplaints.results;
+
+            const unUpdatedComplaintIndex = complaintsList.findIndex(
+              (ch) => ch.id === complaint.id,
+            );
+
+            if (unUpdatedComplaintIndex !== -1) {
+              complaintsList[unUpdatedComplaintIndex] = updatedComplaint;
+            }
+
+            return {
+              paginatedComplaints: new PaginatedComplaint(
+                state.paginatedComplaints.count,
+                state.paginatedComplaints.next,
+                state.paginatedComplaints.previous,
+                complaintsList,
+              ),
+            };
+          });
+
+          return updatedComplaint;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        }
+      },
+
       deleteComplaint: async (complaintId: string) => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
           await ComplaintApi.remove(complaintId);
           set((state) => ({
-            complaints: state.complaints.filter(
-              (complaint) => complaint.id !== complaintId,
+            paginatedComplaints: new PaginatedComplaint(
+              state.paginatedComplaints.count,
+              state.paginatedComplaints.next,
+              state.paginatedComplaints.previous,
+              state.paginatedComplaints.results.filter(
+                (complaint) => complaint.id !== complaintId,
+              ),
             ),
           }));
+          return true;
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });
           } else {
             set({ error: "An unknown error occurred" });
           }
-        } finally {
-          set({ loading: false });
+          return false;
         }
       },
     }),

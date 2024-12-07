@@ -1,3 +1,6 @@
+import { MatchJson } from "@/interfaces/match.interface";
+import Match from "./match.model";
+
 export interface PaginatedMatchJson {
   count: number;
   next: string | null;

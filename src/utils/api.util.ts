@@ -10,7 +10,7 @@ class Api {
   private api: AxiosInstance;
 
   constructor() {
-    const baseUrl = "http://api.coobet.codelabbenin.com/coobet";
+    const baseUrl = "https://api.coobet.app/coobet";
 
     this.api = axios.create({
       baseURL: `${baseUrl}`,

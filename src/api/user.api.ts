@@ -18,7 +18,7 @@ class UserApi {
       const token = localStorage.getItem("access");
 
       const response = await await axios.get<PaginatedUsersJson>(
-        `http://api.coobet.codelabbenin.com/auth/users?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        `http://api.coobet.app/auth/users?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
         {
           headers: {
             "Content-Type": "application/json",

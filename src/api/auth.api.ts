@@ -28,7 +28,7 @@ class AuthAPI {
     let promiseResponse: AuthPromiseResponse | undefined = undefined;
 
     await axios
-      .post(`http://api.coobet.codelabbenin.com/auth/login`, {
+      .post(`https://api.coobet.app/auth/login`, {
         email_or_phone: data.email,
         password: data.password,
       })

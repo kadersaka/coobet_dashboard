@@ -15,13 +15,13 @@ export function toggleModal(id: string) {
   }
 }
 
-export async function createFile({ url }: { url: string }): Promise<File> {
+export async function downloadFile({ url }: { url: string }): Promise<File> {
   try {
-    const token = localStorage.getItem("access");
+    //  const token = localStorage.getItem("access");
     const response = await axios.get<Blob>(url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        //  Authorization: `Bearer ${token}`,
       },
       responseType: "blob",
     });
@@ -29,11 +29,43 @@ export async function createFile({ url }: { url: string }): Promise<File> {
     const fileName = `${new Date().toISOString()}.png`;
     const mimeType = `image/png`;
 
-    return new File([response.data], fileName, { type: mimeType });
+    return new File([response.data], fileName, {
+      // mimeType
+      type: response.data.type,
+    });
   } catch (error) {
     throw new Error(`Failed to fetch the file: ${error}`);
   }
 }
+
+export async function downloadFile2({
+  url,
+  filename,
+}: {
+  url: string;
+  filename?: string;
+}): Promise<File> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+
+    const flName = filename || url.split("/").pop() || "download";
+
+    return new File([blob], flName, { type: `image/png` });
+  } catch (error) {
+    throw new Error(
+      `Failed to download file: ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
+  }
+}
+
+// Usage:
+// await downloadFile('https://example.com/file.pdf', 'myfile.pdf');
 
 export function delay({
   milliseconds,
