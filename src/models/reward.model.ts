@@ -1,4 +1,5 @@
-import User, { UserJson } from "./user.model";
+import { UserJson } from "@/interfaces/user.interface";
+import User from "./user.model";
 export interface RewardJson {
   id?: string;
   user: UserJson;
