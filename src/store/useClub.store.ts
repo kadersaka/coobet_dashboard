@@ -60,7 +60,6 @@ const useClubStore = create<ClubStore>()(
       },
 
       fetchClubs: async (searchField = "", page, pageSize) => {
-        console.log(" ==========> Fetch Clubs");
         set({ loading: true, error: null });
         try {
           const paginatedClubs = await ClubApi.findMany(
@@ -98,7 +97,6 @@ const useClubStore = create<ClubStore>()(
       },
 
       researchClubs: async (searchField = "", page, pageSize) => {
-        console.log(" ==========> Fetch Clubs");
         set({ loading: true, error: null });
         try {
           const paginatedClubs = await ClubApi.findMany(
@@ -119,7 +117,6 @@ const useClubStore = create<ClubStore>()(
         }
       },
       researchAddClub: async (club: Club) => {
-        console.log(" ======> Add Club");
         set({ error: null });
         try {
           const addedClub = await ClubApi.add(club);
@@ -135,7 +132,6 @@ const useClubStore = create<ClubStore>()(
       },
 
       addClub: async (club: Club) => {
-        console.log(" ======> Add Club");
         set({ error: null });
         try {
           const addedClub = await ClubApi.add(club);

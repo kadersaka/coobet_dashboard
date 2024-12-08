@@ -34,7 +34,6 @@ const SelectAddItems: React.FC<SelectAddItemsProps> = ({
   const [searchedValue, setSearchedValue] = useState("");
 
   useEffect(() => {
-    console.log(" ==============> Use effect call");
     loadItems("");
     return () => {
       setSuggestions([]);

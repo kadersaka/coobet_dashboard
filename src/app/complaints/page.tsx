@@ -1,4 +1,3 @@
-/** 
 "use client";
 
 import { FC, useEffect } from "react";
@@ -7,7 +6,7 @@ import MultipleActionButton from "@/components/widget/Form/EditDeleteButton";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
 import { toggleModal } from "@/utils/functions.util";
-import ComplaintForm from "@/components/widget/Forms/ComplaintForm";
+//import ComplaintForm from "@/components/widget/Forms/ComplaintForm";
 import useComplaintstore from "@/store/useComplaint.store";
 import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
 import Image from "next/image";
@@ -15,7 +14,7 @@ import DeletionConfirmation from "@/components/widget/Form/DeletionConfirmation"
 import ActionResult from "@/components/widget/Form/ActionResultMessage";
 import { useSearchParams } from "next/navigation";
 import useSearchStore from "@/store/useSearchStore.store";
-import useComplaintForm from "@/hooks/forms/useComplaintForm.hook";
+//import useComplaintForm from "@/hooks/forms/useComplaintForm.hook";
 import Loader from "@/components/common/Loader";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
@@ -23,24 +22,30 @@ import PageCounter from "@/components/common/PageCounter";
 interface ComplaintsPageProps {}
 
 const ComplaintsPage: FC<ComplaintsPageProps> = () => {
-  const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } =
-    useComplaintForm("complaint-form");
-  const {
-    paginatedComplaints,
-    page,
-    loading,
-    fetchComplaints,
-    deleteComplaint,
-    increasePage,
-    decreasePage,
-  } = useComplaintstore();
+  // const { searchValue } = useSearchStore();
+  // const { resetFormData, resetFormErrors } =
+  //   useComplaintForm("complaint-form");
+  // const {
+  //   paginatedComplaints,
+  //   page,
+  //   loading,
+  //   fetchComplaints,
+  //   deleteComplaint,
+  //   increasePage,
+  //   decreasePage,
+  // } = useComplaintstore();
 
-  useEffect(() => {
-    fetchComplaints(searchValue);
-  }, [fetchComplaints, searchValue]);
+  // useEffect(() => {
+  //   fetchComplaints(searchValue);
+  // }, [fetchComplaints, searchValue]);
 
-  return (
+  return <>Complaint</>;
+};
+
+export default ComplaintsPage;
+
+{
+  /*
     <DefaultLayout>
       <Breadcrumb
         pageName="Championnats"
@@ -168,11 +173,5 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
           <span className="w-1"></span>
         )}
       </div>
-    </DefaultLayout>
-  );
-};
-
-export default ComplaintsPage;
-
-
-*/
+    </DefaultLayout>*/
+}

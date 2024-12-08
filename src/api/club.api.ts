@@ -18,9 +18,10 @@ class ClubApi {
       const response = await api.get<PaginatedClubJson>(
         `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
+
       return PaginatedClub.fromJson(response);
     } catch (error) {
-      console.error("Error fetching clubs:", error);
+      //  console.error("Error fetching clubs:", error);
       throw error;
     }
   }

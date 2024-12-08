@@ -35,6 +35,8 @@ class Api {
 
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
+        } else {
+          window.location.href = "auth/signin";
         }
 
         return config;

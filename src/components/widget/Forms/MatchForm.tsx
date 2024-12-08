@@ -41,7 +41,6 @@ const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
           <div className="mb-4">
-            {/* =====> ITEM SELECTOR <===== */}
             <ItemSelector
               modalId="Club1"
               onModalClose={() => {}}

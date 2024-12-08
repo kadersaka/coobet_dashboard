@@ -31,7 +31,7 @@ const menuGroups = [
       {
         icon: <LayoutDashboard />,
         label: "Dashboard",
-        route: "#",
+        route: "/",
         //  children: [{ label: "eCommerce", route: "/" }],
       },
       {
@@ -68,7 +68,7 @@ const menuGroups = [
       {
         icon: <MessageCircleQuestion />,
         label: "Plaintes / Réclamations",
-        route: "/complaints",
+        route: "/complaint",
       },
       {
         icon: <Bell />,
@@ -96,7 +96,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <Image
               width={176}
               height={32}
-              src={"/images/logo/logo.svg"}
+              src={"/images/logo/coobet.svg"}
               alt="Logo"
               priority
             />
