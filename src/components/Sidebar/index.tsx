@@ -104,7 +104,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-controls="sidebar"
+            aria-controls="sidebar  ."
             className="block lg:hidden"
           >
             <svg
