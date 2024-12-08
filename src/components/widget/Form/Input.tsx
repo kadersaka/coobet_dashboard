@@ -65,7 +65,7 @@ const AppInput: FC<AppInputProps> = ({
                 </div>
               ) : typeof value === "string" ? (
                 <div className="ml-4">
-                  <img
+                  <Image
                     src={value as string}
                     alt="Selected Logo"
                     width={70}
