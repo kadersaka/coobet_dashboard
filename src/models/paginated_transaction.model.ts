@@ -1,4 +1,5 @@
-import Transaction, { TransactionJson } from "./transaction.model";
+import { TransactionJson } from "@/interfaces/transaction.interface";
+import Transaction from "./transaction.model";
 
 export interface PaginatedTransactionJson {
   count: number;
