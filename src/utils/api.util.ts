@@ -115,6 +115,24 @@ class Api {
     }
   }
 
+  // Generic PUT method
+  async pacth<T>(
+    url: string,
+    data: any = {},
+    config: AxiosRequestConfig = {},
+  ): Promise<T> {
+    try {
+      const response: AxiosResponse<T> = await this.api.patch(
+        url,
+        data,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Generic DELETE method
   async delete<T>(url: string, config: AxiosRequestConfig = {}): Promise<T> {
     try {

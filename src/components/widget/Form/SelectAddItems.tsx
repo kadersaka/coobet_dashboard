@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import AppInput from "./Input";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import AppButton from "./Button";
+import Match from "@/models/match.model";
+import Event from "@/models/event.model";
+import Image from "next/image";
+import EventCard from "../EventCard";
+//import EventCard from "../EventCard";
 
 export type ItemsResponse = {
   items: any[];
@@ -113,13 +118,46 @@ const SelectAddItems: React.FC<SelectAddItemsProps> = ({
         {suggestions.map((item, index) => (
           <li
             key={index}
-            className="rounded-sm px-2 py-2.5 hover:cursor-pointer"
+            className="rounded-sm px-2 py-2.5 text-black hover:cursor-pointer dark:text-white"
             onClick={() => {
               onItemSelected(item);
               setSuggestions([]);
             }}
           >
-            {item.name}
+            {item instanceof Match ? (
+              <div className="flex flex-col items-center">
+                <span className="mb-3 font-medium">
+                  {item.championship.name}
+                </span>
+                <div className="ml-4 flex justify-between">
+                  <div className="mr-4 flex">
+                    <Image
+                      src={item.clubHome.logo as string}
+                      alt={item.clubHome.name}
+                      width={30}
+                      height={30}
+                    />
+                    <span className="ml-2">{item.clubHome.name}</span>
+                  </div>
+
+                  <span className="font-medium">vs</span>
+
+                  <div className="ml-4 flex">
+                    <Image
+                      src={item.clubForeign.logo as string}
+                      alt={item.clubForeign.name}
+                      width={30}
+                      height={30}
+                    />
+                    <span className="ml-2 ">{item.clubForeign.name}</span>
+                  </div>
+                </div>
+              </div>
+            ) : item instanceof Event ? (
+              <EventCard event={item as Event} />
+            ) : (
+              <span>{item.name}</span>
+            )}
           </li>
         ))}
       </ul>
@@ -141,7 +179,7 @@ const SelectAddItems: React.FC<SelectAddItemsProps> = ({
         id={`${title}-search`}
         name={`${title}-search`}
         type="text"
-        placeholder={`Rechercher un ${title.toLowerCase()}`}
+        placeholder={`Rechercher ...`}
         value={searchedValue}
         onChange={(e) => {
           setSearchedValue(e.target.value);

@@ -17,6 +17,9 @@ import {
   Users,
   Volleyball,
   Ticket,
+  Medal,
+  Settings,
+  Calendar,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -35,14 +38,9 @@ const menuGroups = [
         //  children: [{ label: "eCommerce", route: "/" }],
       },
       {
-        icon: <User />,
-        label: "Utilisateurs",
-        route: "/users",
-      },
-      {
-        icon: <ArrowLeftRight />,
-        label: "Transactions",
-        route: "/transactions",
+        icon: <Medal />,
+        label: "Sports",
+        route: "/sport",
       },
       {
         icon: <Trophy />,
@@ -55,16 +53,30 @@ const menuGroups = [
         route: "/clubs",
       },
       {
+        icon: <Calendar />,
+        label: "Évènement",
+        route: "/events",
+      },
+      {
         icon: <Volleyball />,
         label: "Matchs",
         route: "/matchs",
+      },
+      {
+        icon: <User />,
+        label: "Utilisateurs",
+        route: "/users",
+      },
+      {
+        icon: <ArrowLeftRight />,
+        label: "Transactions",
+        route: "/transactions",
       },
       {
         icon: <Ticket />,
         label: "Coupons",
         route: "/tickets",
       },
-
       {
         icon: <MessageCircleQuestion />,
         label: "Plaintes / Réclamations",
@@ -74,6 +86,11 @@ const menuGroups = [
         icon: <Bell />,
         label: "Notifications",
         route: "/notifications",
+      },
+      {
+        icon: <Settings />,
+        label: "Paramètre",
+        route: "/setting",
       },
     ],
   },
@@ -98,6 +115,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               height={32}
               src={"/images/logo/coobet.svg"}
               alt="Logo"
+              style={{ width: "100%", height: "auto" }}
               priority
             />
           </Link>

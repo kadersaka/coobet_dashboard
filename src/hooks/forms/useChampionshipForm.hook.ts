@@ -3,6 +3,7 @@ import {
   ChampionshipFormErrors,
 } from "@/interfaces/championship.interface";
 import Championship from "@/models/championship.model";
+import Sport from "@/models/sport.model";
 import useChampionshipStore from "@/store/useChampionship.store";
 import useInterfaceStore from "@/store/useInterface.store";
 import { delay, toggleModal } from "@/utils/functions.util";
@@ -13,7 +14,7 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
 
   const [formData, setFormData] = useState<ChampionshipFormData>({
     name: initialData?.name ?? "",
-    sport: initialData?.sport ?? "",
+    sport: initialData?.sport ?? null,
   });
 
   const [formErrors, setFormErrors] = useState<ChampionshipFormErrors>({
@@ -26,7 +27,7 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
   const resetFormData = () => {
     setFormData({
       name: "",
-      sport: "",
+      sport: null,
     });
   };
 
@@ -52,6 +53,10 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
     });
   };
 
+  const onSportChange = (name: string, sport: Sport) => {
+    setFormData({ ...formData, [name]: sport });
+  };
+
   const validateForm = () => {
     const errors: ChampionshipFormErrors = {
       name: null,
@@ -67,13 +72,8 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
         "Le nom doit contenir uniquement des lettres et des espaces";
     }
 
-    if (!formData.sport.trim()) {
+    if (!formData.sport) {
       errors.sport = "Le sport du championnat est requis";
-    } else if (formData.sport.length < 3) {
-      errors.name = "Le sport doit contenir au moins trois caractères";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      errors.name =
-        "Le sport doit contenir uniquement des lettres et des espaces";
     }
 
     setFormErrors(errors);
@@ -90,7 +90,7 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
       try {
         const championship = new Championship(
           formData.name,
-          formData.sport,
+          formData.sport!,
           initialData?.id,
         );
 
@@ -140,6 +140,7 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
     resetFormData,
     resetFormErrors,
     onInputDataChange,
+    onSportChange,
     onFormSubmit,
   };
 };

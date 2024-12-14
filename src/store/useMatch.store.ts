@@ -19,6 +19,12 @@ interface MatchStore {
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
+  researchMatches: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<PaginatedMatch | undefined>;
+  researchAddMatch: (Match: Match) => Promise<Match | undefined>;
   addMatch: (match: Match) => Promise<Match | undefined>;
   updateMatch: (match: Match) => Promise<Match | undefined>;
   deleteMatch: (matchId: string) => Promise<boolean | undefined>;
@@ -91,6 +97,38 @@ const useMatchStore = create<MatchStore>()(
             };
           });
           return addedMatch;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        }
+      },
+
+      researchMatches: async (searchField = "", page, pageSize) => {
+        set({ loading: true, error: null });
+        try {
+          return await MatchApi.findMany(
+            searchField,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
+          );
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      researchAddMatch: async (match: Match) => {
+        set({ error: null });
+        try {
+          return await MatchApi.add(match);
         } catch (error: unknown) {
           if (error instanceof Error) {
             set({ error: error.message });

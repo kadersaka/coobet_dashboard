@@ -1,23 +1,24 @@
 import { FC, useEffect, useState } from "react";
 import Modal from "../Form/Modal";
 import AppInput from "../Form/Input";
-import useLoginForm from "@/hooks/forms/useLoginForm.hook";
 import AppButton from "../Form/Button";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import Match from "@/models/match.model";
 import useMatchForm from "@/hooks/forms/useMatchForm.hook";
 import ItemSelector from "../Form/ItemSelector";
-import ClubApi from "@/api/club.api";
 import useClubStore from "@/store/useClub.store";
 import Club from "@/models/club.model";
-import { downloadFile } from "@/utils/functions.util";
+import AppDateTimePicker from "../Form/DateTimePicker";
+import Championship from "@/models/championship.model";
+import Sport from "@/models/sport.model";
+import useChampionshipStore from "@/store/useChampionship.store";
 
 interface MatchFormProps {
   id: string;
-  Match?: Match;
+  match?: Match;
 }
 
-const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
+const MatchForm: FC<MatchFormProps> = ({ id, match }) => {
   const {
     processing,
     formData,
@@ -25,10 +26,17 @@ const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
     resetFormData,
     resetFormErrors,
     onInputDataChange,
+    onClubChange,
+    onChampionshipChange,
+    onDateTimeChange,
     onFormSubmit,
-  } = useMatchForm(id, Match);
+  } = useMatchForm(id, match);
 
   const { researchAddClub, researchClubs } = useClubStore();
+  const { researchAddChampionship, researchChampionships } =
+    useChampionshipStore();
+
+  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
 
   return (
     <Modal
@@ -36,62 +44,129 @@ const MatchForm: FC<MatchFormProps> = ({ id, Match }) => {
       onClose={() => {
         resetFormData();
         resetFormErrors();
+        setDynamicKey(`${new Date().getMilliseconds()}`);
       }}
     >
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
           <div className="mb-4">
+            <AppDateTimePicker
+              key={`${dynamicKey}-startDate`}
+              id="startDate"
+              name="startDate"
+              label="Date"
+              placeholder="Choisissez une date"
+              selectedDateTime={formData.startDate}
+              onDateChange={onDateTimeChange}
+            />
+            {formErrors.startDate && (
+              <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                {formErrors.startDate}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
             <ItemSelector
-              modalId="Club1"
-              onModalClose={() => {}}
-              onItemSelected={() => {}}
+              key={`${dynamicKey}-championship`}
+              modalId="championship"
+              onItemSelected={onChampionshipChange}
+              defautItem={new Championship("Nada", new Sport(""))}
+              addItemfn={researchAddChampionship}
+              getItemsfn={researchChampionships}
+              itemName={"Championnat"}
+              placeholder="Sélectionner un championnat"
+              item={formData.championship}
+            />
+            {formErrors.championship && (
+              <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                {formErrors.championship}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <ItemSelector
+              key={`${dynamicKey}-clubHome`}
+              modalId="clubHome"
+              onItemSelected={onClubChange}
               defautItem={new Club("", "", new Date())}
               addItemfn={researchAddClub}
               getItemsfn={researchClubs}
-              itemName={"Club"}
+              itemName={"Club 1"}
               placeholder="Sélectionner un club"
-              item={null}
+              item={formData.clubHome}
             />
-          </div>
-          <div className="mb-4">
-            <AppInput
-              label="But 1"
-              id="clubHomeGoal"
-              name="clubHomeGoal"
-              type="number"
-              placeholder="Nombre de but"
-              value={formData.clubHomeGoal}
-              onChange={onInputDataChange}
-            />
-            {formErrors.clubHomeGoal && (
+            {formErrors.clubHome && (
               <p className="erreur ml-1.5 text-[14px] font-medium text-red">
-                {formErrors.clubHomeGoal}
+                {formErrors.clubHome}
               </p>
             )}
           </div>
+
+          {match?.id && (
+            <div className="mb-4">
+              <AppInput
+                label="But 1"
+                id="clubHomeGoal"
+                name="clubHomeGoal"
+                type="number"
+                placeholder="Nombre de but"
+                value={formData.clubHomeGoal}
+                onChange={onInputDataChange}
+              />
+              {formErrors.clubHomeGoal && (
+                <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                  {formErrors.clubHomeGoal}
+                </p>
+              )}
+            </div>
+          )}
+
           <div className="mb-4">
-            <AppInput
-              label="But 2"
-              id="clubForeignGoal"
-              name="clubForeignGoal"
-              type="number"
-              placeholder="Nombre de but"
-              value={formData.clubForeignGoal}
-              onChange={onInputDataChange}
+            <ItemSelector
+              key={`${dynamicKey}-clubForeign`}
+              modalId="clubForeign"
+              onItemSelected={onClubChange}
+              defautItem={new Club("", "", new Date())}
+              addItemfn={researchAddClub}
+              getItemsfn={researchClubs}
+              itemName={"Club 2"}
+              placeholder="Sélectionner un club"
+              item={formData.clubForeign}
             />
-            {formErrors.clubForeignGoal && (
+            {formErrors.clubForeign && (
               <p className="erreur ml-1.5 text-[14px] font-medium text-red">
-                {formErrors.clubForeignGoal}
+                {formErrors.clubForeign}
               </p>
             )}
           </div>
+
+          {match?.id && (
+            <div className="mb-4">
+              <AppInput
+                label="But 2"
+                id="clubForeignGoal"
+                name="clubForeignGoal"
+                type="number"
+                placeholder="Nombre de but"
+                value={formData.clubForeignGoal}
+                onChange={onInputDataChange}
+              />
+              {formErrors.clubForeignGoal && (
+                <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                  {formErrors.clubForeignGoal}
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="mb-5">
             {processing ? (
               <ProcessingLoader />
             ) : (
               <AppButton
-                name={`${Match?.id ? "Mettre à jour" : "Ajouter"}`}
+                name={`${match?.id ? "Mettre à jour" : "Ajouter"}`}
                 onClick={() => {}}
               />
             )}

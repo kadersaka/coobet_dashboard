@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Moment } from "moment";
-import AppDateIntervalDateTimePicker from "./DateIntervalDateTimePicker";
+import AppDateIntervalDateTimePicker from "./DateTimePicker";
 import { History } from "lucide-react";
 
 interface DatesIntervallProps {

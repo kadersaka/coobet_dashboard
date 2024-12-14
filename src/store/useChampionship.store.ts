@@ -19,6 +19,14 @@ interface ChampionshipStore {
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
+  researchChampionships: (
+    searchField?: string,
+    page?: number,
+    pageSize?: number,
+  ) => Promise<PaginatedChampionship | undefined>;
+  researchAddChampionship: (
+    championship: Championship,
+  ) => Promise<Championship | undefined>;
   addChampionship: (
     championship: Championship,
   ) => Promise<Championship | undefined>;
@@ -77,6 +85,37 @@ const useChampionshipStore = create<ChampionshipStore>()(
           }
         } finally {
           set({ loading: false });
+        }
+      },
+
+      researchChampionships: async (searchField = "", page, pageSize) => {
+        set({ loading: true, error: null });
+        try {
+          return await ChampionshipApi.findMany(
+            searchField,
+            page ?? get().page,
+            pageSize ?? get().pageSize,
+          );
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        } finally {
+          set({ loading: false });
+        }
+      },
+      researchAddChampionship: async (club: Championship) => {
+        set({ error: null });
+        try {
+          return await ChampionshipApi.add(club);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
         }
       },
 

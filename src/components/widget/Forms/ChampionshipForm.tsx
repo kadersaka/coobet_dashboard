@@ -8,6 +8,9 @@ import Club from "@/models/club.model";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import useChampionshipForm from "@/hooks/forms/useChampionshipForm.hook";
 import Championship from "@/models/championship.model";
+import ItemSelector from "../Form/ItemSelector";
+import Sport from "@/models/sport.model";
+import useSportStore from "@/store/useSport.store";
 
 interface ChampionshipFormProps {
   id: string;
@@ -22,8 +25,13 @@ const ChampionshipForm: FC<ChampionshipFormProps> = ({ id, championship }) => {
     resetFormData,
     resetFormErrors,
     onInputDataChange,
+    onSportChange,
     onFormSubmit,
   } = useChampionshipForm(id, championship);
+
+  const { researchAddSport, researchSports } = useSportStore();
+
+  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
 
   return (
     <Modal
@@ -31,6 +39,7 @@ const ChampionshipForm: FC<ChampionshipFormProps> = ({ id, championship }) => {
       onClose={() => {
         resetFormData();
         resetFormErrors();
+        setDynamicKey(`${new Date().toDateString()}`);
       }}
     >
       <div className=" dark:border-strokedark">
@@ -51,15 +60,17 @@ const ChampionshipForm: FC<ChampionshipFormProps> = ({ id, championship }) => {
               </p>
             )}
           </div>
-          <div className="mb-6">
-            <AppInput
-              label="Sport"
-              id="sport"
-              name="sport"
-              type="text"
-              placeholder="Sport"
-              value={formData.sport}
-              onChange={onInputDataChange}
+          <div className="mb-4">
+            <ItemSelector
+              key={`${dynamicKey}-sport`}
+              modalId="sport"
+              onItemSelected={onSportChange}
+              defautItem={new Sport("")}
+              addItemfn={researchAddSport}
+              getItemsfn={researchSports}
+              itemName={"Sport"}
+              placeholder="Sélectionner un sport"
+              item={formData?.sport}
             />
             {formErrors.sport && (
               <p className="erreur ml-1.5 text-[14px] font-medium text-red">

@@ -58,20 +58,27 @@ const MatchsPage: FC<MatchsPageProps> = () => {
         <div className="min-w-[1170px]' rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="flex   bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white ">
-            {["Logo", "Club", "Score", "Score", "Club", "Logo", ""].map(
-              (column, index) => (
-                <div
-                  key={index}
-                  className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 ${
-                    index === 0 || index === 2 || index === 3 || index === 5
-                      ? "text-center"
-                      : ""
-                  }`}
-                >
-                  {column}
-                </div>
-              ),
-            )}
+            {[
+              "Championnat",
+              "Logo",
+              "Club",
+              "Score",
+              "Score",
+              "Club",
+              "Logo",
+              "",
+            ].map((column, index) => (
+              <div
+                key={index}
+                className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 ${
+                  index === 1 || index === 3 || index === 4 || index === 6
+                    ? "bg-blue-10 text-center"
+                    : ""
+                }`}
+              >
+                {column}
+              </div>
+            ))}
           </div>
 
           {/* Table Body */}
@@ -86,8 +93,12 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   key={index}
                   className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark  `}
                 >
+                  {/* Match Championship */}
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    {match.championship.name}
+                  </div>
                   {/* Match Logo 1 */}
-                  <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
+                  <div className="bg-blue-30 flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
                     <Image
                       src={match.clubHome.logo as string}
                       alt={match.clubHome.name}
@@ -143,7 +154,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   <MatchForm
                     key={`match-form-${match.id}`}
                     id={`match-form-${match.id}`}
-                    Match={match}
+                    match={match}
                   />
 
                   {/*Deletion dialog*/}

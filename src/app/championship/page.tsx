@@ -91,7 +91,7 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
 
                   {/* Championship Sport */}
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {championship.sport}
+                    {championship.sport.name}
                   </div>
 
                   {/* Actions */}

@@ -34,8 +34,6 @@ const TransactionForm: FC<TransactionFormProps> = ({ id, transaction }) => {
     onFormSubmit,
   } = useTransactionForm(id, transaction);
 
-  const [phone, setPhone] = useState("");
-
   return (
     <Modal
       id={id}

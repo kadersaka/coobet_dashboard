@@ -5,20 +5,23 @@ import { useEffect, useState } from "react";
 import { MatchFormData, MatchFormErrors } from "@/interfaces/match.interface";
 import Match from "@/models/match.model";
 import Club from "@/models/club.model";
+import { Moment } from "moment";
+import Championship from "@/models/championship.model";
 
 const useMatchForm = (modalId: string, initialData?: Match) => {
   const { addMatch, updateMatch } = useMatchStore();
 
   const [formData, setFormData] = useState<MatchFormData>({
-    clubHome: initialData?.clubHome ?? new Club("home", "", new Date()),
-    clubForeign:
-      initialData?.clubForeign ?? new Club("foreign", "", new Date()),
+    championship: initialData?.championship ?? null,
+    clubHome: initialData?.clubHome ?? null,
+    clubForeign: initialData?.clubForeign ?? null,
     startDate: new Date(),
-    clubHomeGoal: initialData?.clubHomeGoal ?? null,
-    clubForeignGoal: initialData?.clubForeignGoal ?? null,
+    clubHomeGoal: initialData?.clubHomeGoal ?? 0,
+    clubForeignGoal: initialData?.clubForeignGoal ?? 0,
   });
 
   const [formErrors, setFormErrors] = useState<MatchFormErrors>({
+    championship: null,
     clubHome: null,
     clubForeign: null,
     startDate: null,
@@ -30,16 +33,18 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
 
   const resetFormData = () => {
     setFormData({
-      clubHome: new Club("home", "", new Date()),
-      clubForeign: new Club("foreign", "", new Date()),
+      championship: null,
+      clubHome: null,
+      clubForeign: null,
       startDate: new Date(),
-      clubHomeGoal: null,
-      clubForeignGoal: null,
+      clubHomeGoal: 0,
+      clubForeignGoal: 0,
     });
   };
 
   const resetFormErrors = () => {
     setFormErrors({
+      championship: null,
       clubHome: null,
       clubForeign: null,
       startDate: null,
@@ -63,8 +68,23 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
     });
   };
 
+  const onClubChange = (name: string, club: Club) => {
+    setFormData({ ...formData, [name]: club });
+  };
+
+  const onChampionshipChange = (name: string, championship: Championship) => {
+    setFormData({ ...formData, [name]: championship });
+  };
+
+  const onDateTimeChange = (date: Date | Moment) => {
+    if (!initialData?.id) {
+      setFormData({ ...formData, startDate: date });
+    }
+  };
+
   const validateForm = () => {
     const errors: MatchFormErrors = {
+      championship: null,
       clubHome: null,
       clubForeign: null,
       startDate: null,
@@ -72,11 +92,52 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
       clubForeignGoal: null,
     };
 
-    if (!formData.clubHomeGoal && formData.clubForeignGoal) {
+    if (initialData?.id === undefined && new Date() > formData.startDate) {
+      errors.startDate = "Définissez une date correcte";
+    }
+
+    if (formData.championship === null) {
+      errors.championship = "Le championnat doit être défini";
+    }
+
+    if (formData.clubHome === null) {
+      errors.clubHome = "Le club doit être défini";
+    }
+
+    if (formData.clubForeign === null) {
+      errors.clubForeign = "Le club doit être défini";
+    }
+
+    if (
+      formData.clubHome &&
+      formData.clubForeign &&
+      formData.clubHome.id === formData.clubForeign.id
+    ) {
+      errors.clubHome = "Répétition de club";
+      errors.clubForeign = "Répétition de club";
+    }
+
+    if (!formData.startDate) {
+      errors.startDate = "La date doit être définie";
+    }
+
+    /*
+
+    if (
+      !formData.clubHomeGoal &&
+      !isNaN(parseInt(formData.clubForeignGoal?.toString() ?? ""))
+    ) {
       errors.clubHomeGoal = "Le nombre de but ne peut être null";
-    } else if (formData.clubHomeGoal && !formData.clubForeignGoal) {
+    }
+
+    if (
+      !isNaN(parseInt(formData.clubHomeGoal?.toString() ?? "")) &&
+      formData.clubForeignGoal &&
+      !formData.clubForeignGoal
+    ) {
       errors.clubForeignGoal = "Le nombre de but ne peut être null";
     }
+    */
 
     setFormErrors(errors);
 
@@ -91,9 +152,10 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
 
       try {
         const match = new Match(
-          formData.clubHome,
-          formData.clubForeign,
-          formData.startDate,
+          formData.championship!,
+          formData.clubHome!,
+          formData.clubForeign!,
+          formData.startDate!,
           formData.clubHomeGoal,
           formData.clubForeignGoal,
           initialData?.id,
@@ -143,6 +205,9 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
     resetFormData,
     resetFormErrors,
     onInputDataChange,
+    onClubChange,
+    onChampionshipChange,
+    onDateTimeChange,
     onFormSubmit,
   };
 };

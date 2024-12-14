@@ -8,15 +8,17 @@ import {
 import SelectAddItems, { ItemsResponse } from "./SelectAddItems";
 import Club from "@/models/club.model";
 import Championship from "@/models/championship.model";
-import Datetime from "react-datetime";
+import Image from "next/image";
+import Sport from "@/models/sport.model";
+import Match from "@/models/match.model";
 
 interface ItemSelectorProps {
   itemName: string;
   placeholder: string;
   modalId: string;
-  onModalClose: () => void;
+
   item: any;
-  onItemSelected: (item: any) => void;
+  onItemSelected: (name: string, item: any) => void;
   defautItem: any;
   getItemsfn: (
     searchField?: string,
@@ -31,7 +33,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
   itemName,
   placeholder,
   modalId,
-  onModalClose,
+
   item,
   defautItem,
   onItemSelected,
@@ -46,20 +48,19 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
   const handleOpenModal = () => toggleModal(modalId);
 
   const handleCloseModal = () => {
-    onModalClose();
     setCurrentItemPage(1);
   };
 
-  const handleItemSelect = (item: any) => {
-    setSelectedItem(item);
-    onItemSelected(item);
+  const handleItemSelect = (selectedItem: any) => {
+    setSelectedItem(selectedItem);
+    onItemSelected(modalId, selectedItem);
     toggleModal(modalId);
     handleCloseModal();
   };
 
   return (
     <div className="flex flex-col ">
-      <label className="block font-medium text-black dark:text-white">
+      <label className="mb-2.5 block font-medium text-black dark:text-white">
         {itemName}
       </label>
 
@@ -67,7 +68,45 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
         onClick={handleOpenModal}
         className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       >
-        {selectedItem?.name || placeholder}
+        {selectedItem !== null && selectedItem !== undefined ? (
+          selectedItem instanceof Match ? (
+            <div className="mb-1 flex flex-col items-center">
+              <span className="mb-3 font-medium">
+                {selectedItem.championship.name}
+              </span>
+
+              <div className="ml-4 flex justify-between">
+                <div className="mr-4 flex">
+                  <Image
+                    src={selectedItem.clubHome.logo as string}
+                    alt={selectedItem.clubHome.name}
+                    width={30}
+                    height={30}
+                  />
+                  <span className="ml-2">{selectedItem.clubHome.name}</span>
+                </div>
+
+                <span className="font-medium">vs</span>
+
+                <div className="ml-4 flex">
+                  <Image
+                    src={selectedItem.clubForeign.logo as string}
+                    alt={selectedItem.clubForeign.name}
+                    width={30}
+                    height={30}
+                  />
+                  <span className="ml-2 ">{selectedItem.clubForeign.name}</span>
+                </div>
+              </div>
+            </div>
+          ) : selectedItem instanceof Event ? (
+            placeholder
+          ) : (
+            <span>{selectedItem.name}</span>
+          )
+        ) : (
+          placeholder
+        )}
       </div>
 
       {error && (
@@ -119,7 +158,9 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
           }}
           addItemfn={async (value: string) => {
             try {
-              if (defautItem instanceof Club) {
+              if (defautItem instanceof Sport) {
+                defautItem.name = value;
+              } else if (defautItem instanceof Club) {
                 const file = await downloadFile2({
                   url: "/images/cover/cover-01.png",
                   filename: "defaultImage",
@@ -129,7 +170,6 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
                 defautItem.logo = file;
               } else if (defautItem instanceof Championship) {
                 defautItem.name = value;
-                defautItem.sport = "Football";
               }
               return await addItemfn(defautItem);
             } catch (error) {

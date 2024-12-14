@@ -19,7 +19,7 @@ const Modal: FC<ModalProps> = ({ id, children, onClose }) => {
       <div className="mb-4 flex justify-end">
         <X
           size={25}
-          className="text-primary"
+          className="text-primary hover:cursor-pointer"
           onClick={() => {
             if (onClose) {
               onClose();

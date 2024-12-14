@@ -70,7 +70,10 @@ const useLoginForm = () => {
     */
 
     setFormErrors(errors);
-    return !errors.email && !errors.password;
+    return (
+      (!errors.email || errors.email.length == 0) &&
+      (!errors.password || errors.password.length == 0)
+    );
   };
 
   const onFormSubmit = async (e: React.FormEvent) => {

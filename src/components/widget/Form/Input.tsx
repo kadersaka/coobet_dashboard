@@ -1,5 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import Image from "next/image";
+import { Eye, EyeClosed } from "lucide-react";
 
 interface AppInputProps {
   label?: string;
@@ -33,6 +34,10 @@ const AppInput: FC<AppInputProps> = ({
       onChange(e);
     }
   };
+
+  const [inputType, setInputType] = useState<"text" | "password">(
+    type === "password" ? type : "text",
+  );
 
   return (
     <div>
@@ -83,7 +88,7 @@ const AppInput: FC<AppInputProps> = ({
           <input
             id={id}
             name={name}
-            type={type}
+            type={type === "password" ? inputType : type}
             value={value as string | number | readonly string[]}
             autoComplete={autoComplete}
             placeholder={placeholder}
@@ -93,7 +98,18 @@ const AppInput: FC<AppInputProps> = ({
           />
         )}
 
-        {icon && <span className="absolute right-4 top-4">{icon}</span>}
+        {type === "password" ? (
+          <span
+            className="absolute right-4 top-4"
+            onClick={() =>
+              setInputType(inputType === "password" ? "text" : "password")
+            }
+          >
+            {inputType === "password" ? <Eye /> : <EyeClosed />}
+          </span>
+        ) : (
+          <>{icon && <span className="absolute right-4 top-4">{icon}</span>}</>
+        )}
       </div>
     </div>
   );
