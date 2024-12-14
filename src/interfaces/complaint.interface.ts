@@ -1,5 +1,4 @@
 import { UserJson } from "./user.interface";
-import Complaint from "../models/complaint.model";
 
 export interface ComplaintJson {
   id?: string;
@@ -7,12 +6,4 @@ export interface ComplaintJson {
   fullname: string;
   message: string;
   user: UserJson;
-}
-
-export interface ComplaintResponseFormData {
-  response: string;
-}
-
-export interface ComplaintResponseFormError {
-  response: string;
 }

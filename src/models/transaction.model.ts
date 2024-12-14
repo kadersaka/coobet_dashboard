@@ -9,6 +9,7 @@ class Transaction {
   reference: string;
   typeTrans: string;
   status: string;
+  counntryCode?: string;
   phoneNumber: string;
   country: string;
   mobileReference: string;
@@ -27,6 +28,7 @@ class Transaction {
     country: string,
     mobileReference: string,
     createdAt: Date,
+    countryCode?: string,
     app?: string,
     userAppId?: string,
     withdrawalCode?: string,
@@ -39,7 +41,7 @@ class Transaction {
     this.status = status;
     this.phoneNumber = phoneNumber;
     this.country = country;
-    this.app = app;
+    (this.counntryCode = countryCode), (this.app = app);
     this.userAppId = userAppId;
     this.mobileReference = mobileReference;
     this.withdrawalCode = withdrawalCode;
@@ -58,6 +60,7 @@ class Transaction {
       json.country,
       json.mobile_reference,
       new Date(json.created_at),
+      undefined,
       json.app,
       json.user_app_id,
       json.withdrawal_code,
@@ -73,6 +76,7 @@ class Transaction {
       reference: this.reference,
       type_trans: this.typeTrans,
       status: this.status,
+      indication: this.counntryCode,
       phone_number: this.phoneNumber,
       country: this.country,
       app: this.app,

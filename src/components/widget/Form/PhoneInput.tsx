@@ -6,12 +6,11 @@ interface AppPhoneInputProps {
   label?: string;
   id: string;
   name: string;
-
   value?: string;
   placeholder: string;
 
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange: (country: any, value: string) => void;
 }
 
 const AppPhoneInput: FC<AppPhoneInputProps> = ({
@@ -39,7 +38,7 @@ const AppPhoneInput: FC<AppPhoneInputProps> = ({
           country={"bj"}
           value={value}
           onChange={(value, country, e, formattedValue) => {
-            onChange(value);
+            onChange(country, value);
           }}
           regions={["africa"]}
           autoFormat={false}

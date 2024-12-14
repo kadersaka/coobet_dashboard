@@ -4,6 +4,7 @@ export interface TransactionFormData {
   amount: number;
   typeTrans: string;
   mobileReference: string;
+  countryCodeCode?: string;
   phoneNumber: string;
   app?: string;
   userAppId?: string;
@@ -25,6 +26,7 @@ export interface TransactionJson {
   reference: string;
   type_trans: string;
   status: string;
+  indication?: string;
   phone_number: string;
   country: string;
   mobile_reference: string;

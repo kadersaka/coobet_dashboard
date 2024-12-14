@@ -53,7 +53,14 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
             </div>
           ) : (
             paginatedNotifications?.results?.map((notification, index) => (
-              <NotificationCard key={notification.id} {...notification} />
+              <NotificationCard
+                key={index}
+                id={notification.id}
+                title={notification.title}
+                content={notification.content}
+                createdAt={notification.createdAt}
+                isReaded={notification.isReaded}
+              />
             ))
           )}
         </div>

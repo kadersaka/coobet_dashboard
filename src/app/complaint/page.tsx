@@ -22,63 +22,57 @@ import PageCounter from "@/components/common/PageCounter";
 interface ComplaintsPageProps {}
 
 const ComplaintsPage: FC<ComplaintsPageProps> = () => {
-  // const { searchValue } = useSearchStore();
+  const { searchValue } = useSearchStore();
   // const { resetFormData, resetFormErrors } =
   //   useComplaintForm("complaint-form");
-  // const {
-  //   paginatedComplaints,
-  //   page,
-  //   loading,
-  //   fetchComplaints,
-  //   deleteComplaint,
-  //   increasePage,
-  //   decreasePage,
-  // } = useComplaintstore();
+  const {
+    paginatedComplaints,
+    page,
+    loading,
+    fetchComplaints,
+    deleteComplaint,
+    increasePage,
+    decreasePage,
+  } = useComplaintstore();
 
-  // useEffect(() => {
-  //   fetchComplaints(searchValue);
-  // }, [fetchComplaints, searchValue]);
+  useEffect(() => {
+    fetchComplaints(searchValue);
+  }, [fetchComplaints, searchValue]);
 
-  return <>Complaint</>;
-};
-
-export default ComplaintsPage;
-
-{
-  /*
+  return (
     <DefaultLayout>
       <Breadcrumb
         pageName="Championnats"
         onClick={() => fetchComplaints(searchValue)}
       >
-        <AppButton
+        {/* <AppButton
           name="Ajouter"
           width="w-[150px]"
           onClick={() => {
-            resetFormErrors();
-            resetFormData();
+            // resetFormErrors();
+            // resetFormData();
             toggleModal("complaint-form");
           }}
-        />
+        /> */}
       </Breadcrumb>
-      <ComplaintForm id="complaint-form" />
+      {/* <ComplaintForm id="complaint-form" /> */}
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
         <div className="min-w-[1170px]' rounded-sm text-black dark:text-white">
-      // Comment    {Table Header }
           <div className="flex   bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white ">
-            {["Utilisateur", "Email", "Message"].map((column, index) => (
-              <div
-                key={index}
-                className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 `}
-              >
-                {column}
-              </div>
-            ))}
+            {["Utilisateur", "Email", "Message", "Réponse", ""].map(
+              (column, index) => (
+                <div
+                  key={index}
+                  className={`flex-1 px-5 py-4 lg:px-7.5 2xl:px-11 `}
+                >
+                  {column}
+                </div>
+              ),
+            )}
           </div>
 
-      // Comment    { Table Body }
           {loading ? (
             <div className="min-h-fit">
               <ProcessingLoader />
@@ -90,26 +84,27 @@ export default ComplaintsPage;
                   key={index}
                   className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark  `}
                 >
-               // Comment   { Complaint User }
                   <div className="flex-1  px-5 py-4 lg:px-7.5 2xl:px-11">
                     {complaint.user.lastname} {complaint.user.firstname}
                   </div>
 
-               // Comment   { Complaint Email }
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
                     {complaint.email}
                   </div>
 
-                // Comment  { Complaint Message }
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
                     {complaint.message}
                   </div>
 
-                // Comment  { Actions }
+                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                    Réponse
+                  </div>
+
                   <div
                     className={`flex-1 px-5 py-4 text-end lg:px-7.5 2xl:px-11`}
                   >
                     <EditDeleteButton
+                      editText="Répondre"
                       onEdit={() =>
                         toggleModal(`complaint-form-${complaint.id}`)
                       }
@@ -119,19 +114,18 @@ export default ComplaintsPage;
                     />
                   </div>
 
-              // Comment    { Update Form}
+                  {/*              
                   <ComplaintForm
                     key={`complaint-form-${complaint.id}`}
                     id={`complaint-form-${complaint.id}`}
                     complaint={complaint}
-                  />
+                  /> */}
 
-                // Comment  {Deletion dialog}
                   <DeletionConfirmation
                     key={`deletion-confirmation-${complaint.id}`}
                     id={`delete-dialog-${complaint.id}`}
-                    message="Êtes-vous sûr de vouloir supprimer ce complaint"
-                    successMessage="Le complaint a été supprimé avec succès"
+                    message="Êtes-vous sûr de vouloir supprimer cette plainte"
+                    successMessage="La plainte a été supprimé avec succès"
                     objectId={complaint.id!}
                     onDelete={deleteComplaint}
                   />
@@ -173,5 +167,7 @@ export default ComplaintsPage;
           <span className="w-1"></span>
         )}
       </div>
-    </DefaultLayout>*/
-}
+    </DefaultLayout>
+  );
+};
+export default ComplaintsPage;

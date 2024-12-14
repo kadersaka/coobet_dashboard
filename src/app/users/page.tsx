@@ -110,7 +110,7 @@ const UsersPage: FC<UsersPageProps> = () => {
                     className={`flex-1 px-5 py-4 text-end lg:px-7.5 2xl:px-11`}
                   >
                     <EditDeleteButton
-                      editText="Blocker"
+                      editText={user.isBlock ? `Débloquer` : `Bloquer`}
                       onEdit={() => toggleModal(`block-dialog-${user.id}`)}
                       onDelete={() => {
                         toggleModal(`admin-pass-form-${user.id}`);
@@ -129,10 +129,10 @@ const UsersPage: FC<UsersPageProps> = () => {
                   <DeletionConfirmation
                     key={`block-confirmation-${user.id}`}
                     id={`block-dialog-${user.id}`}
-                    message="Êtes-vous sûr de vouloir blocker ce utilisateur"
-                    successMessage="L'utilisateur a été blocké avec succès"
+                    message={`Êtes-vous sûr de vouloir ${user.isBlock ? `débloquer` : `bloquer`} ce utilisateur`}
+                    successMessage={`L'utilisateur a été ${user.isBlock ? `débloqué` : `bloqué`} avec succès`}
                     objectId={user.id!}
-                    deleteText="Blocker"
+                    deleteText={user.isBlock ? `Débloquer` : `Bloquer`}
                     onDelete={blockUser}
                   />
                 </div>

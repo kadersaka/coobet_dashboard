@@ -15,6 +15,7 @@ import PageCounter from "@/components/common/PageCounter";
 import useTicketForm from "@/hooks/forms/useTicketForm.hook";
 import useTicketStore from "@/store/useTicket.store";
 import TicketCard from "@/components/widget/TicketCard";
+import TicketForm from "@/components/widget/Forms/TicketForm";
 
 interface TicketsPageProps {}
 
@@ -49,33 +50,39 @@ const TicketsPage: FC<TicketsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("Ticket-form");
+            toggleModal("ticket-form");
           }}
         />
       </Breadcrumb>
-      {/* <TicketForm id="Ticket-form" /> */}
+      <TicketForm id="ticket-form" />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
-        <div className="md:grid-cols-2' grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white md:grid-cols-2 lg:grid-cols-3">
           {loading ? (
             <div className="min-h-fit">
               <ProcessingLoader />
             </div>
           ) : (
-            <div className="w-full  bg-white dark:bg-boxdark">
+            <>
               {paginatedTickets?.results.map((ticket, index) => (
                 <div
                   key={index}
                   className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark `}
                 >
-                  <TicketCard key={index} ticket={ticket} />
+                  <TicketCard
+                    key={index}
+                    ticket={ticket}
+                    showOptions={true}
+                    onEdit={() => toggleModal(`ticket-form-${ticket.id}`)}
+                    onDelete={() => toggleModal(`delete-dialog-${ticket.id}`)}
+                  />
 
-                  {/* <TicketForm
-                    key={`Ticket-form-${Ticket.id}`}
-                    id={`Ticket-form-${Ticket.id}`}
-                    Ticket={Ticket}
-                  /> */}
+                  <TicketForm
+                    key={`ticket-form-${ticket.id}`}
+                    id={`ticket-form-${ticket.id}`}
+                    ticket={ticket}
+                  />
 
                   <DeletionConfirmation
                     key={`deletion-confirmation-${ticket.id}`}
@@ -87,7 +94,7 @@ const TicketsPage: FC<TicketsPageProps> = () => {
                   />
                 </div>
               ))}
-            </div>
+            </>
           )}
         </div>
       </div>

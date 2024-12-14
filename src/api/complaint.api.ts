@@ -7,7 +7,7 @@ import PaginatedComplaint, {
 import { ComplaintJson } from "@/interfaces/complaint.interface";
 
 class ComplaintApi {
-  private static route: string = "/complaints";
+  private static route: string = "/reclamation";
 
   static async findMany(
     searchField?: string,

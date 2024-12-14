@@ -7,10 +7,7 @@ import {
   TicketFormErrors,
 } from "@/interfaces/ticket.interface";
 import Ticket from "@/models/ticket.model";
-import Club from "@/models/club.model";
-import { Moment } from "moment";
-import Championship from "@/models/championship.model";
-import Match from "@/models/match.model";
+import Event from "@/models/event.model";
 import { SelectItemProps } from "../../components/widget/Form/Select";
 
 export const ticketStatus: SelectItemProps[] = [
@@ -53,7 +50,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
     subscription:
       initialData?.subscription != null
         ? (ticketSubscriptions.find(
-            (subscription) => subscription.value == initialData?.status,
+            (subscription) => subscription.value == initialData?.subscription,
           )?.name ?? "")
         : "",
   });
@@ -103,7 +100,8 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
   };
 
   const onEventChange = (name: string, event: Event) => {
-    setFormData({ ...formData, [name]: [...formData.events, event] });
+    if (!formData.events.find((evt) => evt.id == event.id))
+      setFormData({ ...formData, [name]: [...formData.events, event] });
   };
 
   const validateForm = () => {
@@ -148,7 +146,9 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             "lost",
           formData.sample!,
           new Date(),
-          undefined,
+          ticketSubscriptions.find(
+            (item) => item.name === formData.subscription,
+          )?.value ?? "",
           initialData?.id,
         );
 
@@ -174,7 +174,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             toggleModal(modalId);
             setActionResultMessage("Le coupon a été ajouté avec succès");
             toggleModal("action-result-message");
-            delay({ milliseconds: 1000 });
+            await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
           } else {
             setActionResultMessage("Une erreur s'est produite");

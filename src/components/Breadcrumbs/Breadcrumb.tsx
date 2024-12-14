@@ -13,7 +13,7 @@ const Breadcrumb = ({ pageName, children, onClick }: BreadcrumbProps) => {
       className={`mb-5 flex  items-center justify-between gap-3 sm:flex-row md:mb-8 `}
     >
       <span
-        className="flex items-center text-title-md2 font-semibold text-black dark:text-white"
+        className="flex items-center text-title-md2 font-semibold text-black hover:cursor-pointer dark:text-white"
         onClick={onClick}
       >
         {pageName}

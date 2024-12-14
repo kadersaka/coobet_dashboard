@@ -49,7 +49,7 @@ class SportApi {
   static async update(sport: Sport): Promise<Sport> {
     try {
       const sportJson = sport.toJson();
-      const response = await api.put<SportJson>(
+      const response = await api.pacth<SportJson>(
         `${this.route}/${sport.id}`,
         sportJson,
       );

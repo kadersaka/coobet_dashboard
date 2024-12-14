@@ -56,19 +56,25 @@ const EventsPage: FC<EventsPageProps> = () => {
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
-        <div className="md:grid-cols-2' grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white lg:grid-cols-2">
+        <div className="lg:grid-cols-3' grid grid-cols-1 gap-2 rounded-sm text-black dark:text-white md:grid-cols-2">
           {loading ? (
             <div className="min-h-fit">
               <ProcessingLoader />
             </div>
           ) : (
-            <div className="w-full  bg-white dark:bg-boxdark">
+            <>
               {paginatedEvents?.results.map((event, index) => (
                 <div
                   key={index}
-                  className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark `}
+                  className={`  border-t border-[#EEEEEE] dark:border-strokedark `}
                 >
-                  <EventCard key={index} event={event} />
+                  <EventCard
+                    key={index}
+                    event={event}
+                    showOptions={true}
+                    onEdit={() => toggleModal(`event-form-${event.id}`)}
+                    onDelete={() => toggleModal(`delete-dialog-${event.id}`)}
+                  />
 
                   {/* Update Form*/}
                   <EventForm
@@ -88,7 +94,7 @@ const EventsPage: FC<EventsPageProps> = () => {
                   />
                 </div>
               ))}
-            </div>
+            </>
           )}
         </div>
       </div>

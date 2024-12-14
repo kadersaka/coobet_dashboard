@@ -7,12 +7,19 @@ import { FC } from "react";
 interface EventCardProps {
   event: Event;
   showOptions?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-const EventCard: FC<EventCardProps> = ({ event, showOptions }) => {
+const EventCard: FC<EventCardProps> = ({
+  event,
+  showOptions,
+  onEdit,
+  onDelete,
+}) => {
   return (
     <div
-      className={`w-full rounded-sm border-[#EEEEEE] bg-white p-4 text-black shadow-md transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white `}
+      className={` m-2 w-full rounded-sm border-[#EEEEEE] bg-white p-4 text-black shadow-md transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white`}
     >
       <div
         className={`mb-5 flex ${!showOptions ? "justify-center" : "justify-between"}  font-bold`}
@@ -23,8 +30,21 @@ const EventCard: FC<EventCardProps> = ({ event, showOptions }) => {
             <Edit
               size={15}
               className="mr-4 text-green-500 hover:cursor-pointer"
+              onClick={() => {
+                if (onEdit) {
+                  onEdit();
+                }
+              }}
             />
-            <Trash size={15} className="text-red-500 hover:cursor-pointer" />
+            <Trash
+              size={15}
+              className="text-red-500 hover:cursor-pointer"
+              onClick={() => {
+                if (onDelete) {
+                  onDelete();
+                }
+              }}
+            />
           </div>
         )}
       </div>
@@ -56,7 +76,7 @@ const EventCard: FC<EventCardProps> = ({ event, showOptions }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between text-sm">
         {/* Bet */}
         <p className="flex items-center">
           <span className="mr-1 font-medium">Pari:</span> {event.bet}

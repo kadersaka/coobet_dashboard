@@ -41,7 +41,7 @@ const AdminPassForm: FC<AdminPassFormProps> = ({ id, user }) => {
           <div className="mb-4">
             <AppInput
               label="Mot de passe"
-              id="password"
+              id={`${id}-password`}
               name="password"
               type="password"
               placeholder="Mot de passe"

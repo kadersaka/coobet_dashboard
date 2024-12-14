@@ -54,7 +54,8 @@ const EventForm: FC<EventFormProps> = ({ id, event }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-match`}
-              modalId="match"
+              modalId={`${id}-match`}
+              name="match"
               onItemSelected={onMatchChange}
               defautItem={
                 new Match(

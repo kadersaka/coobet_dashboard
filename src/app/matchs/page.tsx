@@ -119,19 +119,19 @@ const MatchsPage: FC<MatchsPageProps> = () => {
 
                   {/* Match Score 2 */}
                   <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
-                    {match.clubHomeGoal}
+                    {match.clubForeignGoal}
                   </div>
 
                   {/* Match Club 2 */}
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {match.clubHome.name}
+                    {match.clubForeign.name}
                   </div>
 
                   {/* Match Logo 2 */}
                   <div className="flex-1 px-5 py-4 text-center lg:px-7.5 2xl:px-11">
                     <Image
-                      src={match.clubHome.logo as string}
-                      alt={match.clubHome.name}
+                      src={match.clubForeign.logo as string}
+                      alt={match.clubForeign.name}
                       width={50}
                       height={50}
                       className="mx-auto"

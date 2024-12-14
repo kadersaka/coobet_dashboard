@@ -1,42 +1,40 @@
-/*
-
-
 import {
   ComplaintResponseFormData,
   ComplaintResponseFormError,
-} from "@/interfaces/complaint.interface";
+} from "@/interfaces/complaint_response.interface";
 import Complaint from "@/models/complaint.model";
-import ComplaintResponse from "@/models/complaintResponse.model";
+import ComplaintResponse from "@/models/complaint_response.model";
 import useComplaintResponseStore from "@/store/useComplaintResponse.store";
 import useInterfaceStore from "@/store/useInterface.store";
 import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
-const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
-  const { addComplaintResponse, updateComplaintResponse } = useComplaintResponseStore();
+const useComplaintResponseForm = (
+  modalId: string,
+  initialData?: ComplaintResponse,
+) => {
+  const { addComplaintResponse, updateComplaintResponse } =
+    useComplaintResponseStore();
 
   const [formData, setFormData] = useState<ComplaintResponseFormData>({
-    response: ,
+    response: initialData?.response ?? "",
   });
 
-  const [formErrors, setFormErrors] = useState<ComplaintResponseFormErrors>({
-    name: null,
-    sport: null,
+  const [formErrors, setFormErrors] = useState<ComplaintResponseFormError>({
+    response: null,
   });
 
   const [processing, setProcessing] = useState<boolean>(false);
 
   const resetFormData = () => {
     setFormData({
-      name: "",
-      sport: "",
+      response: "",
     });
   };
 
   const resetFormErrors = () => {
     setFormErrors({
-      name: null,
-      sport: null,
+      response: null,
     });
   };
 
@@ -56,27 +54,12 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
   };
 
   const validateForm = () => {
-    const errors: ComplaintResponseFormErrors = {
-      name: null,
-      sport: null,
+    const errors: ComplaintResponseFormError = {
+      response: null,
     };
 
-    if (!formData.name.trim()) {
-      errors.name = "Le nom du championnat est requis";
-    } else if (formData.name.length < 3) {
-      errors.name = "Le nom doit contenir au moins trois caractères";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      errors.name =
-        "Le nom doit contenir uniquement des lettres et des espaces";
-    }
-
-    if (!formData.sport.trim()) {
-      errors.sport = "Le sport du championnat est requis";
-    } else if (formData.sport.length < 3) {
-      errors.name = "Le sport doit contenir au moins trois caractères";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      errors.name =
-        "Le sport doit contenir uniquement des lettres et des espaces";
+    if (formData.response.trim().length === 0) {
+      errors.response = "La réponse doit être défini";
     }
 
     setFormErrors(errors);
@@ -92,20 +75,19 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
 
       try {
         const complaintResponse = new ComplaintResponse(
-          formData.name,
-          formData.sport,
-          initialData?.id,
+          initialData?.reclamation!,
+          formData.response,
+          new Date(),
         );
 
         if (complaintResponse?.id) {
-          const updatedComplaintResponse = await updateComplaintResponse(complaintResponse);
+          const updatedComplaintResponse =
+            await updateComplaintResponse(complaintResponse);
 
           if (updatedComplaintResponse) {
             resetFormData();
             toggleModal(modalId);
-            setActionResultMessage(
-              "Le championnat a été mis à jour avec succès",
-            );
+            setActionResultMessage("La réponse a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
@@ -114,12 +96,13 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
             toggleModal("action-result-message");
           }
         } else {
-          const newComplaintResponse = await addComplaintResponse(complaintResponse);
+          const newComplaintResponse =
+            await addComplaintResponse(complaintResponse);
 
           if (newComplaintResponse) {
             resetFormData();
             toggleModal(modalId);
-            setActionResultMessage("Le championnat a été ajouté avec succès");
+            setActionResultMessage("Le réponse a été ajoutée avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
@@ -148,6 +131,3 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
 };
 
 export default useComplaintResponseForm;
-
-
-*/

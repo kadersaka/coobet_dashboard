@@ -124,9 +124,16 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
     });
   };
 
-  const onPhoneNumberChange = (value: string) => {
+  const onPhoneNumberChange = (country: any, value: string) => {
+    let dialCode = "+229";
+
+    if (country.hasOwnProperty("dialCode")) {
+      dialCode = country.dialCode;
+    }
+
     setFormData({
       ...formData,
+      countryCodeCode: dialCode,
       phoneNumber: value,
     });
   };
@@ -169,14 +176,16 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
             (item) => item.name === formData.typeTrans,
           )?.value ?? "disbursements",
           initialData?.status ?? "pending",
-          formData.phoneNumber,
+          formData.phoneNumber.split(formData.countryCodeCode ?? "")[1],
           initialData?.country ?? "Bénin",
           transactionsData.mobileReferences.find(
             (item) => item.name === formData.mobileReference,
           )?.value ?? "moov",
           initialData?.createdAt ?? new Date(),
+          formData.countryCodeCode,
           transactionsData.apps.find((item) => item.name === formData.app)
             ?.value ?? "win",
+
           formData.userAppId,
           initialData?.withdrawalCode,
           initialData?.id,

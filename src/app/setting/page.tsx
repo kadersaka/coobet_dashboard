@@ -10,6 +10,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import useSettingStore from "@/store/useSetting.store";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import Datetime from "react-datetime";
+import ActionResult from "@/components/widget/Form/ActionResultMessage";
 
 const Settings = () => {
   const { fetchSettings, settings, loading } = useSettingStore();
@@ -92,6 +93,7 @@ const Settings = () => {
             />
           )}
         </Breadcrumb>
+        <ActionResult />
 
         <div className="flex items-center justify-center">
           {loading ? (

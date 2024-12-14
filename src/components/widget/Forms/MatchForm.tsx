@@ -69,7 +69,8 @@ const MatchForm: FC<MatchFormProps> = ({ id, match }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-championship`}
-              modalId="championship"
+              modalId={`${id}-championship`}
+              name="championship"
               onItemSelected={onChampionshipChange}
               defautItem={new Championship("Nada", new Sport(""))}
               addItemfn={researchAddChampionship}
@@ -88,7 +89,8 @@ const MatchForm: FC<MatchFormProps> = ({ id, match }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-clubHome`}
-              modalId="clubHome"
+              modalId={`${id}-clubHome`}
+              name="clubHome"
               onItemSelected={onClubChange}
               defautItem={new Club("", "", new Date())}
               addItemfn={researchAddClub}
@@ -126,7 +128,8 @@ const MatchForm: FC<MatchFormProps> = ({ id, match }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-clubForeign`}
-              modalId="clubForeign"
+              modalId={`${id}-clubForeign`}
+              name="clubForeign"
               onItemSelected={onClubChange}
               defautItem={new Club("", "", new Date())}
               addItemfn={researchAddClub}

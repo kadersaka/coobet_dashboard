@@ -27,12 +27,10 @@ const NotificationCard: FC<NotificationProps> = ({
     }).format(date);
   };
 
-  const baseClasses = `max-w-md rounded-sm shadow-md ${!isReaded ? "shadow-primary" : ""} p-4 transition-all duration-200 border-[#EEEEEE] dark:border-strokedark text-black dark:text-white bg-white dark:bg-boxdark `;
-  const bgColor = isReaded ? "bg-white'" : "bg-primary'";
-  const contentClasses = `mt-2 transition-all duration-200 overflow-hidden ${isExpanded ? "max-h-96" : "max-h-0"}`;
-
   return (
-    <div className={`${baseClasses} ${bgColor}`}>
+    <div
+      className={`max-w-md rounded-sm shadow-md ${!isReaded ? "shadow-primary" : ""} border-[#EEEEEE] bg-white p-4 text-black transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white  `}
+    >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -43,9 +41,10 @@ const NotificationCard: FC<NotificationProps> = ({
         </div>
 
         <button
+          key={id}
           onClick={() => setIsExpanded(!isExpanded)}
           className="rounded-full p-1 transition-colors duration-200 hover:bg-gray-100"
-          aria-label={isExpanded ? "Collapse" : "Expand"}
+          //  aria-label={isExpanded ? "Collapse" : "Expand"}
         >
           {isExpanded ? (
             <ChevronUp className="h-5 w-5 text-gray-500" />
@@ -55,7 +54,9 @@ const NotificationCard: FC<NotificationProps> = ({
         </button>
       </div>
 
-      <div className={contentClasses}>
+      <div
+        className={`mt-2 overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-96" : "max-h-0"}`}
+      >
         <p className="">{content}</p>
       </div>
     </div>

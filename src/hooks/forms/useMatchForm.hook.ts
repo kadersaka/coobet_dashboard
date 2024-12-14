@@ -183,7 +183,7 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
             toggleModal(modalId);
             setActionResultMessage("Le match a été ajouté avec succès");
             toggleModal("action-result-message");
-            delay({ milliseconds: 1000 });
+            await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
           } else {
             setActionResultMessage("Une erreur s'est produite");

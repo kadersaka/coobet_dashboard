@@ -60,7 +60,8 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-event`}
-              modalId="event"
+              modalId={`${id}-events`}
+              name="events"
               onItemSelected={onEventChange}
               defautItem={
                 new Event(
@@ -92,7 +93,7 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
           </div>
 
           <div className="mb-4">
-            {ticket?.events.map((event) => (
+            {formData?.events.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>

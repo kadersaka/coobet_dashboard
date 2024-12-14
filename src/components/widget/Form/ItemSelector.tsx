@@ -16,7 +16,7 @@ interface ItemSelectorProps {
   itemName: string;
   placeholder: string;
   modalId: string;
-
+  name: string;
   item: any;
   onItemSelected: (name: string, item: any) => void;
   defautItem: any;
@@ -33,7 +33,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
   itemName,
   placeholder,
   modalId,
-
+  name,
   item,
   defautItem,
   onItemSelected,
@@ -45,7 +45,10 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
   const [currentItemPage, setCurrentItemPage] = useState(1);
   const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
 
-  const handleOpenModal = () => toggleModal(modalId);
+  const handleOpenModal = () => {
+    console.log(" ========> Click");
+    return toggleModal(modalId);
+  };
 
   const handleCloseModal = () => {
     setCurrentItemPage(1);
@@ -53,7 +56,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
 
   const handleItemSelect = (selectedItem: any) => {
     setSelectedItem(selectedItem);
-    onItemSelected(modalId, selectedItem);
+    onItemSelected(name, selectedItem);
     toggleModal(modalId);
     handleCloseModal();
   };
@@ -68,13 +71,54 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
         onClick={handleOpenModal}
         className="w-full rounded-sm border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       >
-        {selectedItem !== null && selectedItem !== undefined ? (
+        {selectedItem !== null &&
+        selectedItem !== undefined &&
+        !Array.isArray(selectedItem) &&
+        typeof selectedItem == "object" &&
+        selectedItem.hasOwnProperty("name") ? (
+          <span> {selectedItem.name}</span>
+        ) : selectedItem instanceof Match ? (
+          <div className="mb-1 flex flex-col items-center">
+            <span className="mb-3 font-medium">
+              {selectedItem.championship.name}
+            </span>
+            <div className="ml-4 flex justify-between">
+              <div className="mr-4 flex">
+                <Image
+                  src={selectedItem.clubHome.logo as string}
+                  alt={selectedItem.clubHome.name}
+                  width={30}
+                  height={30}
+                />
+                <span className="ml-2">{selectedItem.clubHome.name}</span>
+              </div>
+
+              <span className="font-medium">vs</span>
+
+              <div className="ml-4 flex">
+                <Image
+                  src={selectedItem.clubForeign.logo as string}
+                  alt={selectedItem.clubForeign.name}
+                  width={30}
+                  height={30}
+                />
+                <span className="ml-2 ">{selectedItem.clubForeign.name}</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <span className="">{placeholder}</span>
+        )}
+
+        {/* {selectedItem !== null &&
+        selectedItem !== undefined &&
+        !Array.isArray(selectedItem) &&
+        !(selectedItem instanceof Event) ? (
           selectedItem instanceof Match ? (
             <div className="mb-1 flex flex-col items-center">
               <span className="mb-3 font-medium">
                 {selectedItem.championship.name}
               </span>
-
               <div className="ml-4 flex justify-between">
                 <div className="mr-4 flex">
                   <Image
@@ -99,18 +143,18 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
                 </div>
               </div>
             </div>
-          ) : selectedItem instanceof Event ? (
-            placeholder
           ) : (
-            <span>{selectedItem.name}</span>
+            <span>
+              {selectedItem.name} {`${selectedItem.id}`}
+            </span>
           )
         ) : (
-          placeholder
-        )}
+          <span className="">{placeholder}</span>
+        )} */}
       </div>
 
       {error && (
-        <span className="text-xs text-red-500">Please select a Item</span>
+        <span className="text-xs text-red-500">{itemName} est requis</span>
       )}
 
       <Modal

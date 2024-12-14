@@ -63,7 +63,8 @@ const ChampionshipForm: FC<ChampionshipFormProps> = ({ id, championship }) => {
           <div className="mb-4">
             <ItemSelector
               key={`${dynamicKey}-sport`}
-              modalId="sport"
+              modalId={`${id}-sport`}
+              name={`sport`}
               onItemSelected={onSportChange}
               defautItem={new Sport("")}
               addItemfn={researchAddSport}
