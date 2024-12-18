@@ -39,10 +39,7 @@ const SportsPage: FC<SportsPageProps> = () => {
 
   return (
     <>
-      <Breadcrumb
-        pageName="Championnats"
-        onClick={() => fetchSports(searchValue)}
-      >
+      <Breadcrumb pageName="Sports" onClick={() => fetchSports(searchValue)}>
         <AppButton
           name="Ajouter"
           width="w-[150px]"

@@ -2,7 +2,6 @@
 
 import { FC, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
 import { toggleModal } from "@/utils/functions.util";
 import useNotificationStore from "@/store/useNotification.store";
@@ -16,6 +15,7 @@ import Loader from "@/components/common/Loader";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
 import NotificationCard from "@/components/widget/NotificationCard";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
 interface NotificationsPageProps {}
 

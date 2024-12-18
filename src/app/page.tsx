@@ -1,6 +1,6 @@
-import Dashboard from "@/components/Dashboard/Dashboard";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Dashboard from "./(dasboard)/dashboard/page";
 
 export const metadata: Metadata = {
   title: "Coobet Dashboard",

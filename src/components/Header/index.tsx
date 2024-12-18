@@ -61,18 +61,17 @@ const Header = (props: {
 
           <Link className="block flex-shrink-0 lg:hidden" href="/">
             <Image
-              width={32}
-              height={32}
-              src={"/images/logo/logo-icon.svg"}
+              width={70}
+              height={50}
+              src={"/images/logo/coobet.svg"}
               alt="Logo"
             />
           </Link>
         </div>
 
         <div className="hidden sm:block">
-          <form action="https://formbold.com/s/unique_form_id" method="POST">
-            <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
+          <div className="relative">
+            {/* <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
                   className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
                   width="20"
@@ -94,18 +93,17 @@ const Header = (props: {
                     fill=""
                   />
                 </svg>
-              </button>
+              </button> */}
 
-              <input
-                type="text"
-                placeholder="Recherche ..."
-                value={searchValue}
-                onChange={setSearchValue}
-                onSubmit={setSearchValue}
-                className="flex w-full rounded-sm bg-transparent py-2.5 pl-9 pr-4 font-medium  focus:border-primary focus:outline-none active:border-primary xl:w-150 "
-              />
-            </div>
-          </form>
+            <input
+              type="text"
+              placeholder="Recherche ..."
+              value={searchValue}
+              onChange={setSearchValue}
+              onSubmit={setSearchValue}
+              className="flex w-full rounded-sm bg-transparent py-2.5 pl-9 pr-4 font-medium  focus:border-primary focus:outline-none active:border-primary xl:w-150 "
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
