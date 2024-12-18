@@ -19,15 +19,24 @@ const NotificationCard: FC<NotificationProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const formatDate = (date: Date) => {
-    if (!date || isNaN(date.getTime())) {
-      return "Invalid date"; // Fallback in case of invalid date
+    let dateText = "";
+
+    try {
+      if (!date || isNaN(date.getTime())) {
+        dateText = "Invalid date"; // Fallback in case of invalid date
+      }
+      dateText = new Intl.DateTimeFormat("fr-FR", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+
+      return dateText;
+    } catch (error) {
+      dateText = "Invalid date";
+      return dateText;
     }
-    return new Intl.DateTimeFormat("fr-FR", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
   };
 
   return (

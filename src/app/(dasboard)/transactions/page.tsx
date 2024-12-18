@@ -115,7 +115,8 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
 
                   {/* Transaction Name */}
                   <div className=" px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {transaction.user.lastname} {transaction.user.firstname}
+                    {transaction.user?.lastname ?? "Lastname"}{" "}
+                    {transaction.user?.firstname ?? "Firstname"}
                   </div>
 
                   {/* Transaction Amount */}
