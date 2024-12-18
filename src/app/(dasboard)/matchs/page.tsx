@@ -1,0 +1,212 @@
+"use client";
+
+import { FC, useEffect } from "react";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import AppButton from "@/components/widget/Form/Button";
+import { toggleModal } from "@/utils/functions.util";
+import MatchForm from "@/components/widget/Forms/MatchForm";
+import useMatchStore from "@/store/useMatch.store";
+import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
+import Image from "next/image";
+import DeletionConfirmation from "@/components/widget/Form/DeletionConfirmation";
+import ActionResult from "@/components/widget/Form/ActionResultMessage";
+import useSearchStore from "@/store/useSearchStore.store";
+import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
+import PageCounter from "@/components/common/PageCounter";
+import useMatchForm from "@/hooks/forms/useMatchForm.hook";
+
+interface MatchsPageProps {}
+
+const MatchsPage: FC<MatchsPageProps> = () => {
+  const { searchValue } = useSearchStore();
+  const { resetFormData, resetFormErrors } = useMatchForm("match-form");
+  const {
+    paginatedMatches,
+    page,
+    loading,
+    fetchMatches,
+    deleteMatch,
+    increasePage,
+    decreasePage,
+  } = useMatchStore();
+
+  useEffect(() => {
+    fetchMatches(searchValue);
+  }, [fetchMatches, searchValue]);
+
+  return (
+    <>
+      <Breadcrumb pageName="Matchs" onClick={() => fetchMatches(searchValue)}>
+        <AppButton
+          name="Ajouter"
+          width="w-[150px]"
+          onClick={() => {
+            resetFormErrors();
+            resetFormData();
+            toggleModal("match-form");
+          }}
+        />
+      </Breadcrumb>
+      <MatchForm id="match-form" />
+      <ActionResult />
+
+      <div className="w-full overflow-x-auto ">
+        <div className="min-w-[700px] rounded-sm">
+          {/* Table Header */}
+          <div className="grid grid-cols-4 bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white lg:grid-cols-6 xl:grid-cols-8">
+            {[
+              "Championnat",
+              "Logo",
+              "Club",
+              "Score",
+              "Score",
+              "Club",
+              "Logo",
+              "",
+            ].map((column, index) => (
+              <div
+                key={index}
+                className={`px-4 py-4 ${
+                  index === 1 || index === 3 || index === 4 || index === 6
+                    ? "text-center"
+                    : ""
+                } ${index === 3 || index === 4 ? "hidden lg:table-cell" : ""} ${
+                  index === 1 || index === 6 ? "hidden xl:table-cell" : ""
+                }`}
+              >
+                {column}
+              </div>
+            ))}
+          </div>
+
+          {/* Table Body */}
+          {loading ? (
+            <div className="min-h-[200px]">
+              <ProcessingLoader />
+            </div>
+          ) : (
+            <div className="w-full bg-white dark:bg-boxdark">
+              {paginatedMatches?.results.map((match, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-4 items-center border-t border-[#EEEEEE] dark:border-strokedark lg:grid-cols-6 xl:grid-cols-8"
+                >
+                  {/* Championship */}
+                  <div className="px-4 py-4">
+                    <span className="line-clamp-2">
+                      {match.championship.name}
+                    </span>
+                  </div>
+
+                  {/* Home Team Logo */}
+                  <div className="hidden px-4 py-4 text-center xl:table-cell">
+                    <div className="relative mx-auto h-10 w-10">
+                      <Image
+                        src={match.clubHome.logo as string}
+                        alt={match.clubHome.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Home Team */}
+                  <div className="px-4 py-4">
+                    <span className="line-clamp-2">{match.clubHome.name}</span>
+                  </div>
+
+                  {/* Home Score */}
+                  <div className="hidden px-4 py-4 text-center font-medium lg:table-cell">
+                    {match.clubHomeGoal}
+                  </div>
+
+                  {/* Away Score */}
+                  <div className="hidden px-4 py-4 text-center font-medium lg:table-cell">
+                    {match.clubForeignGoal}
+                  </div>
+
+                  {/* Away Team */}
+                  <div className="px-4 py-4">
+                    <span className="line-clamp-2">
+                      {match.clubForeign.name}
+                    </span>
+                  </div>
+
+                  {/* Away Team Logo */}
+                  <div className="hidden px-4 py-4 text-center xl:table-cell">
+                    <div className="relative mx-auto h-10 w-10">
+                      <Image
+                        src={match.clubForeign.logo as string}
+                        alt={match.clubForeign.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="px-4' py-4 text-center  lg:text-start xl:text-center ">
+                    <EditDeleteButton
+                      onEdit={() => toggleModal(`match-form-${match.id}`)}
+                      onDelete={() => toggleModal(`delete-dialog-${match.id}`)}
+                    />
+                  </div>
+
+                  {/* Forms and Dialogs */}
+                  <MatchForm
+                    key={`match-form-${match.id}`}
+                    id={`match-form-${match.id}`}
+                    match={match}
+                  />
+
+                  <DeletionConfirmation
+                    key={`deletion-confirmation-${match.id}`}
+                    id={`delete-dialog-${match.id}`}
+                    message="Êtes-vous sûr de vouloir supprimer ce match"
+                    successMessage="Le match a été supprimé avec succès"
+                    objectId={match.id!}
+                    onDelete={deleteMatch}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-6 flex flex-col gap-4">
+        <div className="flex justify-center gap-4">
+          {paginatedMatches.previous && (
+            <AppButton
+              name="Précédent"
+              width="w-[120px]"
+              color="bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white"
+              onClick={() => {
+                decreasePage();
+                fetchMatches(searchValue);
+              }}
+            />
+          )}
+
+          <PageCounter totalPage={paginatedMatches.count} currentPage={page} />
+
+          {paginatedMatches.next && (
+            <AppButton
+              name="Suivant"
+              width="w-[120px]"
+              color="bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white"
+              onClick={() => {
+                increasePage();
+                fetchMatches(searchValue);
+              }}
+            />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MatchsPage;

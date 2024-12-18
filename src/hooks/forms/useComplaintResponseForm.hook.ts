@@ -8,16 +8,19 @@ import useComplaintResponseStore from "@/store/useComplaintResponse.store";
 import useInterfaceStore from "@/store/useInterface.store";
 import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
+import useComplaintstore from "@/store/useComplaint.store";
+import useSearchStore from "@/store/useSearchStore.store";
 
-const useComplaintResponseForm = (
-  modalId: string,
-  initialData?: ComplaintResponse,
-) => {
+const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
   const { addComplaintResponse, updateComplaintResponse } =
     useComplaintResponseStore();
 
+  const { searchValue } = useSearchStore();
+
+  const { fetchComplaints } = useComplaintstore();
+
   const [formData, setFormData] = useState<ComplaintResponseFormData>({
-    response: initialData?.response ?? "",
+    response: initialData?.response?.response ?? "",
   });
 
   const [formErrors, setFormErrors] = useState<ComplaintResponseFormError>({
@@ -43,13 +46,13 @@ const useComplaintResponseForm = (
   );
 
   const onInputDataChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
 
     setFormData({
       ...formData,
-      [name]: name === "logo" ? files?.[0] : value,
+      [name]: value,
     });
   };
 
@@ -59,7 +62,7 @@ const useComplaintResponseForm = (
     };
 
     if (formData.response.trim().length === 0) {
-      errors.response = "La réponse doit être défini";
+      errors.response = "La réponse doit être définie";
     }
 
     setFormErrors(errors);
@@ -75,9 +78,9 @@ const useComplaintResponseForm = (
 
       try {
         const complaintResponse = new ComplaintResponse(
-          initialData?.reclamation!,
+          initialData?.id!,
           formData.response,
-          new Date(),
+          initialData?.response?.createdAt ?? new Date(),
         );
 
         if (complaintResponse?.id) {
@@ -114,6 +117,8 @@ const useComplaintResponseForm = (
       } catch (error) {
         console.error("Error handling form submission:", error);
       }
+
+      fetchComplaints(searchValue);
 
       setProcessing(false);
     }

@@ -2,8 +2,8 @@ import { UserJson } from "@/interfaces/user.interface";
 
 class User {
   id?: string;
-  firstname: string;
-  lastname: string;
+  firstname?: string;
+  lastname?: string;
   fullname?: string;
   email?: string;
   phoneIndicative?: string;
@@ -19,8 +19,8 @@ class User {
   refresh?: string;
 
   constructor(
-    firstname: string,
-    lastname: string,
+    firstname?: string,
+    lastname?: string,
     fullname?: string,
     email?: string,
     phoneIndicative?: string,
@@ -76,7 +76,6 @@ class User {
       json.last_name,
       json.fullname,
       json.email,
-
       json.phone_indicative,
       json.phone,
       json.date_joined != null ? new Date(json.date_joined) : undefined,
@@ -88,7 +87,6 @@ class User {
       json.referral_link,
       json.access,
       json.refresh,
-
       json.id,
     );
   }

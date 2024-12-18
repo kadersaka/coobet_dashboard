@@ -1,13 +1,12 @@
 import api from "@/utils/api.util";
 import ComplaintResponse from "@/models/complaint_response.model";
-import PaginatedClub from "@/models/paginated_club.model";
 import PaginatedComplaintResponse, {
   PaginatedComplaintResponseJson,
 } from "@/models/paginated_complaint_response.model";
 import { ComplaintResponseJson } from "@/interfaces/complaint_response.interface";
 
 class ComplaintResponseApi {
-  private static route: string = "/reclamation";
+  private static route: string = "/response_reclamation";
 
   static async findMany(
     searchField?: string,

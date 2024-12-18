@@ -20,6 +20,13 @@ class Setting {
   mtnCustomer: string | null;
   cardCustomer: string | null;
   sbinCustomer: string | null;
+  moovDisUrl: string | null;
+  mtnDisUrl: string | null;
+  rewardMiniWithdrawal: string | null;
+  qosicUsername: string | null;
+  whatsappPhoneIndi: string | null;
+  whatsappPhone: string | null;
+  subscriptionPrice: string | null;
 
   constructor(
     minimumDeposit: string | null,
@@ -40,6 +47,13 @@ class Setting {
     mtnCustomer: string | null,
     cardCustomer: string | null,
     sbinCustomer: string | null,
+    moovDisUrl: string | null,
+    mtnDisUrl: string | null,
+    rewardMiniWithdrawal: string | null,
+    qosicUsername: string | null,
+    whatsappPhoneIndi: string | null,
+    whatsappPhone: string | null,
+    subscriptionPrice: string | null,
     id: string | null,
   ) {
     this.minimumDeposit = minimumDeposit;
@@ -60,6 +74,13 @@ class Setting {
     this.mtnCustomer = mtnCustomer;
     this.cardCustomer = cardCustomer;
     this.sbinCustomer = sbinCustomer;
+    this.moovDisUrl = moovDisUrl;
+    this.mtnDisUrl = mtnDisUrl;
+    this.rewardMiniWithdrawal = rewardMiniWithdrawal;
+    this.qosicUsername = qosicUsername;
+    this.whatsappPhoneIndi = whatsappPhoneIndi;
+    this.whatsappPhone = whatsappPhone;
+    this.subscriptionPrice = subscriptionPrice;
     this.id = id;
   }
 
@@ -83,6 +104,13 @@ class Setting {
       json.mtn_customer,
       json.card_customer,
       json.sbin_customer,
+      json.moov_dis_url,
+      json.mtn_dis_url,
+      json.reward_mini_withdrawal,
+      json.qosic_username,
+      json.whatsapp_phone_indi,
+      json.whatsapp_phone,
+      json.subscription_price,
       json.id,
     );
   }
@@ -107,6 +135,13 @@ class Setting {
       mtn_customer: this.mtnCustomer,
       card_customer: this.cardCustomer,
       sbin_customer: this.sbinCustomer,
+      moov_dis_url: this.moovDisUrl,
+      mtn_dis_url: this.mtnDisUrl,
+      reward_mini_withdrawal: this.rewardMiniWithdrawal,
+      qosic_username: this.qosicUsername,
+      whatsapp_phone_indi: this.whatsappPhoneIndi,
+      whatsapp_phone: this.whatsappPhone,
+      subscription_price: this.subscriptionPrice,
       id: this.id,
     };
   }

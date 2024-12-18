@@ -4,6 +4,7 @@ import { Edit, Trash2Icon } from "lucide-react";
 interface EditDeleteButtonProps {
   editText?: string;
   onEdit: () => void;
+  hideDelete?: boolean;
   deleteText?: string;
   onDelete: () => void;
 }
@@ -11,6 +12,7 @@ interface EditDeleteButtonProps {
 const EditDeleteButton: FC<EditDeleteButtonProps> = ({
   editText,
   onEdit,
+  hideDelete,
   deleteText,
   onDelete,
 }) => {
@@ -41,16 +43,18 @@ const EditDeleteButton: FC<EditDeleteButtonProps> = ({
               {editText ?? "Editer"}
               <Edit className="text-green-500" size={15} />
             </a>
-            <a
-              className=" flex items-center justify-between  px-4 py-2 text-sm text-black hover:bg-body hover:text-white dark:text-white"
-              onClick={() => {
-                setIsOpen(false);
-                onDelete();
-              }}
-            >
-              {deleteText ?? "Supprimer"}
-              <Trash2Icon className="text-red-500" size={15} />
-            </a>
+            {!hideDelete && (
+              <a
+                className=" flex items-center justify-between  px-4 py-2 text-sm text-black hover:bg-body hover:text-white dark:text-white"
+                onClick={() => {
+                  setIsOpen(false);
+                  onDelete();
+                }}
+              >
+                {deleteText ?? "Supprimer"}
+                <Trash2Icon className="text-red-500" size={15} />
+              </a>
+            )}
           </div>
         </div>
       )}

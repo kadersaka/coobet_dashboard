@@ -3,7 +3,8 @@ import { UserJson } from "./user.interface";
 
 export interface ComplaintResponseJson {
   id?: string;
-  reclamation: ComplaintJson;
+  reclamation: string;
+  reclamation_id?: string;
   response: string;
   created_at: string;
 }

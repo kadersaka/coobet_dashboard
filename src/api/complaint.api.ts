@@ -18,6 +18,7 @@ class ComplaintApi {
       const response = await api.get<PaginatedComplaintJson>(
         `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
+
       return PaginatedComplaint.fromJson(response);
     } catch (error) {
       console.error("Error fetching complaints:", error);

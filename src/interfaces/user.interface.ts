@@ -1,7 +1,7 @@
 export interface UserJson {
   id?: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   fullname?: string;
   email?: string;
   phone_indicative?: string;

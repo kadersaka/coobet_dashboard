@@ -3,17 +3,17 @@ import { ComplaintResponseJson } from "@/interfaces/complaint_response.interface
 
 class ComplaintResponse {
   id?: string;
-  reclamation: Complaint;
+  complaintId: string;
   response: string;
   createdAt: Date;
 
   constructor(
-    reclamation: Complaint,
+    complaintId: string,
     response: string,
     createdAt: Date,
     id?: string,
   ) {
-    this.reclamation = reclamation;
+    this.complaintId = complaintId;
 
     this.response = response;
     this.createdAt = createdAt;
@@ -22,7 +22,7 @@ class ComplaintResponse {
 
   static fromJson(json: ComplaintResponseJson): ComplaintResponse {
     return new ComplaintResponse(
-      Complaint.fromJson(json.reclamation),
+      json.reclamation,
       json.response,
       new Date(json.created_at),
 
@@ -34,7 +34,8 @@ class ComplaintResponse {
     return {
       id: this.id,
       response: this.response,
-      reclamation: this.reclamation.toJson(),
+      reclamation: this.complaintId,
+      reclamation_id: this.complaintId,
       created_at: this.createdAt.toISOString(),
     };
   }

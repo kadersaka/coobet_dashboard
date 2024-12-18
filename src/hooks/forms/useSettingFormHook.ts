@@ -31,6 +31,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
     mtnCustomer: initialData?.mtnCustomer ?? "",
     cardCustomer: initialData?.cardCustomer ?? "",
     sbinCustomer: initialData?.sbinCustomer ?? "",
+    moovDisUrl: initialData?.moovDisUrl ?? "",
+    mtnDisUrl: initialData?.mtnDisUrl ?? "",
+    rewardMiniWithdrawal: initialData?.rewardMiniWithdrawal ?? "",
+    qosicUsername: initialData?.qosicUsername ?? "",
+    whatsappPhoneIndi: initialData?.whatsappPhoneIndi ?? "",
+    whatsappPhone: initialData?.whatsappPhone ?? "",
+    subscriptionPrice: initialData?.subscriptionPrice ?? "",
   });
 
   const [formErrors, setFormErrors] = useState<SettingFormErrors>({
@@ -52,6 +59,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
     mtnCustomer: null,
     cardCustomer: null,
     sbinCustomer: null,
+    moovDisUrl: null,
+    mtnDisUrl: null,
+    rewardMiniWithdrawal: null,
+    qosicUsername: null,
+    whatsappPhoneIndi: null,
+    whatsappPhone: null,
+    subscriptionPrice: null,
   });
 
   const [processing, setProcessing] = useState<boolean>(false);
@@ -76,6 +90,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
       mtnCustomer: null,
       cardCustomer: null,
       sbinCustomer: null,
+      moovDisUrl: null,
+      mtnDisUrl: null,
+      rewardMiniWithdrawal: null,
+      qosicUsername: null,
+      whatsappPhoneIndi: null,
+      whatsappPhone: null,
+      subscriptionPrice: null,
     });
   };
 
@@ -99,6 +120,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
       mtnCustomer: null,
       cardCustomer: null,
       sbinCustomer: null,
+      moovDisUrl: null,
+      mtnDisUrl: null,
+      rewardMiniWithdrawal: null,
+      qosicUsername: null,
+      whatsappPhoneIndi: null,
+      whatsappPhone: null,
+      subscriptionPrice: null,
     });
   };
 
@@ -137,6 +165,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
       mtnCustomer: null,
       cardCustomer: null,
       sbinCustomer: null,
+      moovDisUrl: null,
+      mtnDisUrl: null,
+      rewardMiniWithdrawal: null,
+      qosicUsername: null,
+      whatsappPhoneIndi: null,
+      whatsappPhone: null,
+      subscriptionPrice: null,
     };
 
     setFormErrors(errors);
@@ -170,6 +205,13 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
           formData.mtnCustomer,
           formData.cardCustomer,
           formData.sbinCustomer,
+          formData.moovDisUrl,
+          formData.mtnDisUrl,
+          formData.rewardMiniWithdrawal,
+          formData.qosicUsername,
+          formData.whatsappPhoneIndi,
+          formData.whatsappPhone,
+          formData.subscriptionPrice,
           formData?.id ?? "",
         );
 

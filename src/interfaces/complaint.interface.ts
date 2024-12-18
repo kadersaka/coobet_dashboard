@@ -1,3 +1,4 @@
+import { ComplaintResponseJson } from "./complaint_response.interface";
 import { UserJson } from "./user.interface";
 
 export interface ComplaintJson {
@@ -6,4 +7,5 @@ export interface ComplaintJson {
   fullname: string;
   message: string;
   user: UserJson;
+  response_reclamation: ComplaintResponseJson | null;
 }

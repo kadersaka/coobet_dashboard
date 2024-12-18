@@ -18,6 +18,13 @@ export interface SettingJson {
   mtn_customer: string | null;
   card_customer: string | null;
   sbin_customer: string | null;
+  moov_dis_url: string | null;
+  mtn_dis_url: string | null;
+  reward_mini_withdrawal: string | null;
+  qosic_username: string | null;
+  whatsapp_phone_indi: string | null;
+  whatsapp_phone: string | null;
+  subscription_price: string | null;
 }
 
 export interface SettingFormData {
@@ -40,6 +47,13 @@ export interface SettingFormData {
   mtnCustomer: string | null;
   cardCustomer: string | null;
   sbinCustomer: string | null;
+  moovDisUrl: string | null;
+  mtnDisUrl: string | null;
+  rewardMiniWithdrawal: string | null;
+  qosicUsername: string | null;
+  whatsappPhoneIndi: string | null;
+  whatsappPhone: string | null;
+  subscriptionPrice: string | null;
 }
 
 export interface SettingFormErrors {
@@ -61,4 +75,11 @@ export interface SettingFormErrors {
   mtnCustomer: string | null;
   cardCustomer: string | null;
   sbinCustomer: string | null;
+  moovDisUrl: string | null;
+  mtnDisUrl: string | null;
+  rewardMiniWithdrawal: string | null;
+  qosicUsername: string | null;
+  whatsappPhoneIndi: string | null;
+  whatsappPhone: string | null;
+  subscriptionPrice: string | null;
 }

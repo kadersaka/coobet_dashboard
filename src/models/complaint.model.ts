@@ -1,6 +1,7 @@
 import { UserJson } from "@/interfaces/user.interface";
 import User from "./user.model";
 import { ComplaintJson } from "@/interfaces/complaint.interface";
+import ComplaintResponse from "./complaint_response.model";
 
 class Complaint {
   id?: string;
@@ -8,18 +9,21 @@ class Complaint {
   fullname: string;
   message: string;
   user: User;
+  response?: ComplaintResponse;
 
   constructor(
     email: string,
     fullname: string,
     message: string,
     user: User,
+    response: ComplaintResponse | undefined,
     id?: string,
   ) {
     this.email = email;
     this.fullname = fullname;
     this.message = message;
     this.user = user;
+    this.response = response;
     this.id = id;
   }
 
@@ -29,6 +33,9 @@ class Complaint {
       json.fullname,
       json.message,
       User.fromJson(json.user),
+      json.response_reclamation != null
+        ? ComplaintResponse.fromJson(json.response_reclamation)
+        : undefined,
       json.id,
     );
   }
@@ -39,6 +46,7 @@ class Complaint {
       email: this.email,
       fullname: this.fullname,
       message: this.message,
+      response_reclamation: this.response?.toJson() ?? null,
       user: this.user.toJson(),
     };
   }

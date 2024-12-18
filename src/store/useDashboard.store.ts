@@ -1,0 +1,108 @@
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import DashboardApi from "@/api/dashboard.api";
+import Dashboard from "@/models/dashboard.model";
+import { SelectItemProps } from "@/components/widget/Form/Select";
+
+interface DashboardStore {
+  loading: boolean;
+  error: string | null;
+  dashboardData: Dashboard;
+  period: string;
+  periods: SelectItemProps[];
+  setPeriod: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  fetchDashboardData: (period?: string) => Promise<void>;
+}
+
+const useDashboardStore = create<DashboardStore>()(
+  persist(
+    (set, get) => ({
+      loading: false,
+      error: null,
+      period: "all",
+      periods: [
+        {
+          name: "Global",
+          value: "all",
+        },
+        {
+          name: "Hier",
+          value: "last_day",
+        },
+        {
+          name: "Trois dernier jours",
+          value: "last_three_day",
+        },
+        {
+          name: "Semaine antérieure",
+          value: "last_week",
+        },
+        {
+          name: "Mois antérieur",
+          value: "last_month",
+        },
+      ],
+      dashboardData: new Dashboard(
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+      ),
+
+      setPeriod: (e: React.ChangeEvent<HTMLSelectElement>) => {
+        set({
+          period:
+            get().periods.find((prd) => prd.name === e.target.value)?.value ??
+            "all",
+        });
+      },
+
+      fetchDashboardData: async (period?: string) => {
+        set({ loading: true, error: null });
+        try {
+          const stats = await DashboardApi.find(period ?? get().period);
+
+          set({ dashboardData: stats ?? get().dashboardData });
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            set({ error: error.message });
+          } else {
+            set({ error: "An unknown error occurred" });
+          }
+        } finally {
+          set({ loading: false });
+        }
+      },
+    }),
+    {
+      name: "DashboardStore",
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);
+
+export default useDashboardStore;
