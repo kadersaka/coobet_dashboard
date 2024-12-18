@@ -70,7 +70,7 @@ const menuGroups = [
       {
         icon: <ArrowLeftRight />,
         label: "Transactions",
-        route: "/transactions",
+        route: "/transaction",
       },
       {
         icon: <Ticket />,
