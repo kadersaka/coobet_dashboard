@@ -1,8 +1,7 @@
+"use client";
+
 import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
-import DropdownMessage from "./DropdownMessage";
-import DropdownNotification from "./DropdownNotification";
-import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import useSearchStore from "@/store/useSearchStore.store";
 
@@ -96,6 +95,8 @@ const Header = (props: {
               </button> */}
 
             <input
+              id="global-search"
+              name="global-search"
               type="text"
               placeholder="Recherche ..."
               value={searchValue}

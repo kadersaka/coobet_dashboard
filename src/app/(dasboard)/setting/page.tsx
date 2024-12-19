@@ -1,7 +1,5 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useSettingForm from "@/hooks/forms/useSettingFormHook";
 import Setting from "@/models/Setting.model";
 import AppInput from "@/components/widget/Form/Input";
@@ -11,9 +9,18 @@ import useSettingStore from "@/store/useSetting.store";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import Datetime from "react-datetime";
 import ActionResult from "@/components/widget/Form/ActionResultMessage";
+import useAuthSettingForm from "@/hooks/forms/useAuthSettingForm.hook";
 
 const Settings = () => {
   const { fetchSettings, settings, loading } = useSettingStore();
+
+  const {
+    authSettingFormData,
+    authSettingFormErrors,
+    authSettingProcessing,
+    authSettingOnInputDataChange,
+    authSettingOnFormSubmit,
+  } = useAuthSettingForm();
 
   const {
     processing,
@@ -96,29 +103,99 @@ const Settings = () => {
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Paramètre">
-          {(!editMode || processing) && (
-            <AppButton
-              name={` ${settings.length != 0 ? "Mettre à jour" : "Ajouter"}`}
-              width="w-[150px]"
-              onClick={() => {
-                setEditMode(true);
-              }}
-            />
-          )}
-        </Breadcrumb>
+        <Breadcrumb pageName="Paramètre"></Breadcrumb>
         <ActionResult />
 
-        <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center  xl:flex-row xl:items-start  ">
+          {/* ===============> AUTH <=============== */}
+          <div className="mb-10 sm:min-w-90 lg:min-w-125 xl:mr-10">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">Auth</h3>
+              </div>
+              <div className="p-7">
+                <form onSubmit={authSettingOnFormSubmit}>
+                  <div className="mb-4">
+                    <AppInput
+                      label="Ancien mot de passe"
+                      id="oldPassword"
+                      name="oldPassword"
+                      type="password"
+                      placeholder="Ancien mot de passe"
+                      value={authSettingFormData.oldPassword}
+                      onChange={authSettingOnInputDataChange}
+                    />
+                    {authSettingFormErrors.oldPassword && (
+                      <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                        {authSettingFormErrors.oldPassword}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <AppInput
+                      label="Nouveau mot de passe"
+                      id="newPassword"
+                      name="newPassword"
+                      type="password"
+                      placeholder="Nouveau mot de passe"
+                      value={authSettingFormData.newPassword}
+                      onChange={authSettingOnInputDataChange}
+                    />
+                    {authSettingFormErrors.newPassword && (
+                      <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                        {authSettingFormErrors.newPassword}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <AppInput
+                      label="Confirmation nouveau"
+                      id="confirmNewPassword"
+                      name="confirmNewPassword"
+                      type="password"
+                      placeholder="Confirmation nouveau"
+                      value={authSettingFormData.confirmNewPassword}
+                      onChange={authSettingOnInputDataChange}
+                    />
+                    {authSettingFormErrors.confirmNewPassword && (
+                      <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                        {authSettingFormErrors.confirmNewPassword}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-8">
+                    {authSettingProcessing ? (
+                      <ProcessingLoader />
+                    ) : (
+                      <AppButton name="Mettre à jour" onClick={() => {}} />
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
           {loading ? (
             <ProcessingLoader />
           ) : (
-            <div className="sm:min-w-90 lg:min-w-150">
-              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+            <div className="sm:min-w-90 lg:min-w-125">
+              <div className="rounded-sm border border-stroke  bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="flex items-center justify-between border-b border-stroke px-7 py-4 dark:border-strokedark">
                   <h3 className="font-medium text-black dark:text-white">
                     Données
                   </h3>
+                  {(!editMode || processing) && (
+                    <AppButton
+                      name={` ${settings.length != 0 ? "Mettre à jour" : "Ajouter"}`}
+                      width="w-[150px]"
+                      onClick={() => {
+                        setEditMode(true);
+                      }}
+                    />
+                  )}
                 </div>
                 <div className="p-7">
                   <form onSubmit={onFormSubmit}>

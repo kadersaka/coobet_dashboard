@@ -18,6 +18,18 @@ export const transactionsData = {
       value: "deposit",
     },
     {
+      name: "Retrait",
+      value: "withdrawal",
+    },
+    {
+      name: "Abonnement",
+      value: "subscrib",
+    },
+    {
+      name: "Récompense",
+      value: "reward",
+    },
+    {
       name: "Remboursement Momo",
       value: "disbursements",
     },
@@ -36,22 +48,28 @@ export const transactionsData = {
       value: "moov",
     },
   ] as SelectItemProps[],
-  apps: [
+  status: [
     {
-      name: "1Xbet",
-      value: "xbet",
+      name: "En attente",
+      value: "pending",
     },
     {
-      name: "1Win",
-      value: "win",
+      name: "Accepté",
+      value: "accept",
     },
-  ] as SelectItemProps[],
+    {
+      name: "Annulé",
+      value: "cancel",
+    },
+  ],
 };
 
 const useTransactionForm = (modalId: string, initialData?: Transaction) => {
-  const { addTransaction, updateTransaction } = useTransactionStore();
+  const { transactionsApps, addTransaction, updateTransaction } =
+    useTransactionStore();
 
   const [formData, setFormData] = useState<TransactionFormData>({
+    reference: initialData?.reference,
     amount: initialData?.amount ?? 1000,
     typeTrans:
       initialData?.typeTrans != null
@@ -68,10 +86,9 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
         : "Moov",
     app:
       initialData?.app != null
-        ? (transactionsData.apps.find(
-            (mobRef) => mobRef.value == initialData?.app,
-          )?.name ?? "1Win")
-        : "1Win",
+        ? (transactionsApps.find((app) => app.id == initialData?.app)?.name ??
+          "")
+        : "",
     userAppId: initialData?.userAppId ?? "",
   });
 
@@ -183,9 +200,7 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
           )?.value ?? "moov",
           initialData?.createdAt ?? new Date(),
           formData.countryCodeCode,
-          transactionsData.apps.find((item) => item.name === formData.app)
-            ?.value ?? "win",
-
+          transactionsApps.find((app) => app.name === formData.app),
           formData.userAppId,
           initialData?.withdrawalCode,
           initialData?.id,

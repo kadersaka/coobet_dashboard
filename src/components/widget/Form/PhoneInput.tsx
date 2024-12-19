@@ -16,6 +16,7 @@ interface AppPhoneInputProps {
 const AppPhoneInput: FC<AppPhoneInputProps> = ({
   id,
   label,
+  name,
   value,
   placeholder,
   disabled,
@@ -48,8 +49,8 @@ const AppPhoneInput: FC<AppPhoneInputProps> = ({
           searchPlaceholder="Rechercher"
           showDropdown={true}
           inputClass={`!w-full !font-satoshi !rounded-sm !border-2 !border-stroke !bg-transparent !pr-5 !py-6 !text-black !outline-none transition focus:!border-primary active:!border-primary disabled:cursor-default disabled:!bg-whiter dark:!border-form-strokedark dark:!bg-form-input dark:!text-white  dark:focus:!border-primary`}
-          buttonClass={`!bg-transparent !font-satoshi focus:!border-primary active:!border-primary !rounded-sm transition focus:!border-primary dark:!border-form-strokedark dark:!bg-form-input dark:!text-white dark:focus:!border-primary `}
-          dropdownClass={`!font-satoshi`}
+          buttonClass={`!bg-transparent !font-satoshi focus:!border-primary active:!border-primary !rounded-sm transition focus:!border-primary dark:!border-form-strokedark dark:!bg-form-input dark:!text-white dark:focus:!border-primary dark:!bg-boxdark dark:hover:!bg-boxdark`}
+          dropdownClass={`!font-satoshi !z-99999 dark:!bg-boxdark dark:hover:!bg-boxdark`}
         />
       </div>
     </div>

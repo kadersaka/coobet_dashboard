@@ -1,21 +1,14 @@
 "use client";
 
-import { FC, useEffect } from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import AppButton from "@/components/widget/Form/Button";
-import { toggleModal } from "@/utils/functions.util";
-import useNotificationStore from "@/store/useNotification.store";
-import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
-import Image from "next/image";
-import DeletionConfirmation from "@/components/widget/Form/DeletionConfirmation";
-import ActionResult from "@/components/widget/Form/ActionResultMessage";
-import { useSearchParams } from "next/navigation";
-import useSearchStore from "@/store/useSearchStore.store";
-import Loader from "@/components/common/Loader";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
+import ActionResult from "@/components/widget/Form/ActionResultMessage";
+import AppButton from "@/components/widget/Form/Button";
 import NotificationCard from "@/components/widget/NotificationCard";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import useNotificationStore from "@/store/useNotification.store";
+import useSearchStore from "@/store/useSearchStore.store";
+import { FC, useEffect } from "react";
 
 interface NotificationsPageProps {}
 
@@ -28,8 +21,10 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
     loading,
     fetchNotifications,
     deleteNotification,
+
     increasePage,
     decreasePage,
+    pageSize,
   } = useNotificationStore();
 
   useEffect(() => {
@@ -49,11 +44,10 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
         {loading ? (
           <ProcessingLoader />
         ) : (
-          <div className=" grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white md:grid-cols-2 lg:grid-cols-3">
+          <div className=" grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {paginatedNotifications?.results?.map((notification, index) => (
               <NotificationCard
-                key={notification.id}
-                id={notification.id}
+                key={index}
                 title={notification.title}
                 content={notification.content}
                 createdAt={notification.createdAt}
@@ -82,6 +76,7 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
         <PageCounter
           totalPage={paginatedNotifications.count}
           currentPage={page}
+          pageSize={pageSize}
         />
 
         {paginatedNotifications.next ? (

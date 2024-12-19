@@ -20,7 +20,10 @@ import {
   Medal,
   Settings,
   Calendar,
+  LogOut,
+  BellDot,
 } from "lucide-react";
+import AppButton from "../widget/Form/Button";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -54,7 +57,7 @@ const menuGroups = [
       },
       {
         icon: <Calendar />,
-        label: "Évènement",
+        label: "Évènements",
         route: "/events",
       },
       {
@@ -70,7 +73,7 @@ const menuGroups = [
       {
         icon: <ArrowLeftRight />,
         label: "Transactions",
-        route: "/transaction",
+        route: "/transactions",
       },
       {
         icon: <Ticket />,
@@ -91,6 +94,11 @@ const menuGroups = [
         icon: <Settings />,
         label: "Paramètre",
         route: "/setting",
+      },
+      {
+        icon: <LogOut />,
+        label: "Déconnexion",
+        route: "/logout",
       },
     ],
   },

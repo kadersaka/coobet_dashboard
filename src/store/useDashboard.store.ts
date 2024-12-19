@@ -30,15 +30,15 @@ const useDashboardStore = create<DashboardStore>()(
           value: "last_day",
         },
         {
-          name: "Trois dernier jours",
+          name: "Trois derniers jours",
           value: "last_three_day",
         },
         {
-          name: "Semaine antérieure",
+          name: "7 derniers jours",
           value: "last_week",
         },
         {
-          name: "Mois antérieur",
+          name: "30 derniers jours",
           value: "last_month",
         },
       ],

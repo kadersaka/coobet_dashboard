@@ -13,6 +13,7 @@ export interface TicketJson {
   status: string;
   sample: string;
   abonnement: string;
+  bet_amount: string;
 }
 
 export interface TicketFormData {
@@ -20,6 +21,7 @@ export interface TicketFormData {
   status: string | null;
   sample: string | null;
   subscription: string | null;
+  betAmount: string | null;
 }
 
 export interface TicketFormErrors {
@@ -27,4 +29,5 @@ export interface TicketFormErrors {
   status: string | null;
   sample: string | null;
   subscription: string | null;
+  betAmount: string | null;
 }

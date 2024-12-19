@@ -16,6 +16,7 @@ import {
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import AppPhoneInput from "../Form/PhoneInput";
+import useTransactionStore from "@/store/useTransaction.store";
 
 interface TransactionFormProps {
   id: string;
@@ -33,6 +34,8 @@ const TransactionForm: FC<TransactionFormProps> = ({ id, transaction }) => {
     onPhoneNumberChange,
     onFormSubmit,
   } = useTransactionForm(id, transaction);
+
+  const { transactionsApps } = useTransactionStore();
 
   return (
     <Modal
@@ -125,8 +128,11 @@ const TransactionForm: FC<TransactionFormProps> = ({ id, transaction }) => {
                 id="app"
                 name="app"
                 label="Application"
-                items={transactionsData.apps}
-                value={formData.app ?? "1Win"}
+                items={transactionsApps.map((app) => ({
+                  name: app.name,
+                  value: app.id ?? "",
+                }))}
+                value={formData.app ?? ""}
                 onChange={onInputDataChange}
                 icon={
                   <Smartphone

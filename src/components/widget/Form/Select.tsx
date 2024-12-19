@@ -54,9 +54,9 @@ const AppSelect: FC<AppSelectProps> = ({
             onChange(e);
             changeTextColor();
           }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white 
+           
+          `}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
             {label}

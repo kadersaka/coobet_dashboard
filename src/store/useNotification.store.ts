@@ -43,7 +43,7 @@ const useNotificationStore = create<NotificationStore>()(
       loading: false,
       error: null,
       page: 1,
-      pageSize: 10,
+      pageSize: 21,
 
       setPage: (newPage: number) => {
         set({ page: newPage });

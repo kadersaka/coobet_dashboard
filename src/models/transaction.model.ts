@@ -1,6 +1,7 @@
 import { UserJson } from "@/interfaces/user.interface";
 import User from "./user.model";
 import { TransactionJson } from "@/interfaces/transaction.interface";
+import App from "./app.model";
 
 class Transaction {
   id?: string;
@@ -13,7 +14,7 @@ class Transaction {
   phoneNumber: string;
   country: string;
   mobileReference: string;
-  app?: string;
+  app?: App;
   userAppId?: string;
   createdAt?: Date;
   withdrawalCode?: string;
@@ -29,7 +30,7 @@ class Transaction {
     mobileReference: string,
     createdAt: Date,
     countryCode?: string,
-    app?: string,
+    app?: App,
     userAppId?: string,
     withdrawalCode?: string,
     id?: string,
@@ -61,7 +62,7 @@ class Transaction {
       json.mobile_reference,
       new Date(json.created_at),
       undefined,
-      json.app,
+      json.app != null ? App.fromJson(json.app!) : undefined,
       json.user_app_id,
       json.withdrawal_code,
       json.id,
@@ -79,7 +80,7 @@ class Transaction {
       indication: this.counntryCode,
       phone_number: this.phoneNumber,
       country: this.country,
-      app: this.app,
+      app: this.app?.toJson(),
       user_app_id: this.userAppId,
       mobile_reference: this.mobileReference,
       withdrawal_code: this.withdrawalCode,

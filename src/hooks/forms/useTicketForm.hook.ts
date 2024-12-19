@@ -53,6 +53,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             (subscription) => subscription.value == initialData?.subscription,
           )?.name ?? "")
         : "",
+    betAmount: initialData?.betAmount?.toString() ?? "",
   });
 
   const [formErrors, setFormErrors] = useState<TicketFormErrors>({
@@ -60,6 +61,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
     status: null,
     sample: null,
     subscription: null,
+    betAmount: null,
   });
 
   const [processing, setProcessing] = useState<boolean>(false);
@@ -70,6 +72,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
       status: "",
       sample: "",
       subscription: "",
+      betAmount: "",
     });
   };
 
@@ -79,6 +82,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
       status: null,
       sample: null,
       subscription: null,
+      betAmount: null,
     });
   };
 
@@ -110,6 +114,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
       status: null,
       sample: null,
       subscription: null,
+      betAmount: null,
     };
 
     if (formData.events.length === 0) {
@@ -126,6 +131,12 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
 
     if (formData.subscription?.length === 0) {
       errors.sample = "L'abonnement doit être défini";
+    }
+
+    if (isNaN(parseFloat(formData.betAmount ?? ""))) {
+      errors.betAmount = "Le montant doit être un nombre";
+    } else if (parseFloat(formData.betAmount ?? "90") < 90) {
+      errors.betAmount = "Le montant minimum est 90";
     }
 
     setFormErrors(errors);
@@ -145,10 +156,12 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
           ticketStatus.find((item) => item.name === formData.status)?.value ??
             "lost",
           formData.sample!,
-          new Date(),
+
           ticketSubscriptions.find(
             (item) => item.name === formData.subscription,
           )?.value ?? "",
+          formData.betAmount!,
+          new Date(),
           initialData?.id,
         );
 

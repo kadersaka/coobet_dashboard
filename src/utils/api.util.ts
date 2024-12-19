@@ -17,6 +17,7 @@ class Api {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
+        "Accept-Language": "fr",
         /*   "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers":
           "Origin, X-Requested-With, Content-Type, Accept",

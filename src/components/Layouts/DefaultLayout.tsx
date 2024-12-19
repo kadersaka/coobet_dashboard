@@ -1,11 +1,7 @@
 "use client";
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import Loader from "../common/Loader";
-import axios from "axios";
-import api from "@/utils/api.util";
-import PaginatedUsers from "@/models/paginated_user.model";
 
 export default function DefaultLayout({
   children,
@@ -13,6 +9,7 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   /*
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -36,6 +33,7 @@ export default function DefaultLayout({
     fetchData();
   }, []);
   */
+
   return (
     <>
       {/* {loading ? (
@@ -54,7 +52,7 @@ export default function DefaultLayout({
             {/* <!-- ===== Header End ===== --> */}
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
-              <div className="min-h-screen  max-w-screen-2xl  bg-whiter p-4 dark:bg-boxdark-2 md:p-6 2xl:p-10">
+              <div className="min-h-screen  max-w-screen-2xl bg-whiter p-4  dark:bg-boxdark-2 md:p-6 2xl:p-10">
                 {children}
               </div>
             </main>

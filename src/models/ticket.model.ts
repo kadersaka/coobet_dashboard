@@ -8,14 +8,16 @@ class Ticket {
   status: string;
   sample: string;
   subscription?: string;
+  betAmount: string;
   createdAt: Date;
 
   constructor(
     events: Event[],
     status: string,
     sample: string,
+    subscription: string,
+    betAmount: string,
     createdAt: Date,
-    subscription?: string,
     id?: string,
   ) {
     this.events = events;
@@ -23,6 +25,7 @@ class Ticket {
     this.sample = sample;
     this.subscription = subscription;
     this.createdAt = createdAt;
+    this.betAmount = betAmount;
     this.id = id;
   }
 
@@ -33,8 +36,9 @@ class Ticket {
       ),
       json.status,
       json.sample,
-      new Date(json.created_at),
       json.abonnement,
+      json.bet_amount,
+      new Date(json.created_at),
       json.id,
     );
   }
@@ -46,6 +50,7 @@ class Ticket {
       sample: this.sample,
       status: this.status,
       abonnement: this.subscription ?? "",
+      bet_amount: this.betAmount.toString(),
       created_at: this.createdAt.toDateString(),
     };
   }

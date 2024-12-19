@@ -17,13 +17,16 @@ class Event {
     status: string,
     bet: string,
     coast: string,
+
     createdAt: Date,
+
     id?: string,
   ) {
     this.match = match;
     this.status = status;
     this.bet = bet;
     this.coast = coast;
+
     this.createdAt = createdAt;
     this.id = id;
   }
@@ -34,6 +37,7 @@ class Event {
       json.status,
       json.bet,
       json.coast,
+
       new Date(json.created_at),
       json.id,
     );
@@ -47,6 +51,7 @@ class Event {
       status: this.status,
       bet: this.bet,
       coast: this.coast,
+
       created_at: this.createdAt.toDateString(),
     };
   }

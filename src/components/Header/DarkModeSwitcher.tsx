@@ -1,3 +1,5 @@
+"use client";
+
 import useColorMode from "@/hooks/useColorMode";
 
 const DarkModeSwitcher = () => {
@@ -11,6 +13,8 @@ const DarkModeSwitcher = () => {
         }`}
       >
         <input
+          id="dark-mode-switcher"
+          name="dark-mode-switcher"
           type="checkbox"
           onChange={() => {
             if (typeof setColorMode === "function") {
@@ -21,7 +25,7 @@ const DarkModeSwitcher = () => {
         />
         <span
           className={`absolute left-[3px] top-1/2 flex h-6 w-6 -translate-y-1/2 translate-x-0 items-center justify-center rounded-full bg-white shadow-switcher duration-75 ease-linear ${
-            colorMode === "dark" && "!right-[3px] !translate-x-full"
+            colorMode === "dark" && "right-[3px] translate-x-full"
           }`}
         >
           <span className="dark:hidden">

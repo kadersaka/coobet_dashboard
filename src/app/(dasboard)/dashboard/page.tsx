@@ -7,6 +7,7 @@ import {
   ArrowLeftRight,
   ArrowRight,
   Calendar,
+  ChevronDown,
   Eye,
   Forward,
   Medal,
@@ -19,7 +20,6 @@ import {
   Trophy,
   Users,
   UserSquare,
-  UserSquare2,
   Volleyball,
 } from "lucide-react";
 import AppSelect from "@/components/widget/Form/Select";
@@ -38,15 +38,19 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchDashboardData(period);
-  }, [fetchDashboardData]);
+  }, [fetchDashboardData, period]);
 
   return (
     <>
       <div className="my-10 flex items-center justify-center">
+        <span className="mr-5 font-medium text-boxdark dark:text-white">
+          Filtre:
+        </span>
         <AppSelect
           id="period"
           name="period"
           items={periods}
+          icon={<ChevronDown />}
           value={periods.find((prd) => prd.value == period)?.name ?? "all"}
           onChange={setPeriod}
         />

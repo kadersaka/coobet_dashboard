@@ -116,6 +116,23 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
           </div>
 
           <div className="mb-4">
+            <AppInput
+              label="Montant"
+              id="betAmount"
+              name="betAmount"
+              type="number"
+              placeholder="Montant"
+              value={formData.betAmount}
+              onChange={onInputDataChange}
+            />
+            {formErrors.betAmount && (
+              <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                {formErrors.betAmount}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
             <AppSelect
               id="subscription"
               name="subscription"

@@ -21,7 +21,7 @@ class ClubApi {
 
       return PaginatedClub.fromJson(response);
     } catch (error) {
-      //  console.error("Error fetching clubs:", error);
+      console.error("Error fetching clubs:", error);
       throw error;
     }
   }

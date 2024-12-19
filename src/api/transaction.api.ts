@@ -8,14 +8,34 @@ import { TransactionJson } from "@/interfaces/transaction.interface";
 class TransactionApi {
   private static route: string = "/transaction";
 
+  /**
+   * "reference",
+        "type_trans",
+        "status",
+        "phone_number",
+        "user_app_id",
+        "mobile_reference",
+        "withdriwal_code",
+        "user__email",
+
+   */
+
   static async findMany(
     searchField?: string,
+    reference?: string,
+    status?: string,
+    phoneNumber?: string,
+    userAppId?: string,
+    mobileReference?: string,
+    withdriwalCode?: string,
+    userEmail?: string,
+    app?: string,
     page?: number,
     pageSize?: number,
   ): Promise<PaginatedTransaction> {
     try {
       const response = await api.get<PaginatedTransactionJson>(
-        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        `${this.route}?search_fields=${searchField ?? ""}&reference=${reference ?? ""}&status=${status ?? ""}&phone_number=${phoneNumber ?? ""}&user_app_id=${userAppId ?? ""}&mobile_reference=${mobileReference ?? ""}&withdriwal_code=${withdriwalCode ?? ""}&user__email=${userEmail ?? ""}&app=${app ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedTransaction.fromJson(response);
     } catch (error) {

@@ -1,27 +1,29 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MultipleActionButton from "@/components/widget/Form/EditDeleteButton";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
 import {
+  delay,
   toggleModal,
   transactionMobileReference,
   transactionStatus,
   transactionType,
 } from "@/utils/functions.util";
 import useTransactionStore from "@/store/useTransaction.store";
-import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
-import Image from "next/image";
-import DeletionConfirmation from "@/components/widget/Form/DeletionConfirmation";
 import ActionResult from "@/components/widget/Form/ActionResultMessage";
 import useSearchStore from "@/store/useSearchStore.store";
-import Loader from "@/components/common/Loader";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
-import useTransactionForm from "@/hooks/forms/useTransactionForm";
+import useTransactionForm, {
+  transactionsData,
+} from "@/hooks/forms/useTransactionForm";
 import TransactionForm from "@/components/widget/Forms/TransactionForm";
+import { Filter } from "lucide-react";
+import TransactionFilterForm from "@/components/widget/Forms/TransactionFilterForm";
+import useTransactionFilterForm from "@/hooks/forms/useTransactionFilter.hook";
 
 interface TransactionsPageProps {}
 
@@ -29,12 +31,15 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
   const { searchValue } = useSearchStore();
   const { resetFormData, resetFormErrors } =
     useTransactionForm("transaction-form");
+
   const {
     paginatedTransactions,
     page,
     loading,
     fetchTransactions,
-    deleteTransaction,
+    transactionsApps,
+    fetchApps,
+    filter,
     increasePage,
     decreasePage,
   } = useTransactionStore();
@@ -42,6 +47,10 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
   useEffect(() => {
     fetchTransactions(searchValue);
   }, [fetchTransactions, searchValue]);
+
+  useEffect(() => {
+    fetchApps();
+  }, [fetchApps]);
 
   return (
     <>
@@ -55,12 +64,27 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
+
             toggleModal("transaction-form");
           }}
         />
       </Breadcrumb>
 
+      <TransactionFilterForm id="transaction-filter-form" filter={filter} />
+
       <TransactionForm id="transaction-form" />
+
+      <div
+        className="my-10 hidden w-full  justify-end hover:cursor-pointer md:flex"
+        onClick={() => {
+          toggleModal("transaction-filter-form");
+        }}
+      >
+        <span className="mr-4 font-medium text-black dark:text-white">
+          Filtre
+        </span>
+        <Filter className="fill-primary dark:fill-boxdark" />
+      </div>
 
       <ActionResult />
 

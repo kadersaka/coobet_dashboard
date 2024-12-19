@@ -2,7 +2,6 @@ import { useState, FC } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface NotificationProps {
-  id: string;
   title: string;
   content: string;
   createdAt: Date;
@@ -10,7 +9,6 @@ interface NotificationProps {
 }
 
 const NotificationCard: FC<NotificationProps> = ({
-  id,
   title,
   content,
   createdAt,

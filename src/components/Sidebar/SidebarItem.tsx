@@ -5,6 +5,12 @@ import { usePathname } from "next/navigation";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const handleClick = () => {
+    if (item.route === "/logout") {
+      localStorage.removeItem("accessToken");
+      window.location.href = "auth/signin";
+
+      return "";
+    }
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
     return setPageName(updatedPageName);
@@ -24,7 +30,9 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
 
   return (
     <>
-      <li>
+      <li
+        className={`hover:cursor-pointer ${item.route === "/logout" ? "mt-20" : ""}`}
+      >
         <Link
           href={item.route}
           onClick={handleClick}

@@ -3,19 +3,35 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import TransactionApi from "@/api/transaction.api";
 import PaginatedTransaction from "@/models/paginated_transaction.model";
 import Transaction from "@/models/transaction.model";
+import App from "@/models/app.model";
+import AppApi from "@/api/app.api";
+import { TransactionFiterFormData } from "../interfaces/transaction.interface";
 
 interface TransactionStore {
   paginatedTransactions: PaginatedTransaction;
   loading: boolean;
   error: string | null;
+  filter: TransactionFiterFormData;
   page: number;
   pageSize: number;
+  transactionsApps: App[];
+  setFilter: (newFilter: TransactionFiterFormData) => void;
+
   setPage: (newPage: number) => void;
   increasePage: () => void;
   decreasePage: () => void;
   setPageSize: (newPageSize: number) => void;
+  fetchApps: () => void;
   fetchTransactions: (
     searchField?: string,
+    reference?: string,
+    status?: string,
+    phoneNumber?: string,
+    userAppId?: string,
+    mobileReference?: string,
+    withdriwalCode?: string,
+    userEmail?: string,
+    app?: string,
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
@@ -35,10 +51,29 @@ const useTransactionStore = create<TransactionStore>()(
       loading: false,
       error: null,
       page: 1,
+
+      filter: {
+        reference: "",
+        status: "",
+        type: "",
+        countryCodeCode: "",
+        phoneNumber: "",
+        userAppId: "",
+        mobileReference: "",
+        withdriwalCode: "",
+        userEmail: "",
+        app: "",
+      },
+
       pageSize: 10,
+      transactionsApps: [],
 
       setPage: (newPage: number) => {
         set({ page: newPage });
+      },
+
+      setPageSize: (newPageSize: number) => {
+        set({ pageSize: newPageSize });
       },
 
       increasePage: () => {
@@ -53,15 +88,35 @@ const useTransactionStore = create<TransactionStore>()(
         }));
       },
 
-      setPageSize: (newPageSize: number) => {
-        set({ pageSize: newPageSize });
+      setFilter: (newFilter: TransactionFiterFormData) => {
+        set({ filter: newFilter });
       },
 
-      fetchTransactions: async (searchField = "", page, pageSize) => {
+      fetchTransactions: async (
+        searchField = "",
+        reference,
+        status,
+        phoneNumber,
+        userAppId,
+        mobileReference,
+        withdriwalCode,
+        userEmail,
+        app,
+        page,
+        pageSize,
+      ) => {
         set({ loading: true, error: null });
         try {
           const paginatedTransactions = await TransactionApi.findMany(
             searchField,
+            reference ?? get().filter.reference,
+            status ?? get().filter.status,
+            phoneNumber ?? get().filter.phoneNumber,
+            userAppId ?? get().filter.userAppId,
+            mobileReference ?? get().filter.mobileReference,
+            withdriwalCode ?? get().filter.withdriwalCode,
+            userEmail ?? get().filter.userEmail,
+            app ?? get().filter.app,
             page ?? get().page,
             pageSize ?? get().pageSize,
           );
@@ -77,6 +132,18 @@ const useTransactionStore = create<TransactionStore>()(
           }
         } finally {
           set({ loading: false });
+        }
+      },
+
+      fetchApps: async () => {
+        try {
+          const apps = await AppApi.findMany();
+
+          set({
+            transactionsApps: apps,
+          });
+        } catch (error) {
+          set({ error: "An unknown error occurred" });
         }
       },
 

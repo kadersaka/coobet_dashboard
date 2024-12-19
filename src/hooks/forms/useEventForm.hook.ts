@@ -113,6 +113,8 @@ const useEventForm = (modalId: string, initialData?: Event) => {
 
     if (isNaN(parseFloat(formData.coast ?? ""))) {
       errors.coast = "La cote doit être nombre";
+    } else if (parseFloat(`${formData.coast}`) < 1) {
+      errors.coast = "La cote minimum est 1";
     }
 
     setFormErrors(errors);
@@ -133,6 +135,7 @@ const useEventForm = (modalId: string, initialData?: Event) => {
             "lost",
           formData.bet!,
           formData.coast!,
+
           new Date(),
           initialData?.id,
         );
