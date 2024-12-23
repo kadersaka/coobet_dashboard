@@ -26,6 +26,8 @@ const useLoginForm = () => {
     password: null,
   });
 
+  const [processing, setProcessing] = useState(false);
+
   const setActionResultMessage = useInterfaceStore(
     (state) => state.setActionResultMessage,
   );
@@ -80,6 +82,7 @@ const useLoginForm = () => {
     e.preventDefault();
 
     if (validateForm()) {
+      setProcessing(true);
       try {
         const response = await AuthAPI.login({
           email: formData.email,
@@ -120,12 +123,14 @@ const useLoginForm = () => {
           });
         }
       }
+      setProcessing(false);
     }
   };
 
   return {
     formData,
     formErrors,
+    processing,
     onInputDataChange,
     onFormSubmit,
   };

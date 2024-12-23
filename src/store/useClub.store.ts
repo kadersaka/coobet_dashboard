@@ -4,6 +4,8 @@ import ClubApi from "@/api/club.api";
 import { ClubFormData, ClubFormErrors } from "@/interfaces/club.interface";
 import Club from "@/models/club.model";
 import PaginatedClub from "@/models/paginated_club.model";
+import { extractAxiosError } from "@/utils/functions.util";
+import { AxiosError } from "axios";
 
 interface ClubStore {
   paginatedClubs: PaginatedClub;
@@ -26,8 +28,8 @@ interface ClubStore {
     pageSize?: number,
   ) => Promise<PaginatedClub | undefined>;
   researchAddClub: (club: Club) => Promise<Club | undefined>;
-  addClub: (club: Club) => Promise<Club | undefined>;
-  updateClub: (club: Club) => Promise<Club | undefined>;
+  addClub: (club: Club) => Promise<Club | string | undefined>;
+  updateClub: (club: Club) => Promise<Club | string | undefined>;
   deleteClub: (clubId: string) => Promise<boolean | undefined>;
 }
 
@@ -86,8 +88,8 @@ const useClubStore = create<ClubStore>()(
             */
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -107,8 +109,8 @@ const useClubStore = create<ClubStore>()(
 
           return paginatedClubs;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -123,8 +125,8 @@ const useClubStore = create<ClubStore>()(
 
           return addedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -151,8 +153,9 @@ const useClubStore = create<ClubStore>()(
           });
           return addedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -187,8 +190,9 @@ const useClubStore = create<ClubStore>()(
 
           return updatedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -209,8 +213,8 @@ const useClubStore = create<ClubStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

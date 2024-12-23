@@ -12,6 +12,15 @@ export interface TransactionFormData {
   userAppId?: string;
 }
 
+export interface TransactionFormErrors {
+  reference: string | null;
+  amount: string | null;
+  typeTrans: string | null;
+  mobileReference: string | null;
+  phoneNumber: string | null;
+  app: string | null;
+  userAppId: string | null;
+}
 export interface TransactionFiterFormData {
   reference: string;
   status: string;
@@ -37,15 +46,6 @@ export interface TransactionFiterFormErrors {
   app: string | null;
 }
 
-export interface TransactionFormErrors {
-  amount: string | null;
-  typeTrans: string | null;
-  mobileReference: string | null;
-  phoneNumber: string | null;
-  app: string | null;
-  userAppId: string | null;
-}
-
 export interface TransactionJson {
   id?: string;
   amount: string;
@@ -58,6 +58,8 @@ export interface TransactionJson {
   country: string;
   mobile_reference: string;
   app?: AppJson;
+  transaction_reference?: string;
+  app_id?: string;
   user_app_id?: string;
   withdrawal_code?: string;
   created_at: string | Date;

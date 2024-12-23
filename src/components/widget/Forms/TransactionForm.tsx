@@ -35,7 +35,7 @@ const TransactionForm: FC<TransactionFormProps> = ({ id, transaction }) => {
     onFormSubmit,
   } = useTransactionForm(id, transaction);
 
-  const { transactionsApps } = useTransactionStore();
+  const { transactionsApps, error } = useTransactionStore();
 
   return (
     <Modal
@@ -47,22 +47,42 @@ const TransactionForm: FC<TransactionFormProps> = ({ id, transaction }) => {
     >
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
-          <div className="mb-4">
-            <AppInput
-              label="Montant"
-              id="amount"
-              name="amount"
-              type="text"
-              placeholder="Montant"
-              value={formData.amount}
-              onChange={onInputDataChange}
-            />
-            {formErrors.amount && (
-              <p className="erreur ml-1.5 text-[14px] font-medium text-red">
-                {formErrors.amount}
-              </p>
-            )}
-          </div>
+          {formData.typeTrans == "Remboursement Momo" && (
+            <div className="mb-6">
+              <AppInput
+                label="Référence"
+                id="reference"
+                name="reference"
+                type="text"
+                placeholder="YihTYhUiKHG"
+                value={formData.reference}
+                onChange={onInputDataChange}
+              />
+              {formErrors.reference && (
+                <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                  {formErrors.reference}
+                </p>
+              )}
+            </div>
+          )}
+          {formData.typeTrans === "Dépôt" && (
+            <div className="mb-4">
+              <AppInput
+                label="Montant"
+                id="amount"
+                name="amount"
+                type="text"
+                placeholder="Montant"
+                value={formData.amount}
+                onChange={onInputDataChange}
+              />
+              {formErrors.amount && (
+                <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                  {formErrors.amount}
+                </p>
+              )}
+            </div>
+          )}
           <div className="mb-4">
             <AppSelect
               id="typeTrans"

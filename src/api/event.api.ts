@@ -10,12 +10,13 @@ class EventApi {
 
   static async findMany(
     searchField?: string,
+    filter?: string,
     page?: number,
     pageSize?: number,
   ): Promise<PaginatedEvent> {
     try {
       const response = await api.get<PaginatedEventJson>(
-        `${this.route}?search_fields=${searchField ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        `${this.route}?search_fields=${searchField ?? ""}&filter_field=${filter ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedEvent.fromJson(response);
     } catch (error) {

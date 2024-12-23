@@ -37,7 +37,7 @@ export const ticketSubscriptions: SelectItemProps[] = [
 ];
 
 const useTicketForm = (modalId: string, initialData?: Ticket) => {
-  const { addTicket, updateTicket } = useTicketStore();
+  const { addTicket, updateTicket, error } = useTicketStore();
 
   const [formData, setFormData] = useState<TicketFormData>({
     events: initialData?.events ?? [],
@@ -168,29 +168,29 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
         if (ticket?.id) {
           const updatedTicket = await updateTicket(ticket);
 
-          if (updatedTicket) {
+          if (typeof updatedTicket === "string") {
+            setActionResultMessage(updatedTicket);
+            toggleModal("action-result-message");
+          } else if (updatedTicket) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le coupon a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newTicket = await addTicket(ticket);
 
-          if (newTicket) {
+          if (typeof newTicket === "string") {
+            setActionResultMessage(newTicket);
+            toggleModal("action-result-message");
+          } else if (newTicket) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le coupon a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

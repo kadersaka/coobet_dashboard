@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DeletionConfirmation from "../widget/Form/DeletionConfirmation";
+import AuthAPI from "@/api/auth.api";
 
 const SidebarDropdown = ({ item }: any) => {
   const pathname = usePathname();

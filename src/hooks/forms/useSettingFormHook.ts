@@ -9,7 +9,7 @@ import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useSettingForm = (modalId: string, initialData?: Setting) => {
-  const { addSetting, updateSetting } = useSettingStore();
+  const { addSetting, updateSetting, error } = useSettingStore();
 
   const [formData, setFormData] = useState<SettingFormData>({
     id: initialData?.id ?? undefined,
@@ -218,29 +218,28 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
         if (setting?.id) {
           const updatedSetting = await updateSetting(setting);
 
-          if (updatedSetting) {
+          if (typeof updatedSetting === "string") {
+            setActionResultMessage(updatedSetting);
+            toggleModal("action-result-message");
+          } else if (updatedSetting) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le paramètre a été mis à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
-          const newsetting = await addSetting(setting);
-
-          if (newsetting) {
+          const newSetting = await addSetting(setting);
+          if (typeof newSetting === "string") {
+            setActionResultMessage(newSetting);
+            toggleModal("action-result-message");
+          } else if (newSetting) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le paramètre a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

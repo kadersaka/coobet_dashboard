@@ -38,7 +38,7 @@ class TicketApi {
   static async add(ticket: Ticket): Promise<Ticket> {
     try {
       const ticketJson = ticket.toJson();
-      const response = await api.post<TicketJson>(`${this.route}/`, ticketJson);
+      const response = await api.post<TicketJson>(`${this.route}`, ticketJson);
       return Ticket.fromJson(response);
     } catch (error) {
       console.error("Error creating ticket:", error);

@@ -46,7 +46,6 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
   const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
 
   const handleOpenModal = () => {
-    console.log(" ========> Click");
     return toggleModal(modalId);
   };
 

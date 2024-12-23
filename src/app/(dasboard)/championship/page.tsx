@@ -119,7 +119,7 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
                   <DeletionConfirmation
                     key={`deletion-confirmation-${championship.id}`}
                     id={`delete-dialog-${championship.id}`}
-                    message="Êtes-vous sûr de vouloir supprimer ce championship"
+                    message="Êtes-vous sûr de vouloir supprimer ce championnat"
                     successMessage="Le championship a été supprimé avec succès"
                     objectId={championship.id!}
                     onDelete={deleteChampionship}

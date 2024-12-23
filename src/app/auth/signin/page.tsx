@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import AppInput from "@/components/widget/Form/Input";
 import AppButton from "@/components/widget/Form/Button";
 import useLoginForm from "@/hooks/forms/useLoginForm.hook";
 import ActionResult from "@/components/widget/Form/ActionResultMessage";
+import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 
 const SignIn: React.FC = () => {
-  const { formData, formErrors, onInputDataChange, onFormSubmit } =
+  const { formData, formErrors, processing, onInputDataChange, onFormSubmit } =
     useLoginForm();
 
   useEffect(() => {
@@ -57,7 +58,11 @@ const SignIn: React.FC = () => {
               )}
             </div>
             <div className="mb-5">
-              <AppButton name="Connexion" onClick={() => {}} />
+              {processing ? (
+                <ProcessingLoader />
+              ) : (
+                <AppButton name="Connexion" onClick={() => {}} />
+              )}
             </div>
           </form>
         </div>

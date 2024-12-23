@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import EventApi from "@/api/event.api";
 import PaginatedEvent from "@/models/paginated_event.model";
 import Event from "@/models/event.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface EventStore {
   paginatedEvents: PaginatedEvent;
@@ -25,8 +27,8 @@ interface EventStore {
     pageSize?: number,
   ) => Promise<PaginatedEvent | undefined>;
   researchAddEvent: (event: Event) => Promise<Event | undefined>;
-  addEvent: (Event: Event) => Promise<Event | undefined>;
-  updateEvent: (Event: Event) => Promise<Event | undefined>;
+  addEvent: (Event: Event) => Promise<Event | string | undefined>;
+  updateEvent: (Event: Event) => Promise<Event | string | undefined>;
   deleteEvent: (EventId: string) => Promise<boolean | undefined>;
 }
 
@@ -64,6 +66,7 @@ const useEventStore = create<EventStore>()(
         try {
           const paginatedEvents = await EventApi.findMany(
             searchField,
+            undefined,
             page ?? get().page,
             pageSize ?? get().pageSize,
           );
@@ -72,8 +75,8 @@ const useEventStore = create<EventStore>()(
             paginatedEvents: paginatedEvents,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -87,14 +90,15 @@ const useEventStore = create<EventStore>()(
         try {
           const paginatedClubs = EventApi.findMany(
             searchField,
+            "pending",
             page ?? get().page,
             pageSize ?? get().pageSize,
           );
 
           return paginatedClubs;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -109,8 +113,8 @@ const useEventStore = create<EventStore>()(
 
           return addedEvent;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -133,8 +137,9 @@ const useEventStore = create<EventStore>()(
           });
           return addedEvent;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -161,8 +166,9 @@ const useEventStore = create<EventStore>()(
 
           return updatedEvent;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -185,8 +191,8 @@ const useEventStore = create<EventStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

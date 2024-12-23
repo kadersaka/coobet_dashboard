@@ -4,6 +4,8 @@ import Club from "@/models/club.model";
 import PaginatedTicket from "@/models/paginated_ticket.model";
 import Ticket from "@/models/ticket.model";
 import TicketApi from "@/api/ticket.api";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface TicketStore {
   paginatedTickets: PaginatedTicket;
@@ -26,8 +28,8 @@ interface TicketStore {
     pageSize?: number,
   ) => Promise<PaginatedTicket | undefined>;
   researchAddTicket: (ticket: Ticket) => Promise<Ticket | undefined>;
-  addTicket: (ticket: Ticket) => Promise<Ticket | undefined>;
-  updateTicket: (ticket: Ticket) => Promise<Ticket | undefined>;
+  addTicket: (ticket: Ticket) => Promise<Ticket | string | undefined>;
+  updateTicket: (ticket: Ticket) => Promise<Ticket | string | undefined>;
   deleteTicket: (ticketId: string) => Promise<boolean | undefined>;
 }
 
@@ -86,8 +88,8 @@ const useTicketStore = create<TicketStore>()(
             */
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -107,8 +109,8 @@ const useTicketStore = create<TicketStore>()(
 
           return paginatedTickets;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -123,8 +125,8 @@ const useTicketStore = create<TicketStore>()(
 
           return addedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -151,8 +153,9 @@ const useTicketStore = create<TicketStore>()(
           });
           return addedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -187,8 +190,9 @@ const useTicketStore = create<TicketStore>()(
 
           return updatedClub;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -211,8 +215,8 @@ const useTicketStore = create<TicketStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

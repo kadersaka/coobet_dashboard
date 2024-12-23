@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import SettingApi from "@/api/setting.api";
 import Setting from "@/models/Setting.model";
 import PaginatedSetting from "@/models/paginated_setting.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface SettingStore {
   settings: Setting[];
@@ -16,9 +18,9 @@ interface SettingStore {
   setPageSize: (newPageSize: number) => void;
   fetchSettings: () => Promise<void>;
   researchSettings: () => Promise<Setting[] | undefined>;
-  researchAddSetting: (club: Setting) => Promise<Setting | undefined>;
-  addSetting: (setting: Setting) => Promise<Setting | undefined>;
-  updateSetting: (setting: Setting) => Promise<Setting | undefined>;
+  researchAddSetting: (setting: Setting) => Promise<Setting | undefined>;
+  addSetting: (setting: Setting) => Promise<Setting | string | undefined>;
+  updateSetting: (setting: Setting) => Promise<Setting | string | undefined>;
   deleteSetting: (settingId: string) => Promise<boolean | undefined>;
 }
 
@@ -60,8 +62,8 @@ const useSettingStore = create<SettingStore>()(
             settings: settings,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -77,8 +79,8 @@ const useSettingStore = create<SettingStore>()(
 
           return settings;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -92,8 +94,8 @@ const useSettingStore = create<SettingStore>()(
         try {
           return await SettingApi.add(setting);
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -115,8 +117,9 @@ const useSettingStore = create<SettingStore>()(
           });
           return addedSetting;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -146,8 +149,9 @@ const useSettingStore = create<SettingStore>()(
 
           return updatedsetting;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -165,8 +169,8 @@ const useSettingStore = create<SettingStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

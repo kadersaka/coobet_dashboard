@@ -6,7 +6,7 @@ import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useSportForm = (modalId: string, initialData?: Sport) => {
-  const { addSport, updateSport } = useSportStore();
+  const { addSport, updateSport, error } = useSportStore();
 
   const [formData, setFormData] = useState<SportFormData>({
     name: initialData?.name ?? "",
@@ -71,38 +71,34 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
       setProcessing(true);
 
       try {
-        const sport = new Sport(
-          formData.name,
-
-          initialData?.id,
-        );
+        const sport = new Sport(formData.name, initialData?.id);
 
         if (sport?.id) {
           const updatedSport = await updateSport(sport);
 
-          if (updatedSport) {
+          if (typeof updatedSport === "string") {
+            setActionResultMessage(updatedSport);
+            toggleModal("action-result-message");
+          } else if (updatedSport) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le sport a été mis à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
-          const newsport = await addSport(sport);
+          const newSport = await addSport(sport);
 
-          if (newsport) {
+          if (typeof newSport === "string") {
+            setActionResultMessage(newSport);
+            toggleModal("action-result-message");
+          } else if (newSport) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le sport a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

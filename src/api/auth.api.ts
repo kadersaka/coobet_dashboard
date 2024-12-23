@@ -1,15 +1,14 @@
 import { UserJson } from "@/interfaces/user.interface";
 import AuthSetting from "@/models/auth_setting.model";
-import User from "@/models/user.model";
 import api from "@/utils/api.util";
-import AppConstants from "@/utils/constants.util";
+import { extractAxiosError, toggleModal } from "@/utils/functions.util";
 import axios from "axios";
 
 interface AuthPromiseResponse {
   data?: UserJson;
   refresh?: string;
   access?: string;
-  success?: string;
+  success?: boolean;
   exp?: string;
   message?: string;
   errors?: {
@@ -31,10 +30,16 @@ class AuthAPI {
     let promiseResponse: AuthPromiseResponse | undefined = undefined;
 
     await axios
-      .post(`https://api.coobet.app/auth/login`, {
-        email_or_phone: data.email,
-        password: data.password,
-      })
+      .post(
+        `https://api.coobet.app/auth/login`,
+        {
+          email_or_phone: data.email,
+          password: data.password,
+        },
+        {
+          headers: { "Accept-Language": "fr" },
+        },
+      )
       .then((response) => {
         promiseResponse = response.data;
       })
@@ -48,46 +53,31 @@ class AuthAPI {
 
   static async setting(
     data: AuthSetting,
-  ): Promise<AuthPromiseResponse | undefined> {
-    let promiseResponse: AuthPromiseResponse | undefined = undefined;
+  ): Promise<AuthPromiseResponse | string | undefined> {
+    let promiseResponse: AuthPromiseResponse | string | undefined = undefined;
 
     try {
-      const response = await api.post<AuthPromiseResponse>(
+      await api.post<AuthPromiseResponse>(
         `https://api.coobet.app/auth/change_password`,
         data.toJson(),
       );
 
-      promiseResponse = response.data;
+      promiseResponse = { success: true };
     } catch (error: any) {
       console.log(`Error when updating password`);
-      promiseResponse = error.response.data;
-      console.error(error);
+
+      return extractAxiosError(error);
     }
 
     return promiseResponse;
   }
 
-  static async logout(
-    authenticatedUser: User,
-  ): Promise<AuthPromiseResponse | undefined> {
-    let promiseResponse: AuthPromiseResponse | undefined = undefined;
-    const token =
-      authenticatedUser != undefined ? authenticatedUser.access : "token";
-    await axios
-      .get(`${AppConstants.baseUrl}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        promiseResponse = response.data;
-      })
-      .catch((error) => {
-        promiseResponse = error.response.data;
-        console.error(error);
-      });
+  static async logout(modalId: string): Promise<boolean | undefined> {
+    localStorage.clear();
+    toggleModal(modalId);
+    window.location.href = "auth/signin";
 
-    return promiseResponse;
+    return true;
   }
 }
 

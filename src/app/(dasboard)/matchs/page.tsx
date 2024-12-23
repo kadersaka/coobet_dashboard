@@ -4,7 +4,7 @@ import { FC, useEffect } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
-import { toggleModal } from "@/utils/functions.util";
+import { ensureBaseUrl, toggleModal } from "@/utils/functions.util";
 import MatchForm from "@/components/widget/Forms/MatchForm";
 import useMatchStore from "@/store/useMatch.store";
 import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
@@ -51,8 +51,8 @@ const MatchsPage: FC<MatchsPageProps> = () => {
       <MatchForm id="match-form" />
       <ActionResult />
 
-      <div className="w-full overflow-x-auto ">
-        <div className="min-w-[700px] rounded-sm">
+      <div className="overflow-x-auto' w-full ">
+        <div className="min-w-[700px] rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="grid grid-cols-4 bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white lg:grid-cols-6 xl:grid-cols-8">
             {[
@@ -103,7 +103,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   <div className="hidden px-4 py-4 text-center xl:table-cell">
                     <div className="relative mx-auto h-10 w-10">
                       <Image
-                        src={match.clubHome.logo as string}
+                        src={ensureBaseUrl(match.clubHome.logo as string)}
                         alt={match.clubHome.name}
                         fill
                         className="object-contain"
@@ -137,7 +137,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   <div className="hidden px-4 py-4 text-center xl:table-cell">
                     <div className="relative mx-auto h-10 w-10">
                       <Image
-                        src={match.clubForeign.logo as string}
+                        src={ensureBaseUrl(match.clubForeign.logo as string)}
                         alt={match.clubForeign.name}
                         fill
                         className="object-contain"
@@ -148,6 +148,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   {/* Actions */}
                   <div className="px-4' py-4 text-center  lg:text-start xl:text-center ">
                     <EditDeleteButton
+                      key={match.id}
                       onEdit={() => toggleModal(`match-form-${match.id}`)}
                       onDelete={() => toggleModal(`delete-dialog-${match.id}`)}
                     />

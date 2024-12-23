@@ -12,7 +12,7 @@ import useComplaintstore from "@/store/useComplaint.store";
 import useSearchStore from "@/store/useSearchStore.store";
 
 const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
-  const { addComplaintResponse, updateComplaintResponse } =
+  const { addComplaintResponse, updateComplaintResponse, error } =
     useComplaintResponseStore();
 
   const { searchValue } = useSearchStore();
@@ -87,22 +87,25 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
           const updatedComplaintResponse =
             await updateComplaintResponse(complaintResponse);
 
-          if (updatedComplaintResponse) {
+          if (typeof updatedComplaintResponse === "string") {
+            setActionResultMessage(updatedComplaintResponse);
+            toggleModal("action-result-message");
+          } else if (updatedComplaintResponse) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("La réponse a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newComplaintResponse =
             await addComplaintResponse(complaintResponse);
 
-          if (newComplaintResponse) {
+          if (typeof newComplaintResponse === "string") {
+            setActionResultMessage(newComplaintResponse);
+            toggleModal("action-result-message");
+          } else if (newComplaintResponse) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le réponse a été ajoutée avec succès");

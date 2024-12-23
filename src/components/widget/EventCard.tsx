@@ -1,5 +1,6 @@
 import { eventStatus } from "@/hooks/forms/useEventForm.hook";
 import Event from "@/models/event.model";
+import { ensureBaseUrl } from "@/utils/functions.util";
 import { Edit, Trash } from "lucide-react";
 import Image from "next/image";
 import { FC } from "react";
@@ -19,7 +20,7 @@ const EventCard: FC<EventCardProps> = ({
 }) => {
   return (
     <div
-      className={` m-2 w-full rounded-sm border-[#EEEEEE] bg-white p-4 text-black shadow-md transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white`}
+      className={` my-2 w-full rounded-sm border-[#EEEEEE] bg-white p-4 text-black shadow-md transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white`}
     >
       <div
         className={`mb-5 flex ${!showOptions ? "justify-center" : "justify-between"}  font-bold`}
@@ -53,7 +54,7 @@ const EventCard: FC<EventCardProps> = ({
           <div className="ml-4 flex items-center justify-between">
             <div className=" flex items-center justify-between">
               <Image
-                src={event.match.clubHome.logo as string}
+                src={ensureBaseUrl(event.match.clubHome.logo as string)}
                 alt={event.match.clubHome.name}
                 width={50}
                 height={50}
@@ -65,7 +66,7 @@ const EventCard: FC<EventCardProps> = ({
 
             <div className=" flex items-center justify-between">
               <Image
-                src={event.match.clubForeign.logo as string}
+                src={ensureBaseUrl(event.match.clubForeign.logo as string)}
                 alt={event.match.clubForeign.name}
                 width={50}
                 height={50}
@@ -91,6 +92,7 @@ const EventCard: FC<EventCardProps> = ({
         {/* Status */}
         <p className="flex items-center">
           <span className="mr-1 font-medium">Statut:</span>
+
           {eventStatus.find((item) => item.value === event.status)?.name ??
             "Inconnu"}
         </p>

@@ -24,6 +24,8 @@ import {
   BellDot,
 } from "lucide-react";
 import AppButton from "../widget/Form/Button";
+import DeletionConfirmation from "../widget/Form/DeletionConfirmation";
+import AuthAPI from "@/api/auth.api";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -172,6 +174,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </div>
             ))}
           </nav>
+          <DeletionConfirmation
+            id={"logout-confirmation"}
+            message={"Êtes-vous sûr de vouloir vous déconnecter ?"}
+            successMessage={"Vous avez été déconnecté avec succès"}
+            objectId={"logout-confirmation"}
+            deleteText="Déconnexion"
+            onDelete={AuthAPI.logout}
+          />
           {/* <!-- Sidebar Menu --> */}
         </div>
       </aside>

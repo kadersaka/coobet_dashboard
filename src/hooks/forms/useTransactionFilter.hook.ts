@@ -12,7 +12,7 @@ const useTransactionFilterForm = (
   modalId: string,
   filter: TransactionFiterFormData,
 ) => {
-  const { setFilter, fetchTransactions, transactionsApps } =
+  const { setFilter, fetchTransactions, transactionsApps, error } =
     useTransactionStore();
   const { searchValue } = useSearchStore();
 

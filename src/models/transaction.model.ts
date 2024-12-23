@@ -81,6 +81,8 @@ class Transaction {
       phone_number: this.phoneNumber,
       country: this.country,
       app: this.app?.toJson(),
+      transaction_reference: this.reference,
+      app_id: this.app?.id,
       user_app_id: this.userAppId,
       mobile_reference: this.mobileReference,
       withdrawal_code: this.withdrawalCode,

@@ -50,7 +50,7 @@ class SportApi {
     try {
       const sportJson = sport.toJson();
       const response = await api.pacth<SportJson>(
-        `${this.route}/${sport.id}`,
+        `${this.route}/${sport.id}/`,
         sportJson,
       );
       return Sport.fromJson(response);
@@ -62,7 +62,7 @@ class SportApi {
 
   static async remove(sportId: string): Promise<void> {
     try {
-      await api.delete<void>(`${this.route}/${sportId}`);
+      await api.delete<void>(`${this.route}/${sportId}/`);
     } catch (error) {
       console.error(`Error deleting sport with ID ${sportId}:`, error);
       throw error;

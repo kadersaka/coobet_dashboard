@@ -31,10 +31,10 @@ const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
     <Modal id={id}>
       <div className=" flex flex-col items-center justify-center self-center p-3 text-[14px]  text-black dark:text-white sm:text-[15px] md:text-[16px] lg:text-[17px]">
         <p className="text-md my-5 text-center font-medium">{message}</p>
-        <div className="mb-1 mt-4 flex w-full flex-row items-center justify-evenly">
+        <div className="mb-1 mt-4 flex w-full flex-col items-center justify-evenly lg:flex-row ">
           <AppButton
             name="Fermer"
-            width="w-[150px]"
+            width="w-[150px] mb-3 lg:mr-3 lg:mb-0"
             onClick={() => {
               toggleModal(id);
             }}

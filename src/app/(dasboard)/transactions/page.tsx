@@ -37,7 +37,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
     page,
     loading,
     fetchTransactions,
-    transactionsApps,
+
     fetchApps,
     filter,
     increasePage,
@@ -72,7 +72,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
 
       <TransactionFilterForm id="transaction-filter-form" filter={filter} />
 
-      <TransactionForm id="transaction-form" />
+      <TransactionForm id="transaction-form" transaction={undefined} />
 
       <div
         className="my-10 hidden w-full  justify-end hover:cursor-pointer md:flex"
@@ -80,8 +80,10 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
           toggleModal("transaction-filter-form");
         }}
       >
-        <span className="mr-4 font-medium text-black dark:text-white">
-          Filtre
+        <span className="mr-4 font-bold text-black dark:text-white">
+          {Object.values(filter).every((flt) => flt.length === 0)
+            ? "Filtre"
+            : "Filtré"}
         </span>
         <Filter className="fill-primary dark:fill-boxdark" />
       </div>

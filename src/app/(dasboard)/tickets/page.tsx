@@ -84,7 +84,7 @@ const TicketsPage: FC<TicketsPageProps> = () => {
                 <DeletionConfirmation
                   key={`deletion-confirmation-${ticket.id}`}
                   id={`delete-dialog-${ticket.id}`}
-                  message="Êtes-vous sûr de vouloir supprimer cet coupon"
+                  message="Êtes-vous sûr de vouloir supprimer ce coupon"
                   successMessage="Le coupon a été supprimé avec succès"
                   objectId={ticket.id!}
                   onDelete={deleteTicket}

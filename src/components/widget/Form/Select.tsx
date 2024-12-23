@@ -72,10 +72,6 @@ const AppSelect: FC<AppSelectProps> = ({
             </option>
           ))}
         </select>
-
-        <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
-          <ChevronDown />
-        </span>
       </div>
     </div>
   );

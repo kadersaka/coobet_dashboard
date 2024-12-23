@@ -5,7 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import MultipleActionButton from "@/components/widget/Form/EditDeleteButton";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
-import { toggleModal } from "@/utils/functions.util";
+import { ensureBaseUrl, toggleModal } from "@/utils/functions.util";
 import ClubForm from "@/components/widget/Forms/ClubForm";
 import useClubStore from "@/store/useClub.store";
 import EditDeleteButton from "@/components/widget/Form/EditDeleteButton";
@@ -91,7 +91,7 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                   {/* Club Logo */}
                   <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
                     <Image
-                      src={club.logo as string}
+                      src={ensureBaseUrl(club.logo as string)}
                       alt={club.name}
                       width={50}
                       height={50}
@@ -104,6 +104,7 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                     className={`flex-1 px-5 py-4 text-end lg:px-7.5 2xl:px-11`}
                   >
                     <EditDeleteButton
+                      key={club.id}
                       onEdit={() => toggleModal(`club-form-${club.id}`)}
                       onDelete={() => {
                         toggleModal(`delete-dialog-${club.id}`);

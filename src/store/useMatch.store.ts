@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import MatchApi from "@/api/match.api";
 import PaginatedMatch from "@/models/paginated_match.model";
 import Match from "@/models/match.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface MatchStore {
   paginatedMatches: PaginatedMatch;
@@ -25,8 +27,8 @@ interface MatchStore {
     pageSize?: number,
   ) => Promise<PaginatedMatch | undefined>;
   researchAddMatch: (Match: Match) => Promise<Match | undefined>;
-  addMatch: (match: Match) => Promise<Match | undefined>;
-  updateMatch: (match: Match) => Promise<Match | undefined>;
+  addMatch: (match: Match) => Promise<Match | string | undefined>;
+  updateMatch: (match: Match) => Promise<Match | string | undefined>;
   deleteMatch: (matchId: string) => Promise<boolean | undefined>;
 }
 
@@ -72,8 +74,8 @@ const useMatchStore = create<MatchStore>()(
             paginatedMatches: paginatedMatches,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -98,8 +100,9 @@ const useMatchStore = create<MatchStore>()(
           });
           return addedMatch;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -115,8 +118,8 @@ const useMatchStore = create<MatchStore>()(
             pageSize ?? get().pageSize,
           );
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -130,8 +133,8 @@ const useMatchStore = create<MatchStore>()(
         try {
           return await MatchApi.add(match);
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -158,8 +161,9 @@ const useMatchStore = create<MatchStore>()(
 
           return updatedMatch;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -182,8 +186,8 @@ const useMatchStore = create<MatchStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

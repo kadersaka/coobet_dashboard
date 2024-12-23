@@ -59,6 +59,16 @@ const useAuthSettingForm = () => {
       errors.confirmNewPassword = "Le confirmation de mot de passe est requis";
     }
 
+    if (authSettingFormData.newPassword!.length < 6) {
+      errors.newPassword =
+        "Le nouveau mot de passe doit contenir au moins 6 caractères";
+    }
+
+    if (authSettingFormData.confirmNewPassword!.length < 6) {
+      errors.confirmNewPassword =
+        "Le nouveau mot de passe doit contenir au moins 6 caractères";
+    }
+
     if (
       authSettingFormData.newPassword?.trim() !=
       authSettingFormData.confirmNewPassword?.trim()
@@ -67,10 +77,22 @@ const useAuthSettingForm = () => {
       errors.confirmNewPassword = "Mot de passe non identique";
     }
 
+    /* if (!isValidPassword(authSettingFormData.newPassword!)) {
+      errors.newPassword = `Le mot de passe doit contenir au moins une lettre majuscule,
+         une lettre minuscule, un chiffre et comporter au moins 6 caractères`;
+      errors.confirmNewPassword = `Le mot de passe doit contenir au moins une lettre majuscule,
+         une lettre minuscule, un chiffre et comporter au moins 6 caractères`;
+    }*/
+
     setAuthSettingFormErrors(errors);
 
     return Object.values(errors).every((error) => !error);
   };
+
+  function isValidPassword(password: string): boolean {
+    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/;
+    return regex.test(password);
+  }
 
   const authSettingOnFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,21 +107,23 @@ const useAuthSettingForm = () => {
       try {
         const response = await AuthAPI.setting(authSetting);
 
-        if (response?.message) {
+        if (typeof response === "string") {
+          setActionResultMessage(response);
+          toggleModal("action-result-message");
+        } else if (response?.message) {
           setAuthSettingFormErrors({
             oldPassword: response.message,
             newPassword: response.message,
             confirmNewPassword: response.message,
           });
-        } else if (response?.data) {
+        } else if (response?.success) {
           setActionResultMessage(
             `Votre mot de passe a été modifié avec succès`,
           );
 
           toggleModal("action-result-message");
-        } else {
-          setActionResultMessage("Une erreur s'est produite");
-          toggleModal("action-result-message");
+
+          await AuthAPI.logout("");
         }
       } catch (error: unknown) {
         console.error("Error handling form submission:", error);

@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import Reward from "@/models/reward.model";
 import RewardApi from "@/api/reward.api";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface RewardStore {
   rewards: Reward[];
@@ -26,8 +28,8 @@ const useRewardStore = create<RewardStore>()(
           const paginatedRewards = await RewardApi.findMany(searchField, page);
           set({ rewards: paginatedRewards.results });
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -42,8 +44,8 @@ const useRewardStore = create<RewardStore>()(
           await RewardApi.add(reward);
           set((state) => ({ rewards: [...state.rewards, reward] }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -62,8 +64,8 @@ const useRewardStore = create<RewardStore>()(
             ),
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -80,8 +82,8 @@ const useRewardStore = create<RewardStore>()(
             rewards: state.rewards.filter((reward) => reward.id !== rewardId),
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

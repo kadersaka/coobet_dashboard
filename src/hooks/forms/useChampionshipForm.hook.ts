@@ -10,7 +10,7 @@ import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useChampionshipForm = (modalId: string, initialData?: Championship) => {
-  const { addChampionship, updateChampionship } = useChampionshipStore();
+  const { addChampionship, updateChampionship, error } = useChampionshipStore();
 
   const [formData, setFormData] = useState<ChampionshipFormData>({
     name: initialData?.name ?? "",
@@ -97,7 +97,10 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
         if (championship?.id) {
           const updatedChampionship = await updateChampionship(championship);
 
-          if (updatedChampionship) {
+          if (typeof updateChampionship === "string") {
+            setActionResultMessage(updateChampionship);
+            toggleModal("action-result-message");
+          } else if (updatedChampionship) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage(
@@ -106,22 +109,19 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newChampionship = await addChampionship(championship);
 
-          if (newChampionship) {
+          if (typeof newChampionship === "string") {
+            setActionResultMessage(newChampionship);
+            toggleModal("action-result-message");
+          } else if (newChampionship) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le championnat a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

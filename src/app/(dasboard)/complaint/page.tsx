@@ -43,7 +43,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
   return (
     <>
       <Breadcrumb
-        pageName="Championnats"
+        pageName="Plaintes | Reclamations"
         onClick={() => fetchComplaints(searchValue)}
       >
         {/* <AppButton

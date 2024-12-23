@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import User from "@/models/user.model";
 import UserApi from "@/api/user.api";
 import PaginatedUsers from "@/models/paginated_user.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface UserStore {
   paginatedUsers: PaginatedUsers;
@@ -19,8 +21,8 @@ interface UserStore {
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
-  addUser: (user: User) => Promise<User | undefined>;
-  updateUser: (user: User) => Promise<User | undefined>;
+  addUser: (user: User) => Promise<User | string | undefined>;
+  updateUser: (user: User) => Promise<User | string | undefined>;
   blockUser: (userId: string) => Promise<boolean | undefined>;
   deleteUser: (
     userId: string,
@@ -64,8 +66,8 @@ const useUsersStore = create<UserStore>()(
             paginatedUsers: paginatedUsers,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -88,8 +90,9 @@ const useUsersStore = create<UserStore>()(
           }));
           return addedUser;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -112,8 +115,9 @@ const useUsersStore = create<UserStore>()(
           }));
           return updatedUser;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -142,8 +146,8 @@ const useUsersStore = create<UserStore>()(
           });
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -165,8 +169,8 @@ const useUsersStore = create<UserStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

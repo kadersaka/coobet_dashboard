@@ -9,7 +9,7 @@ import { Moment } from "moment";
 import Championship from "@/models/championship.model";
 
 const useMatchForm = (modalId: string, initialData?: Match) => {
-  const { addMatch, updateMatch } = useMatchStore();
+  const { addMatch, updateMatch, error } = useMatchStore();
 
   const [formData, setFormData] = useState<MatchFormData>({
     championship: initialData?.championship ?? null,
@@ -164,29 +164,29 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
         if (match?.id) {
           const updatedMatch = await updateMatch(match);
 
-          if (updatedMatch) {
+          if (typeof updatedMatch === "string") {
+            setActionResultMessage(updatedMatch);
+            toggleModal("action-result-message");
+          } else if (updatedMatch) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le match a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newMatch = await addMatch(match);
 
-          if (newMatch) {
+          if (typeof newMatch === "string") {
+            setActionResultMessage(newMatch);
+            toggleModal("action-result-message");
+          } else if (newMatch) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le match a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

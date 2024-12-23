@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import DashboardApi from "@/api/dashboard.api";
 import Dashboard from "@/models/dashboard.model";
 import { SelectItemProps } from "@/components/widget/Form/Select";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface DashboardStore {
   loading: boolean;
@@ -88,8 +90,8 @@ const useDashboardStore = create<DashboardStore>()(
 
           set({ dashboardData: stats ?? get().dashboardData });
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import SportApi from "@/api/sport.api";
 import PaginatedSport from "@/models/paginated_sport.model";
 import Sport from "@/models/sport.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface SportStore {
   paginatedSports: PaginatedSport;
@@ -25,8 +27,8 @@ interface SportStore {
     pageSize?: number,
   ) => Promise<PaginatedSport | undefined>;
   researchAddSport: (club: Sport) => Promise<Sport | undefined>;
-  addSport: (sport: Sport) => Promise<Sport | undefined>;
-  updateSport: (sport: Sport) => Promise<Sport | undefined>;
+  addSport: (sport: Sport) => Promise<Sport | string | undefined>;
+  updateSport: (sport: Sport) => Promise<Sport | string | undefined>;
   deleteSport: (sportId: string) => Promise<boolean | undefined>;
 }
 
@@ -72,8 +74,8 @@ const useSportStore = create<SportStore>()(
             paginatedSports: paginatedSports,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -93,8 +95,8 @@ const useSportStore = create<SportStore>()(
 
           return paginatedSports;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -107,8 +109,8 @@ const useSportStore = create<SportStore>()(
         try {
           return await SportApi.add(sport);
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -135,8 +137,9 @@ const useSportStore = create<SportStore>()(
           });
           return addedSport;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -171,8 +174,9 @@ const useSportStore = create<SportStore>()(
 
           return updatedsport;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -195,8 +199,8 @@ const useSportStore = create<SportStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

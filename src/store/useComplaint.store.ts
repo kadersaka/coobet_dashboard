@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import ComplaintApi from "@/api/complaint.api";
 import PaginatedComplaint from "@/models/paginated_complaint.model";
 import Complaint from "@/models/complaint.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface ComplaintStore {
   paginatedComplaints: PaginatedComplaint;
@@ -19,8 +21,12 @@ interface ComplaintStore {
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
-  addComplaint: (complaint: Complaint) => Promise<Complaint | undefined>;
-  updateComplaint: (complaint: Complaint) => Promise<Complaint | undefined>;
+  addComplaint: (
+    complaint: Complaint,
+  ) => Promise<Complaint | string | undefined>;
+  updateComplaint: (
+    complaint: Complaint,
+  ) => Promise<Complaint | string | undefined>;
   deleteComplaint: (complaintId: string) => Promise<boolean | undefined>;
 }
 
@@ -66,8 +72,8 @@ const useComplaintStore = create<ComplaintStore>()(
             paginatedComplaints: paginatedComplaints,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -96,8 +102,9 @@ const useComplaintStore = create<ComplaintStore>()(
           });
           return addedComplaint;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -132,8 +139,9 @@ const useComplaintStore = create<ComplaintStore>()(
 
           return updatedComplaint;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -156,8 +164,8 @@ const useComplaintStore = create<ComplaintStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

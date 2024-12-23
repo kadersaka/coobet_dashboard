@@ -30,7 +30,7 @@ export const eventStatus: SelectItemProps[] = [
 ];
 
 const useEventForm = (modalId: string, initialData?: Event) => {
-  const { addEvent, updateEvent } = useEventStore();
+  const { addEvent, updateEvent, error } = useEventStore();
 
   const [formData, setFormData] = useState<EventFormData>({
     match: initialData?.match ?? null,
@@ -143,29 +143,29 @@ const useEventForm = (modalId: string, initialData?: Event) => {
         if (event?.id) {
           const updatedEvent = await updateEvent(event);
 
-          if (updatedEvent) {
+          if (typeof updateEvent === "string") {
+            setActionResultMessage(updateEvent);
+            toggleModal("action-result-message");
+          } else if (updatedEvent) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("L'évènement a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newEvent = await addEvent(event);
 
-          if (newEvent) {
+          if (typeof newEvent === "string") {
+            setActionResultMessage(newEvent);
+            toggleModal("action-result-message");
+          } else if (newEvent) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("L'évènement a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

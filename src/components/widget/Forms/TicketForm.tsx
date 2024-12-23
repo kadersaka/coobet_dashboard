@@ -1,28 +1,23 @@
-import { FC, useEffect, useState } from "react";
-import Modal from "../Form/Modal";
-import AppInput from "../Form/Input";
-import AppButton from "../Form/Button";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
-import Ticket from "@/models/ticket.model";
 import useTicketForm, {
   ticketStatus,
   ticketSubscriptions,
 } from "@/hooks/forms/useTicketForm.hook";
-import ItemSelector from "../Form/ItemSelector";
-import useClubStore from "@/store/useClub.store";
-import Club from "@/models/club.model";
-import AppDateTimePicker from "../Form/DateTimePicker";
 import Championship from "@/models/championship.model";
-import Sport from "@/models/sport.model";
-import useChampionshipStore from "@/store/useChampionship.store";
-import Match from "@/models/match.model";
-import useMatchForm from "@/hooks/forms/useMatchForm.hook";
-import useMatchStore from "@/store/useMatch.store";
-import AppSelect from "../Form/Select";
-import { ArrowRightLeft } from "lucide-react";
+import Club from "@/models/club.model";
 import Event from "@/models/event.model";
+import Match from "@/models/match.model";
+import Sport from "@/models/sport.model";
+import Ticket from "@/models/ticket.model";
 import useEventStore from "@/store/useEvent.store";
+import { ArrowRightLeft } from "lucide-react";
+import { FC, useState } from "react";
 import EventCard from "../EventCard";
+import AppButton from "../Form/Button";
+import AppInput from "../Form/Input";
+import ItemSelector from "../Form/ItemSelector";
+import Modal from "../Form/Modal";
+import AppSelect from "../Form/Select";
 
 interface TicketFormProps {
   id: string;

@@ -3,6 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import NotificationApi from "@/api/notification.api";
 import PaginatedNotification from "@/models/paginated_notification.model";
 import Notification from "@/models/notification.model";
+import { AxiosError } from "axios";
+import { extractAxiosError } from "@/utils/functions.util";
 
 interface NotificationStore {
   paginatedNotifications: PaginatedNotification;
@@ -78,8 +80,8 @@ const useNotificationStore = create<NotificationStore>()(
             paginatedNotifications: paginatedNotifications,
           }));
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -99,8 +101,8 @@ const useNotificationStore = create<NotificationStore>()(
 
           return paginatedNotifications;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -113,8 +115,8 @@ const useNotificationStore = create<NotificationStore>()(
         try {
           return await NotificationApi.add(Notification);
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -141,8 +143,8 @@ const useNotificationStore = create<NotificationStore>()(
           });
           return addedNotification;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -179,8 +181,8 @@ const useNotificationStore = create<NotificationStore>()(
 
           return updatedNotification;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -203,8 +205,8 @@ const useNotificationStore = create<NotificationStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

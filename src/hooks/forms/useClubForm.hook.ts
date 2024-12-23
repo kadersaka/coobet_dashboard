@@ -6,7 +6,7 @@ import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useClubForm = (modalId: string, initialData?: Club) => {
-  const { addClub, updateClub } = useClubStore();
+  const { addClub, updateClub, error } = useClubStore();
 
   const [formData, setFormData] = useState<ClubFormData>({
     name: initialData?.name ?? "",
@@ -108,29 +108,29 @@ const useClubForm = (modalId: string, initialData?: Club) => {
         if (club?.id) {
           const updatedClub = await updateClub(club);
 
-          if (updatedClub) {
+          if (typeof updateClub === "string") {
+            setActionResultMessage(updateClub);
+            toggleModal("action-result-message");
+          } else if (updatedClub) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le club a été mise à jour avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
             toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
-            toggleModal("action-result-message");
           }
         } else {
           const newClub = await addClub(club);
 
-          if (newClub) {
+          if (typeof newClub === "string") {
+            setActionResultMessage(newClub);
+            toggleModal("action-result-message");
+          } else if (newClub) {
             resetFormData();
             toggleModal(modalId);
             setActionResultMessage("Le club a été ajouté avec succès");
             toggleModal("action-result-message");
             await delay({ milliseconds: 1000 });
-            toggleModal("action-result-message");
-          } else {
-            setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }

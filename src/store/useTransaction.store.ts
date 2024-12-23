@@ -6,6 +6,8 @@ import Transaction from "@/models/transaction.model";
 import App from "@/models/app.model";
 import AppApi from "@/api/app.api";
 import { TransactionFiterFormData } from "../interfaces/transaction.interface";
+import { AxiosError } from "axios";
+import { delay, extractAxiosError } from "@/utils/functions.util";
 
 interface TransactionStore {
   paginatedTransactions: PaginatedTransaction;
@@ -37,10 +39,10 @@ interface TransactionStore {
   ) => Promise<void>;
   addTransaction: (
     transaction: Transaction,
-  ) => Promise<Transaction | undefined>;
+  ) => Promise<Transaction | string | undefined>;
   updateTransaction: (
     transaction: Transaction,
-  ) => Promise<Transaction | undefined>;
+  ) => Promise<Transaction | string | undefined>;
   deleteTransaction: (transactionId: string) => Promise<boolean | undefined>;
 }
 
@@ -125,8 +127,8 @@ const useTransactionStore = create<TransactionStore>()(
             paginatedTransactions,
           });
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -167,8 +169,9 @@ const useTransactionStore = create<TransactionStore>()(
           });
           return addedTransaction;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -203,8 +206,9 @@ const useTransactionStore = create<TransactionStore>()(
 
           return updatedTransaction;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
+            return extractAxiosError(error);
           } else {
             set({ error: "An unknown error occurred" });
           }
@@ -227,8 +231,8 @@ const useTransactionStore = create<TransactionStore>()(
           }));
           return true;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            set({ error: error.message });
+          if (error instanceof AxiosError) {
+            set({ error: extractAxiosError(error) });
           } else {
             set({ error: "An unknown error occurred" });
           }

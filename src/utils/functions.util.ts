@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import api from "./api.util";
 
 export function toggleModal(id: string) {
@@ -116,4 +116,43 @@ export function transactionMobileReference(mobileReference: string): string {
     default:
       return "Inconnu";
   }
+}
+
+export function ensureBaseUrl(url: string): string {
+  const baseUrl = "https://api.coobet.app";
+  if (!url.startsWith(baseUrl)) {
+    const normalizedBaseUrl = baseUrl.endsWith("/")
+      ? baseUrl.slice(0, -1)
+      : baseUrl;
+    const normalizedUrl = url.startsWith("/") ? url : `/${url}`;
+    return `${normalizedBaseUrl}${normalizedUrl}`;
+  }
+  return url;
+}
+
+export function extractAxiosError(error: AxiosError): string {
+  if (error.response?.data) {
+    const data = error.response.data;
+
+    if (typeof data === "object" && data !== null) {
+      if ("message" in data && typeof data.message === "string") {
+        return data.message;
+      }
+
+      const errorMessages: string[] = [];
+      Object.entries(data).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          errorMessages.push(`${value.join("  ")}`);
+        } else if (typeof value === "string") {
+          errorMessages.push(`${value}`);
+        }
+      });
+
+      return errorMessages.length > 0
+        ? errorMessages.join(" . ")
+        : "Une erreur inconnue s'est produite";
+    }
+  }
+
+  return error.message || "Une erreur inconnue s'est produite";
 }

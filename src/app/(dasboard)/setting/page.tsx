@@ -108,10 +108,12 @@ const Settings = () => {
 
         <div className="flex flex-col items-center justify-center  xl:flex-row xl:items-start  ">
           {/* ===============> AUTH <=============== */}
-          <div className="mb-10 sm:min-w-90 lg:min-w-125 xl:mr-10">
+          <div className="mb-10 max-w-125 sm:min-w-90 sm:max-w-100 lg:min-w-125 lg:max-w-132.5 xl:mr-10">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">Auth</h3>
+                <h3 className="font-medium text-black dark:text-white">
+                  Admin
+                </h3>
               </div>
               <div className="p-7">
                 <form onSubmit={authSettingOnFormSubmit}>
@@ -177,7 +179,9 @@ const Settings = () => {
               </div>
             </div>
           </div>
+          {/* ===============> AUTH <=============== */}
 
+          {/* ===============> SETTING <=============== */}
           {loading ? (
             <ProcessingLoader />
           ) : (
@@ -668,6 +672,7 @@ const Settings = () => {
               </div>
             </div>
           )}
+          {/* ===============> SETTING <=============== */}
         </div>
       </div>
     </>
