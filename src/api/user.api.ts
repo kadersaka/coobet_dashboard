@@ -83,7 +83,7 @@ class UserApi {
     const token = localStorage.getItem("access");
     try {
       await axios.post(
-        "http://api.coobet.codelabbenin.com/auth/delete_acount",
+        "https://api.coobet.app/auth/delete_acount",
         { passwor: adminPassword, user_id: userId },
         {
           headers: {
