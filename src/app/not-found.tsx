@@ -10,7 +10,7 @@ export default function NotFound() {
         <p className="mb-6 ">Oops! La page recherchée n&apos;existe pas.</p>
         <Link href="/">
           <span className="text-lg font-medium text-primary hover:underline">
-            Page d'accueil
+            Page d&apos;accueil
           </span>
         </Link>
       </div>
