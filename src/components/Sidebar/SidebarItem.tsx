@@ -31,7 +31,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   return (
     <>
       <li
-        className={`hover:cursor-pointer ${item.route === "/logout" ? "mt-20" : ""}`}
+        className={`hover:cursor-pointer ${item.route === "/logout" ? "mt-10" : ""}`}
       >
         {item.route !== "/logout" ? (
           <>

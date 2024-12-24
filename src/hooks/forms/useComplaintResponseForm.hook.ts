@@ -31,7 +31,7 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
 
   const resetFormData = () => {
     setFormData({
-      response: "",
+      response: initialData?.response?.response ?? "",
     });
   };
 

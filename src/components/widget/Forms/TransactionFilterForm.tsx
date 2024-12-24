@@ -8,6 +8,7 @@ import {
   ArrowRightLeft,
   ChartNoAxesColumnIncreasing,
   GitCommit,
+  ServerCog,
   Smartphone,
 } from "lucide-react";
 import "react-phone-input-2/lib/style.css";
@@ -39,7 +40,7 @@ const TransactionFilterForm: FC<TransactionFilterFormProps> = ({
     onFormSubmit,
   } = useTransactionFilterForm(id, filter);
 
-  const { transactionsApps } = useTransactionStore();
+  const { transactionsApps, transactionsServices } = useTransactionStore();
 
   useEffect(() => {
     setFormData({
@@ -60,6 +61,9 @@ const TransactionFilterForm: FC<TransactionFilterFormProps> = ({
       withdriwalCode: filter.withdriwalCode ?? "",
       userEmail: filter.userEmail ?? "",
       app: transactionsApps.find((app) => app.id === filter.app)?.name ?? "",
+      service:
+        transactionsServices.find((service) => service.id === filter.service)
+          ?.name ?? "",
     });
   }, [setFormData, transactionsData, transactionsApps, filter]);
 
@@ -182,6 +186,28 @@ const TransactionFilterForm: FC<TransactionFilterFormProps> = ({
             {formErrors.app && (
               <p className="erreur ml-1.5 text-[14px] font-medium text-red">
                 {formErrors.app}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <AppSelect
+              id="service"
+              name="service"
+              label="Service"
+              items={transactionsServices.map((service) => ({
+                name: service.name,
+                value: service.id ?? "",
+              }))}
+              value={formData.service ?? ""}
+              onChange={onInputDataChange}
+              icon={
+                <ServerCog className="text-black dark:text-white" size={25} />
+              }
+            />
+            {formErrors.service && (
+              <p className="erreur ml-1.5 text-[14px] font-medium text-red">
+                {formErrors.service}
               </p>
             )}
           </div>

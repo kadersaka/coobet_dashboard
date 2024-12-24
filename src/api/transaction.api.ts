@@ -4,6 +4,7 @@ import PaginatedTransaction, {
   PaginatedTransactionJson,
 } from "@/models/paginated_transaction.model";
 import { TransactionJson } from "@/interfaces/transaction.interface";
+import { TransactionFiterFormData } from "../interfaces/transaction.interface";
 
 class TransactionApi {
   private static route: string = "/transaction";
@@ -22,20 +23,13 @@ class TransactionApi {
 
   static async findMany(
     searchField?: string,
-    reference?: string,
-    status?: string,
-    phoneNumber?: string,
-    userAppId?: string,
-    mobileReference?: string,
-    withdriwalCode?: string,
-    userEmail?: string,
-    app?: string,
+    filter?: TransactionFiterFormData,
     page?: number,
     pageSize?: number,
   ): Promise<PaginatedTransaction> {
     try {
       const response = await api.get<PaginatedTransactionJson>(
-        `${this.route}?search_fields=${searchField ?? ""}&reference=${reference ?? ""}&status=${status ?? ""}&phone_number=${phoneNumber ?? ""}&user_app_id=${userAppId ?? ""}&mobile_reference=${mobileReference ?? ""}&withdriwal_code=${withdriwalCode ?? ""}&user__email=${userEmail ?? ""}&app=${app ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
+        `${this.route}?search_fields=${searchField ?? ""}&reference=${filter?.reference ?? ""}&status=${filter?.status ?? ""}&phone_number=${filter?.phoneNumber ?? ""}&user_app_id=${filter?.userAppId ?? ""}&mobile_reference=${filter?.mobileReference ?? ""}&withdriwal_code=${filter?.withdriwalCode ?? ""}&user__email=${filter?.userEmail ?? ""}&app=${filter?.app ?? ""}&service=${filter?.service ?? ""}&page=${page ?? 1}&page_size=${pageSize ?? 20}`,
       );
       return PaginatedTransaction.fromJson(response);
     } catch (error) {

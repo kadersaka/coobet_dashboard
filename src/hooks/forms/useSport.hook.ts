@@ -20,7 +20,7 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
 
   const resetFormData = () => {
     setFormData({
-      name: "",
+      name: initialData?.name ?? "",
     });
   };
 

@@ -2,11 +2,17 @@ import { ClubFormData, ClubFormErrors } from "@/interfaces/club.interface";
 import Club from "@/models/club.model";
 import useClubStore from "@/store/useClub.store";
 import useInterfaceStore from "@/store/useInterface.store";
-import { delay, toggleModal } from "@/utils/functions.util";
+import api from "@/utils/api.util";
+import {
+  delay,
+  toggleModal,
+  uploadImage,
+  validateLogoUrl,
+} from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useClubForm = (modalId: string, initialData?: Club) => {
-  const { addClub, updateClub, error } = useClubStore();
+  const { addClub, updateClub } = useClubStore();
 
   const [formData, setFormData] = useState<ClubFormData>({
     name: initialData?.name ?? "",
@@ -22,8 +28,8 @@ const useClubForm = (modalId: string, initialData?: Club) => {
 
   const resetFormData = () => {
     setFormData({
-      name: "",
-      logo: "",
+      name: initialData?.name ?? "",
+      logo: initialData?.logo ?? "",
     });
   };
 
@@ -49,7 +55,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
     });
   };
 
-  const validateForm = () => {
+  const validateForm = async () => {
     const errors: ClubFormErrors = {
       name: null,
       logo: null,
@@ -67,19 +73,15 @@ const useClubForm = (modalId: string, initialData?: Club) => {
     if (!formData.logo) {
       errors.logo = "Le logo du club est requis";
     } else if (typeof formData.logo === "string") {
-      validateLogoUrl(formData.logo).then((valid) => {
-        if (!valid) {
-          errors.logo = "Le logo doit être de type (JPEG, PNG, GIF).";
-        }
-      });
-    } else if (
-      formData.logo instanceof File /* || formData.logo instanceof Blob */
-    ) {
-      if (
-        !["image/jpeg", "image/png", "image/gif"].includes(formData.logo.type)
-      ) {
+      const valid = await validateLogoUrl(formData.logo);
+      if (!valid) {
         errors.logo = "Le logo doit être de type (JPEG, PNG, GIF).";
       }
+    } else if (
+      formData.logo instanceof File &&
+      !["image/jpeg", "image/png", "image/gif"].includes(formData.logo.type)
+    ) {
+      errors.logo = "Le logo doit être de type (JPEG, PNG, GIF).";
     }
 
     setFormErrors(errors);
@@ -90,7 +92,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (await validateForm()) {
       setProcessing(true);
 
       try {
@@ -100,7 +102,7 @@ const useClubForm = (modalId: string, initialData?: Club) => {
         }
         const club = new Club(
           formData.name,
-          logoUrl,
+          logoUrl.length != 0 ? logoUrl : (formData.logo as string),
           initialData?.createdAt ?? new Date(),
           initialData?.id,
         );
@@ -139,24 +141,6 @@ const useClubForm = (modalId: string, initialData?: Club) => {
       }
 
       setProcessing(false);
-    }
-  };
-
-  const uploadImage = async (file: File): Promise<string> => {
-    return URL.createObjectURL(file);
-  };
-
-  const validateLogoUrl = async (url: string): Promise<boolean> => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const type = blob.type;
-
-      // Validate the type of the fetched file
-      return ["image/jpeg", "image/png", "image/gif"].includes(type);
-    } catch (error) {
-      console.error("Error fetching logo URL:", error);
-      return false;
     }
   };
 

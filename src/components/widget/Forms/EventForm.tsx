@@ -104,7 +104,7 @@ const EventForm: FC<EventFormProps> = ({ id, event }) => {
               name="coast"
               type="number"
               placeholder="Cote"
-              value={formData.coast}
+              value={parseFloat(formData.coast ?? "0").toFixed(3)}
               onChange={onInputDataChange}
             />
             {formErrors.coast && (

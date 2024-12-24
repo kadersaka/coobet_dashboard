@@ -32,6 +32,7 @@ export interface TransactionFiterFormData {
   withdriwalCode: string;
   userEmail: string;
   app: string;
+  service: string;
 }
 
 export interface TransactionFiterFormErrors {
@@ -44,6 +45,7 @@ export interface TransactionFiterFormErrors {
   withdriwalCode: string | null;
   userEmail: string | null;
   app: string | null;
+  service: string | null;
 }
 
 export interface TransactionJson {

@@ -38,22 +38,7 @@ class ClubApi {
 
   static async add(club: Club): Promise<Club> {
     try {
-      const file = await downloadFile({
-        url: club.logo as string,
-      });
-
-      const response = await api.post<ClubJson>(
-        this.route,
-        {
-          name: club.name,
-          logo: file,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      const response = await api.post<ClubJson>(this.route, club.toJson());
 
       return Club.fromJson(response);
     } catch (error) {
@@ -64,22 +49,9 @@ class ClubApi {
 
   static async update(club: Club): Promise<Club> {
     try {
-      const file = await downloadFile({
-        url: club.logo as string,
-      });
-
       const response = await api.put<ClubJson>(
         `${this.route}/${club.id}`,
-        {
-          name: club.name,
-          logo: file,
-          created_at: club.createdAt?.toISOString(),
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
+        club.toJson(),
       );
 
       return Club.fromJson(response);

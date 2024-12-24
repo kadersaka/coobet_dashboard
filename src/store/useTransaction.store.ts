@@ -8,6 +8,8 @@ import AppApi from "@/api/app.api";
 import { TransactionFiterFormData } from "../interfaces/transaction.interface";
 import { AxiosError } from "axios";
 import { delay, extractAxiosError } from "@/utils/functions.util";
+import Service from "@/models/service.model";
+import ServiceApi from "@/api/service.model";
 
 interface TransactionStore {
   paginatedTransactions: PaginatedTransaction;
@@ -17,6 +19,7 @@ interface TransactionStore {
   page: number;
   pageSize: number;
   transactionsApps: App[];
+  transactionsServices: Service[];
   setFilter: (newFilter: TransactionFiterFormData) => void;
 
   setPage: (newPage: number) => void;
@@ -24,16 +27,10 @@ interface TransactionStore {
   decreasePage: () => void;
   setPageSize: (newPageSize: number) => void;
   fetchApps: () => void;
+  fetchServices: () => void;
   fetchTransactions: (
     searchField?: string,
-    reference?: string,
-    status?: string,
-    phoneNumber?: string,
-    userAppId?: string,
-    mobileReference?: string,
-    withdriwalCode?: string,
-    userEmail?: string,
-    app?: string,
+    filter?: TransactionFiterFormData,
     page?: number,
     pageSize?: number,
   ) => Promise<void>;
@@ -65,10 +62,12 @@ const useTransactionStore = create<TransactionStore>()(
         withdriwalCode: "",
         userEmail: "",
         app: "",
+        service: "",
       },
 
       pageSize: 10,
       transactionsApps: [],
+      transactionsServices: [],
 
       setPage: (newPage: number) => {
         set({ page: newPage });
@@ -94,31 +93,12 @@ const useTransactionStore = create<TransactionStore>()(
         set({ filter: newFilter });
       },
 
-      fetchTransactions: async (
-        searchField = "",
-        reference,
-        status,
-        phoneNumber,
-        userAppId,
-        mobileReference,
-        withdriwalCode,
-        userEmail,
-        app,
-        page,
-        pageSize,
-      ) => {
+      fetchTransactions: async (searchField = "", filter, page, pageSize) => {
         set({ loading: true, error: null });
         try {
           const paginatedTransactions = await TransactionApi.findMany(
             searchField,
-            reference ?? get().filter.reference,
-            status ?? get().filter.status,
-            phoneNumber ?? get().filter.phoneNumber,
-            userAppId ?? get().filter.userAppId,
-            mobileReference ?? get().filter.mobileReference,
-            withdriwalCode ?? get().filter.withdriwalCode,
-            userEmail ?? get().filter.userEmail,
-            app ?? get().filter.app,
+            filter ?? get().filter,
             page ?? get().page,
             pageSize ?? get().pageSize,
           );
@@ -143,6 +123,18 @@ const useTransactionStore = create<TransactionStore>()(
 
           set({
             transactionsApps: apps,
+          });
+        } catch (error) {
+          set({ error: "An unknown error occurred" });
+        }
+      },
+
+      fetchServices: async () => {
+        try {
+          const services = await ServiceApi.findMany();
+
+          set({
+            transactionsServices: services.results,
           });
         } catch (error) {
           set({ error: "An unknown error occurred" });

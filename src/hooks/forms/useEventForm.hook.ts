@@ -54,10 +54,14 @@ const useEventForm = (modalId: string, initialData?: Event) => {
 
   const resetFormData = () => {
     setFormData({
-      match: null,
-      status: "",
-      bet: "",
-      coast: "",
+      match: initialData?.match ?? null,
+      status:
+        initialData?.status != null
+          ? (eventStatus.find((status) => status.value == initialData?.status)
+              ?.name ?? "")
+          : "",
+      bet: initialData?.bet ?? "",
+      coast: initialData?.coast ?? "",
     });
   };
 

@@ -33,12 +33,12 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
 
   const resetFormData = () => {
     setFormData({
-      championship: null,
-      clubHome: null,
-      clubForeign: null,
+      championship: initialData?.championship ?? null,
+      clubHome: initialData?.clubHome ?? null,
+      clubForeign: initialData?.clubForeign ?? null,
       startDate: new Date(),
-      clubHomeGoal: 0,
-      clubForeignGoal: 0,
+      clubHomeGoal: initialData?.clubHomeGoal ?? 0,
+      clubForeignGoal: initialData?.clubForeignGoal ?? 0,
     });
   };
 

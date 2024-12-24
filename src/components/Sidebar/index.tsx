@@ -22,6 +22,7 @@ import {
   Calendar,
   LogOut,
   BellDot,
+  Megaphone,
 } from "lucide-react";
 import AppButton from "../widget/Form/Button";
 import DeletionConfirmation from "../widget/Form/DeletionConfirmation";
@@ -81,6 +82,11 @@ const menuGroups = [
         icon: <Ticket />,
         label: "Coupons",
         route: "/tickets",
+      },
+      {
+        icon: <Megaphone />,
+        label: "Publicités",
+        route: "/advertisement",
       },
       {
         icon: <MessageCircleQuestion />,

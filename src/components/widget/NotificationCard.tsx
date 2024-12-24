@@ -1,45 +1,34 @@
 import { useState, FC } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { formatDate } from "@/utils/functions.util";
 
 interface NotificationProps {
+  id: string;
   title: string;
   content: string;
   createdAt: Date;
   isReaded: boolean;
+  isExpanded: boolean;
+  onExpandToggle: (id: string) => void;
 }
 
 const NotificationCard: FC<NotificationProps> = ({
+  id,
   title,
   content,
   createdAt,
   isReaded,
+  isExpanded,
+  onExpandToggle,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const formatDate = (date: Date) => {
-    let dateText = "";
-
-    try {
-      if (!date || isNaN(date.getTime())) {
-        dateText = "Invalid date"; // Fallback in case of invalid date
-      }
-      dateText = new Intl.DateTimeFormat("fr-FR", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(date);
-
-      return dateText;
-    } catch (error) {
-      dateText = "Invalid date";
-      return dateText;
-    }
-  };
-
   return (
     <div
       className={`max-w-md rounded-sm shadow-sm ${!isReaded ? "shadow-primary" : ""} border-[#EEEEEE] bg-white p-4 text-black transition-all duration-200 dark:border-strokedark dark:bg-boxdark dark:text-white  `}
+      style={{
+        display: "flex", // Prevents grid interference
+        flexDirection: "column",
+        overflow: "hidden", // Keeps the card isolated
+      }}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
@@ -51,7 +40,7 @@ const NotificationCard: FC<NotificationProps> = ({
         </div>
 
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => onExpandToggle(id)}
           className="rounded-full p-1 transition-colors duration-200 hover:bg-gray-100"
           aria-label={isExpanded ? "Collapse" : "Expand"}
         >
@@ -64,9 +53,10 @@ const NotificationCard: FC<NotificationProps> = ({
       </div>
 
       <div
-        className={`mt-2 overflow-hidden  duration-200 ${isExpanded ? "max-h-96" : "max-h-0"}`}
+        key={id}
+        className={`{isExpanded ?  "max-h-96" : "max-h-0"} mt-2 max-h-96 overflow-hidden duration-200`}
       >
-        <p className="">{content}</p>
+        <p className="">{isExpanded ? content : ""}</p>
       </div>
     </div>
   );

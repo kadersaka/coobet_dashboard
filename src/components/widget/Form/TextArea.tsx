@@ -6,7 +6,6 @@ interface AppTextAreaProps {
   label?: string;
   id: string;
   name: string;
-
   value?: string;
   placeholder: string;
   autoComplete?: string;

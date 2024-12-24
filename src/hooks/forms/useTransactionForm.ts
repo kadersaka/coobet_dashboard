@@ -109,11 +109,27 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
 
   const resetFormData = () => {
     setFormData({
-      amount: 1000,
-      typeTrans: "Remboursement Momo",
-      mobileReference: "Moov",
-      phoneNumber: "",
-      app: "1Win",
+      reference: initialData?.reference ?? "",
+      amount: initialData?.amount ?? 1000,
+      typeTrans:
+        initialData?.typeTrans != null
+          ? (transactionsData.types.find(
+              (type) => type.value == initialData?.typeTrans,
+            )?.name ?? "Remboursement Momo")
+          : "Remboursement Momo",
+      phoneNumber: initialData?.phoneNumber ?? "",
+      mobileReference:
+        initialData?.mobileReference != null
+          ? (transactionsData.mobileReferences.find(
+              (mobRef) => mobRef.value == initialData?.mobileReference,
+            )?.name ?? "Moov")
+          : "Moov",
+      app:
+        initialData?.app != null
+          ? (transactionsApps.find((app) => app.id == initialData?.app)?.name ??
+            "")
+          : "",
+      userAppId: initialData?.userAppId ?? "",
     });
   };
 

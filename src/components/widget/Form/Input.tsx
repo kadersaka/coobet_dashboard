@@ -1,6 +1,7 @@
 import { FC, ReactNode, useState } from "react";
 import Image from "next/image";
 import { Eye, EyeClosed } from "lucide-react";
+import { ensureBaseUrl } from "@/utils/functions.util";
 
 interface AppInputProps {
   label?: string;
@@ -66,16 +67,18 @@ const AppInput: FC<AppInputProps> = ({
                     width={60}
                     height={60}
                     className="rounded-sm object-cover"
+                    style={{ height: "auto" }}
                   />
                 </div>
               ) : typeof value === "string" ? (
                 <div className="ml-4">
                   <Image
-                    src={value as string}
+                    src={ensureBaseUrl(value as string)}
                     alt="Selected Logo"
                     width={70}
                     height={70}
-                    className="rounded-sm object-cover"
+                    className=" rounded-sm object-cover"
+                    style={{ height: "auto" }}
                   />
                 </div>
               ) : (

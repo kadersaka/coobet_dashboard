@@ -114,6 +114,21 @@ const Dashboard: React.FC = () => {
             >
               <ArrowLeftRight className="fill-primary dark:fill-white" />
             </CardDataStats>
+
+            <CardDataStats
+              title="Total Transactions Service"
+              total={`${dashboardData.allServiceTransactions ?? 0}`} // rate="0.43%" levelUp
+            >
+              <ArrowLeftRight className="fill-primary dark:fill-white" />
+            </CardDataStats>
+
+            <CardDataStats
+              title="Total Transactions Coobet"
+              total={`${dashboardData.allCoobetTransactions ?? 0}`} // rate="0.43%" levelUp
+            >
+              <ArrowLeftRight className="fill-primary dark:fill-white" />
+            </CardDataStats>
+
             <CardDataStats
               title="Dépôts"
               total={`${dashboardData.allTransDeposits ?? 0} F CFA`} // rate="0.43%" levelUp

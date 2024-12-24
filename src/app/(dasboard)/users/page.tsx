@@ -47,7 +47,7 @@ const UsersPage: FC<UsersPageProps> = () => {
 
       <ActionResult />
 
-      <div className="max-w-full overflow-x-auto">
+      <div className="'overflow-x-auto' max-w-full ">
         <div className="min-w-[400px] rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="  grid grid-cols-3 bg-bodydark1 text-left font-bold text-boxdark dark:bg-meta-4 dark:text-white md:grid-cols-4 xl:grid-cols-6 ">

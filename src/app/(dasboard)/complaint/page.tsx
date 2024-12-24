@@ -59,7 +59,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
       {/* <ComplaintForm id="complaint-form" /> */}
       <ActionResult />
 
-      <div className="max-w-full overflow-x-auto">
+      <div className="overflow-x-auto' max-w-full">
         <div className="min-w-[400px] rounded-sm text-black dark:text-white">
           <div className="grid grid-cols-3 bg-bodydark1 text-left   font-bold text-boxdark dark:bg-meta-4 dark:text-white lg:grid-cols-4 xl:grid-cols-5 ">
             {["Utilisateur", "Email", "Message", "Réponse", ""].map(

@@ -73,6 +73,8 @@ const useDashboardStore = create<DashboardStore>()(
         0,
         0,
         0,
+        0,
+        0,
       ),
 
       setPeriod: (e: React.ChangeEvent<HTMLSelectElement>) => {

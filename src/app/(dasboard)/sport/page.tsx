@@ -89,7 +89,10 @@ const SportsPage: FC<SportsPageProps> = () => {
                     className={`flex-1 px-5 py-4 text-end lg:px-7.5 2xl:px-11`}
                   >
                     <EditDeleteButton
-                      onEdit={() => toggleModal(`sport-form-${sport.id}`)}
+                      onEdit={() => {
+                        resetFormData();
+                        toggleModal(`sport-form-${sport.id}`);
+                      }}
                       onDelete={() => {
                         toggleModal(`delete-dialog-${sport.id}`);
                       }}

@@ -26,8 +26,8 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
 
   const resetFormData = () => {
     setFormData({
-      name: "",
-      sport: null,
+      name: initialData?.name ?? "",
+      sport: initialData?.sport ?? null,
     });
   };
 

@@ -12,8 +12,12 @@ const useTransactionFilterForm = (
   modalId: string,
   filter: TransactionFiterFormData,
 ) => {
-  const { setFilter, fetchTransactions, transactionsApps, error } =
-    useTransactionStore();
+  const {
+    setFilter,
+    fetchTransactions,
+    transactionsApps,
+    transactionsServices,
+  } = useTransactionStore();
   const { searchValue } = useSearchStore();
 
   const [formData, setFormData] = useState<TransactionFiterFormData>({
@@ -34,6 +38,9 @@ const useTransactionFilterForm = (
     withdriwalCode: filter.withdriwalCode ?? "",
     userEmail: filter.userEmail ?? "",
     app: transactionsApps.find((app) => app.id === filter.app)?.name ?? "",
+    service:
+      transactionsServices.find((service) => service.id === filter.service)
+        ?.name ?? "",
   });
 
   const [formErrors, setFormErrors] = useState<TransactionFiterFormErrors>({
@@ -46,6 +53,7 @@ const useTransactionFilterForm = (
     withdriwalCode: null,
     userEmail: null,
     app: null,
+    service: null,
   });
 
   const resetFormData = async () => {
@@ -60,6 +68,7 @@ const useTransactionFilterForm = (
       withdriwalCode: "",
       userEmail: "",
       app: "",
+      service: "",
     });
 
     toggleModal(modalId);
@@ -78,6 +87,7 @@ const useTransactionFilterForm = (
       withdriwalCode: null,
       userEmail: null,
       app: null,
+      service: null,
     });
   };
 
@@ -119,6 +129,7 @@ const useTransactionFilterForm = (
       withdriwalCode: null,
       userEmail: null,
       app: null,
+      service: null,
     };
 
     setFormErrors(errors);
@@ -151,6 +162,10 @@ const useTransactionFilterForm = (
         userEmail: formData.userEmail ?? "",
         app:
           transactionsApps.find((app) => app.name === formData.app)?.id ?? "",
+        service:
+          transactionsServices.find(
+            (service) => service.name === formData.service,
+          )?.id ?? "",
       });
 
       toggleModal(modalId);

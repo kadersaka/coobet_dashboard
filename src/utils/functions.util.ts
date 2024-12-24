@@ -64,8 +64,45 @@ export async function downloadFile2({
   }
 }
 
-// Usage:
-// await downloadFile('https://example.com/file.pdf', 'myfile.pdf');
+export const validateLogoUrl = async (url: string): Promise<boolean> => {
+  /* try {
+ 
+    const response = await api.get<Blob>(url, { responseType: "blob" });
+
+    const type = response.type;
+
+    return ["image/jpeg", "image/png", "image/gif"].includes(type);
+  } catch (error) {
+    console.error("Error fetching logo URL:", error);
+
+    return false;
+  }
+  */
+  return url.includes("https://api.coobet.app/");
+};
+
+export const uploadImage = async (file: File): Promise<string> => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await api.post<{ id: number; file: any; image: string }>(
+      "upload/file",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+
+    return response.image;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+
+    throw new Error("Image upload failed. Please try again.");
+  }
+};
 
 export function delay({
   milliseconds,
@@ -119,12 +156,13 @@ export function transactionMobileReference(mobileReference: string): string {
 }
 
 export function ensureBaseUrl(url: string): string {
-  const baseUrl = "https://api.coobet.app";
+  const baseUrl = "https://api.coobet.app/";
   if (!url.startsWith(baseUrl)) {
     const normalizedBaseUrl = baseUrl.endsWith("/")
       ? baseUrl.slice(0, -1)
       : baseUrl;
     const normalizedUrl = url.startsWith("/") ? url : `/${url}`;
+
     return `${normalizedBaseUrl}${normalizedUrl}`;
   }
   return url;
@@ -156,3 +194,24 @@ export function extractAxiosError(error: AxiosError): string {
 
   return error.message || "Une erreur inconnue s'est produite";
 }
+
+export const formatDate = (date: Date) => {
+  let dateText = "";
+
+  try {
+    if (!date || isNaN(date.getTime())) {
+      dateText = "Invalid date"; // Fallback in case of invalid date
+    }
+    dateText = new Intl.DateTimeFormat("fr-FR", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date);
+
+    return dateText;
+  } catch (error) {
+    dateText = "Invalid date";
+    return dateText;
+  }
+};

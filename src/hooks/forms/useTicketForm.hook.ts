@@ -68,11 +68,20 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
 
   const resetFormData = () => {
     setFormData({
-      events: [],
-      status: "",
-      sample: "",
-      subscription: "",
-      betAmount: "",
+      events: initialData?.events ?? [],
+      status:
+        initialData?.status != null
+          ? (ticketStatus.find((status) => status.value == initialData?.status)
+              ?.name ?? "")
+          : "",
+      sample: initialData?.sample ?? "",
+      subscription:
+        initialData?.subscription != null
+          ? (ticketSubscriptions.find(
+              (subscription) => subscription.value == initialData?.subscription,
+            )?.name ?? "")
+          : "",
+      betAmount: initialData?.betAmount?.toString() ?? "",
     });
   };
 

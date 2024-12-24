@@ -27,4 +27,6 @@ export interface DashboardJson {
   all_sports: number;
   all_clubs: number;
   all_bonus: number;
+  all_service_transactions: number;
+  all_coobet_transactions: number;
 }

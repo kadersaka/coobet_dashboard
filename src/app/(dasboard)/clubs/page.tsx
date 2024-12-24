@@ -96,6 +96,7 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                       width={50}
                       height={50}
                       className="mx-auto"
+                      style={{ height: "auto" }}
                     />
                   </div>
 

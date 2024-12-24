@@ -37,7 +37,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
     page,
     loading,
     fetchTransactions,
-
+    fetchServices,
     fetchApps,
     filter,
     increasePage,
@@ -52,11 +52,19 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
     fetchApps();
   }, [fetchApps]);
 
+  useEffect(() => {
+    fetchServices();
+  }, [fetchServices]);
+
   return (
     <>
       <Breadcrumb
         pageName="Transactions"
-        onClick={() => fetchTransactions(searchValue)}
+        onClick={() => {
+          fetchTransactions(searchValue);
+          fetchApps();
+          fetchServices();
+        }}
       >
         <AppButton
           name="Ajouter"
@@ -64,7 +72,6 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-
             toggleModal("transaction-form");
           }}
         />
@@ -90,7 +97,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
 
       <ActionResult />
 
-      <div className="max-w-full overflow-x-auto">
+      <div className="'overflow-x-auto' max-w-full">
         <div className="min-w-[500px] rounded-sm text-black dark:text-white">
           {/* Table Header */}
           <div className="grid grid-cols-4 bg-bodydark1 text-left  font-bold text-boxdark dark:bg-meta-4 dark:text-white lg:grid-cols-5 xl:grid-cols-7 ">

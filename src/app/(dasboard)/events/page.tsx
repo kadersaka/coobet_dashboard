@@ -68,7 +68,11 @@ const EventsPage: FC<EventsPageProps> = () => {
                   key={index}
                   event={event}
                   showOptions={true}
-                  onEdit={() => toggleModal(`event-form-${event.id}`)}
+                  onEdit={() => {
+                    resetFormData();
+                    resetFormErrors();
+                    toggleModal(`event-form-${event.id}`);
+                  }}
                   onDelete={() => toggleModal(`delete-dialog-${event.id}`)}
                 />
 

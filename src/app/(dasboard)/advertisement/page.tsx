@@ -1,8 +1,6 @@
 "use client";
 
 import { FC, useEffect } from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import MultipleActionButton from "@/components/widget/Form/EditDeleteButton";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AppButton from "@/components/widget/Form/Button";
 import { toggleModal } from "@/utils/functions.util";
@@ -12,36 +10,36 @@ import useSearchStore from "@/store/useSearchStore.store";
 import Loader from "@/components/common/Loader";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import PageCounter from "@/components/common/PageCounter";
-import useTicketForm from "@/hooks/forms/useTicketForm.hook";
-import useTicketStore from "@/store/useTicket.store";
-import TicketCard from "@/components/widget/TicketCard";
-import TicketForm from "@/components/widget/Forms/TicketForm";
+import useAdvertisementForm from "@/hooks/forms/useAdvertisementForm.hook";
+import useAdvertisementStore from "@/store/useAdvertisement.store";
+import AdvertisementCard from "@/components/widget/AdvertisementCard";
+import AdvertisementForm from "@/components/widget/Forms/AdvertisementForm";
+interface AdvertisementsPageProps {}
 
-interface TicketsPageProps {}
-
-const TicketsPage: FC<TicketsPageProps> = () => {
+const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useTicketForm("ticket-form");
+  const { resetFormData, resetFormErrors } =
+    useAdvertisementForm("Advertisement-form");
   const {
-    paginatedTickets,
+    paginatedAdvertisements,
     page,
     loading,
-    fetchTickets,
-    deleteTicket,
+    fetchAdvertisements,
+    deleteAdvertisement,
     increasePage,
     decreasePage,
-  } = useTicketStore();
+  } = useAdvertisementStore();
 
   useEffect(() => {
-    fetchTickets(searchValue);
-  }, [fetchTickets, searchValue]);
+    fetchAdvertisements(searchValue);
+  }, [fetchAdvertisements, searchValue]);
 
   return (
     <>
       <Breadcrumb
-        pageName="Tickets"
+        pageName="Publicités"
         onClick={() => {
-          fetchTickets(searchValue);
+          fetchAdvertisements(searchValue);
         }}
       >
         <AppButton
@@ -50,11 +48,11 @@ const TicketsPage: FC<TicketsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("ticket-form");
+            toggleModal("advertisement-form");
           }}
         />
       </Breadcrumb>
-      <TicketForm id="ticket-form" />
+      <AdvertisementForm id="advertisement-form" />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
@@ -62,36 +60,38 @@ const TicketsPage: FC<TicketsPageProps> = () => {
           <ProcessingLoader />
         ) : (
           <div className="grid grid-cols-1 gap-4 rounded-sm text-black dark:text-white md:grid-cols-2 lg:grid-cols-3">
-            {paginatedTickets?.results.map((ticket, index) => (
+            {paginatedAdvertisements?.results.map((advertisement, index) => (
               <div
                 key={index}
                 className={` flex w-full items-center border-t border-[#EEEEEE] dark:border-strokedark `}
               >
-                <TicketCard
+                <AdvertisementCard
                   key={index}
-                  ticket={ticket}
+                  advertisement={advertisement}
                   showOptions={true}
                   onEdit={() => {
                     resetFormData();
                     resetFormErrors();
-                    toggleModal(`ticket-form-${ticket.id}`);
+                    toggleModal(`advertisement-form-${advertisement.id}`);
                   }}
-                  onDelete={() => toggleModal(`delete-dialog-${ticket.id}`)}
+                  onDelete={() => {
+                    toggleModal(`delete-dialog-${advertisement.id}`);
+                  }}
                 />
 
-                <TicketForm
-                  key={`ticket-form-${ticket.id}`}
-                  id={`ticket-form-${ticket.id}`}
-                  ticket={ticket}
+                <AdvertisementForm
+                  key={`advertisement-form-${advertisement.id}-${index}`}
+                  id={`advertisement-form-${advertisement.id}`}
+                  advertisement={advertisement}
                 />
 
                 <DeletionConfirmation
-                  key={`deletion-confirmation-${ticket.id}`}
-                  id={`delete-dialog-${ticket.id}`}
-                  message="Êtes-vous sûr de vouloir supprimer ce coupon"
-                  successMessage="Le coupon a été supprimé avec succès"
-                  objectId={ticket.id!}
-                  onDelete={deleteTicket}
+                  key={`deletion-confirmation-${advertisement.id}-${index}`}
+                  id={`delete-dialog-${advertisement.id}`}
+                  message="Êtes-vous sûr de vouloir supprimer cette publicité"
+                  successMessage="La publicité a été supprimée avec succès"
+                  objectId={advertisement.id!}
+                  onDelete={deleteAdvertisement}
                 />
               </div>
             ))}
@@ -100,30 +100,33 @@ const TicketsPage: FC<TicketsPageProps> = () => {
       </div>
 
       <div className="my-5 flex items-center justify-evenly xsm:my-10 md:my-8">
-        {paginatedTickets.previous ? (
+        {paginatedAdvertisements.previous ? (
           <AppButton
             name="Précédent"
             width="w-[150px]"
             color={`bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white`}
             onClick={() => {
               decreasePage();
-              fetchTickets(searchValue);
+              fetchAdvertisements(searchValue);
             }}
           />
         ) : (
           <span className="w-1"> </span>
         )}
 
-        <PageCounter totalPage={paginatedTickets.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedAdvertisements.count}
+          currentPage={page}
+        />
 
-        {paginatedTickets.next ? (
+        {paginatedAdvertisements.next ? (
           <AppButton
             name="Suivant"
             width="w-[150px]"
             color={`bg-bodydark2 text-boxdark dark:bg-meta-4 dark:text-white`}
             onClick={() => {
               increasePage();
-              fetchTickets(searchValue);
+              fetchAdvertisements(searchValue);
             }}
           />
         ) : (
@@ -134,4 +137,4 @@ const TicketsPage: FC<TicketsPageProps> = () => {
   );
 };
 
-export default TicketsPage;
+export default AdvertisementsPage;
