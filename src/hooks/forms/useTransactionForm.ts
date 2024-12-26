@@ -18,20 +18,12 @@ export const transactionsData = {
       name: "Dépôt",
       value: "deposit",
     },
-    /* {
-      name: "Retrait",
-      value: "withdrawal",
-    },
-    */
+
     {
       name: "Abonnement",
       value: "subscrib",
     },
-    /*  {
-      name: "Récompense",
-      value: "reward",
-    },
-    */
+
     {
       name: "Remboursement Momo",
       value: "disbursements",

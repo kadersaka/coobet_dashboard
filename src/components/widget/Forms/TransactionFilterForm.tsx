@@ -46,17 +46,17 @@ const TransactionFilterForm: FC<TransactionFilterFormProps> = ({
     setFormData({
       reference: filter.reference ?? "",
       status:
-        transactionsData.status.find((status) => status.name === filter.status)
+        transactionsData.status.find((status) => status.value === filter.status)
           ?.name ?? "",
       type:
-        transactionsData.types.find((type) => type.name === filter.status)
+        transactionsData.types.find((type) => type.value === filter.type)
           ?.name ?? "",
       countryCodeCode: filter.countryCodeCode ?? "",
       phoneNumber: filter.phoneNumber ?? "",
       userAppId: filter.userAppId ?? "",
       mobileReference:
         transactionsData.mobileReferences.find(
-          (mobilRef) => mobilRef.name === filter.status,
+          (mobilRef) => mobilRef.value === filter.mobileReference,
         )?.name ?? "",
       withdriwalCode: filter.withdriwalCode ?? "",
       userEmail: filter.userEmail ?? "",
