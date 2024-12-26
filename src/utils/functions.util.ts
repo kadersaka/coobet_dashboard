@@ -145,7 +145,7 @@ export function transactionType(type: string): string {
 export function transactionMobileReference(mobileReference: string): string {
   switch (mobileReference) {
     case "moov":
-      return "Moov";
+      return "MOOV";
     case "mtn":
       return "MTN";
     case "card":

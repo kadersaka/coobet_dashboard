@@ -170,7 +170,7 @@ const useTransactionFilterForm = (
 
       toggleModal(modalId);
 
-      await fetchTransactions(searchValue);
+      await fetchTransactions(searchValue, undefined, 1);
     }
   };
 
