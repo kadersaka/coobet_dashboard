@@ -36,7 +36,7 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
   } = useChampionshipStore();
 
   useEffect(() => {
-    fetchChampionships(searchValue);
+    fetchChampionships(searchValue, 1);
   }, [fetchChampionships, searchValue]);
 
   return (

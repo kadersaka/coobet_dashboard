@@ -31,7 +31,7 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
   >({});
 
   useEffect(() => {
-    fetchNotifications(searchValue);
+    fetchNotifications(searchValue, 1);
   }, [fetchNotifications, searchValue]);
 
   const handleExpandToggle = (id: string) => {

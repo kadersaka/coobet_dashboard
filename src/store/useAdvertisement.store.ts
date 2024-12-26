@@ -73,7 +73,7 @@ const useAdvertisementStore = create<AdvertisementStore>()(
       },
 
       fetchAdvertisements: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedAdvertisements = await AdvertisementApi.findMany(
             searchField,

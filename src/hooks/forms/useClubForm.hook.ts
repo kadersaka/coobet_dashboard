@@ -2,6 +2,7 @@ import { ClubFormData, ClubFormErrors } from "@/interfaces/club.interface";
 import Club from "@/models/club.model";
 import useClubStore from "@/store/useClub.store";
 import useInterfaceStore from "@/store/useInterface.store";
+import useSearchStore from "@/store/useSearchStore.store";
 import api from "@/utils/api.util";
 import {
   delay,
@@ -12,7 +13,8 @@ import {
 import { useEffect, useState } from "react";
 
 const useClubForm = (modalId: string, initialData?: Club) => {
-  const { addClub, updateClub } = useClubStore();
+  const { searchValue } = useSearchStore();
+  const { addClub, updateClub, fetchClubs } = useClubStore();
 
   const [formData, setFormData] = useState<ClubFormData>({
     name: initialData?.name ?? "",
@@ -136,6 +138,8 @@ const useClubForm = (modalId: string, initialData?: Club) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchClubs(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

@@ -32,7 +32,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
   } = useMatchStore();
 
   useEffect(() => {
-    fetchMatches(searchValue);
+    fetchMatches(searchValue, 1);
   }, [fetchMatches, searchValue]);
 
   return (

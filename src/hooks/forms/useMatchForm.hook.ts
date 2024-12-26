@@ -7,9 +7,11 @@ import Match from "@/models/match.model";
 import Club from "@/models/club.model";
 import { Moment } from "moment";
 import Championship from "@/models/championship.model";
+import useSearchStore from "@/store/useSearchStore.store";
 
 const useMatchForm = (modalId: string, initialData?: Match) => {
-  const { addMatch, updateMatch, error } = useMatchStore();
+  const { searchValue } = useSearchStore();
+  const { addMatch, updateMatch, fetchMatches } = useMatchStore();
 
   const [formData, setFormData] = useState<MatchFormData>({
     championship: initialData?.championship ?? null,
@@ -190,6 +192,8 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchMatches(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

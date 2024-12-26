@@ -12,7 +12,7 @@ import useComplaintstore from "@/store/useComplaint.store";
 import useSearchStore from "@/store/useSearchStore.store";
 
 const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
-  const { addComplaintResponse, updateComplaintResponse, error } =
+  const { addComplaintResponse, updateComplaintResponse } =
     useComplaintResponseStore();
 
   const { searchValue } = useSearchStore();
@@ -117,6 +117,8 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchComplaints(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

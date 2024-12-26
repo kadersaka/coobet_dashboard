@@ -9,7 +9,7 @@ import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useSettingForm = (modalId: string, initialData?: Setting) => {
-  const { addSetting, updateSetting, error } = useSettingStore();
+  const { addSetting, updateSetting, fetchSettings } = useSettingStore();
 
   const [formData, setFormData] = useState<SettingFormData>({
     id: initialData?.id ?? undefined,
@@ -244,6 +244,8 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchSettings();
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

@@ -62,7 +62,7 @@ const useEventStore = create<EventStore>()(
       },
 
       fetchEvents: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedEvents = await EventApi.findMany(
             searchField,

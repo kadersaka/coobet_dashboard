@@ -94,7 +94,7 @@ const useTransactionStore = create<TransactionStore>()(
       },
 
       fetchTransactions: async (searchField = "", filter, page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedTransactions = await TransactionApi.findMany(
             searchField,

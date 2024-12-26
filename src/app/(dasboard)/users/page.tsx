@@ -35,7 +35,7 @@ const UsersPage: FC<UsersPageProps> = () => {
   } = useUserStore();
 
   useEffect(() => {
-    fetchUsers(searchValue);
+    fetchUsers(searchValue, 1);
   }, [fetchUsers, searchValue]);
 
   return (

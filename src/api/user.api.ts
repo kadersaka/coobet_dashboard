@@ -23,6 +23,7 @@ class UserApi {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Accept-Language": "fr",
           },
         },
       );
@@ -82,13 +83,14 @@ class UserApi {
   static async remove(userId: string, adminPassword: string): Promise<void> {
     const token = localStorage.getItem("access");
     try {
-      await axios.post(
-        "https://api.coobet.app/auth/delete_acount",
-        { passwor: adminPassword, user_id: userId },
+      await axios.delete;
+      fetch(
+        "https://api.coobet.app/auth/delete_account",
+        // { password: adminPassword, user_id: userId },
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Accept-Language": "fr",
           },
         },
       );

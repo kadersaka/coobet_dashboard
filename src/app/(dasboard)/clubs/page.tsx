@@ -36,7 +36,7 @@ const ClubsPage: FC<ClubsPageProps> = () => {
   } = useClubStore();
 
   useEffect(() => {
-    fetchClubs(searchValue);
+    fetchClubs(searchValue, 1);
   }, [fetchClubs, searchValue]);
 
   return (

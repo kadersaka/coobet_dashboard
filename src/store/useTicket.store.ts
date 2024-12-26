@@ -99,7 +99,7 @@ const useTicketStore = create<TicketStore>()(
       },
 
       researchTickets: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedTickets = await TicketApi.findMany(
             searchField,

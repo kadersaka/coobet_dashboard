@@ -5,6 +5,7 @@ import {
 import Advertisement from "@/models/advertisement.model";
 import useAdvertisementStore from "@/store/useAdvertisement.store";
 import useInterfaceStore from "@/store/useInterface.store";
+import useSearchStore from "@/store/useSearchStore.store";
 import api from "@/utils/api.util";
 import {
   delay,
@@ -15,7 +16,9 @@ import {
 import { useEffect, useState } from "react";
 
 const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
-  const { addAdvertisement, updateAdvertisement } = useAdvertisementStore();
+  const { searchValue } = useSearchStore();
+  const { addAdvertisement, updateAdvertisement, fetchAdvertisements } =
+    useAdvertisementStore();
 
   const [formData, setFormData] = useState<AdvertisementFormData>({
     content: initialData?.content ?? "",
@@ -162,6 +165,8 @@ const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchAdvertisements(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

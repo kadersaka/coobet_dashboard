@@ -61,7 +61,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
       <Breadcrumb
         pageName="Transactions"
         onClick={() => {
-          fetchTransactions(searchValue);
+          fetchTransactions(searchValue, undefined, 1);
           fetchApps();
           fetchServices();
         }}

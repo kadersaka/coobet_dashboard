@@ -34,7 +34,7 @@ const SportsPage: FC<SportsPageProps> = () => {
   } = useSportStore();
 
   useEffect(() => {
-    fetchSports(searchValue);
+    fetchSports(searchValue, 1);
   }, [fetchSports, searchValue]);
 
   return (

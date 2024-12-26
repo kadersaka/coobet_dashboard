@@ -36,12 +36,15 @@ const EventsPage: FC<EventsPageProps> = () => {
   } = useEventStore();
 
   useEffect(() => {
-    fetchEvents(searchValue);
+    fetchEvents(searchValue, 1);
   }, [fetchEvents, searchValue]);
 
   return (
     <>
-      <Breadcrumb pageName="Events" onClick={() => fetchEvents(searchValue)}>
+      <Breadcrumb
+        pageName="Évènements"
+        onClick={() => fetchEvents(searchValue)}
+      >
         <AppButton
           name="Ajouter"
           width="w-[150px]"

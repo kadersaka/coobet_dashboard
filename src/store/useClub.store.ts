@@ -62,7 +62,7 @@ const useClubStore = create<ClubStore>()(
       },
 
       fetchClubs: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedClubs = await ClubApi.findMany(
             searchField,

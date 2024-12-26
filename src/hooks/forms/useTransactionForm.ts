@@ -10,6 +10,7 @@ import {
 } from "@/interfaces/transaction.interface";
 import User from "@/models/user.model";
 import { SelectItemProps } from "@/components/widget/Form/Select";
+import useSearchStore from "@/store/useSearchStore.store";
 
 export const transactionsData = {
   types: [
@@ -68,8 +69,14 @@ export const transactionsData = {
 };
 
 const useTransactionForm = (modalId: string, initialData?: Transaction) => {
-  const { transactionsApps, error, addTransaction, updateTransaction } =
-    useTransactionStore();
+  const { searchValue } = useSearchStore();
+  const {
+    transactionsApps,
+    error,
+    addTransaction,
+    updateTransaction,
+    fetchTransactions,
+  } = useTransactionStore();
 
   const [formData, setFormData] = useState<TransactionFormData>({
     reference: initialData?.reference ?? "",
@@ -206,56 +213,63 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
     if (validateForm()) {
       setProcessing(true);
 
-      const transaction = new Transaction(
-        Number(formData.amount),
-        new User("user", "user"),
-        formData?.reference ?? "",
-        transactionsData.types.find((item) => item.name === formData.typeTrans)
-          ?.value ?? "disbursements",
-        initialData?.status ?? "pending",
-        formData.phoneNumber.split(formData.countryCodeCode ?? "")[1],
-        initialData?.country ?? "Bénin",
-        transactionsData.mobileReferences.find(
-          (item) => item.name === formData.mobileReference,
-        )?.value ?? "moov",
-        initialData?.createdAt ?? new Date(),
-        formData.countryCodeCode,
-        transactionsApps.find((app) => app.name === formData.app),
-        formData.userAppId,
-        initialData?.withdrawalCode,
-        initialData?.id,
-      );
+      try {
+        const transaction = new Transaction(
+          Number(formData.amount),
+          new User("user", "user"),
+          formData?.reference ?? "",
+          transactionsData.types.find(
+            (item) => item.name === formData.typeTrans,
+          )?.value ?? "disbursements",
+          initialData?.status ?? "pending",
+          formData.phoneNumber.split(formData.countryCodeCode ?? "")[1],
+          initialData?.country ?? "Bénin",
+          transactionsData.mobileReferences.find(
+            (item) => item.name === formData.mobileReference,
+          )?.value ?? "moov",
+          initialData?.createdAt ?? new Date(),
+          formData.countryCodeCode,
+          transactionsApps.find((app) => app.name === formData.app),
+          formData.userAppId,
+          initialData?.withdrawalCode,
+          initialData?.id,
+        );
 
-      if (transaction.id) {
-        const updatedTransaction = await updateTransaction(transaction);
+        if (transaction.id) {
+          const updatedTransaction = await updateTransaction(transaction);
 
-        if (error) {
-          setActionResultMessage(error);
-          toggleModal("action-result-message");
-        } else if (updatedTransaction) {
-          resetFormData();
-          toggleModal(modalId);
-          setActionResultMessage(
-            "La transaction a été mise à jour avec succès.",
-          );
-          toggleModal("action-result-message");
-          await delay({ milliseconds: 1000 });
-          toggleModal("action-result-message");
+          if (error) {
+            setActionResultMessage(error);
+            toggleModal("action-result-message");
+          } else if (updatedTransaction) {
+            resetFormData();
+            toggleModal(modalId);
+            setActionResultMessage(
+              "La transaction a été mise à jour avec succès.",
+            );
+            toggleModal("action-result-message");
+            await delay({ milliseconds: 1000 });
+            toggleModal("action-result-message");
+          }
+        } else {
+          const newTransaction = await addTransaction(transaction);
+
+          if (typeof newTransaction === "string") {
+            setActionResultMessage(newTransaction);
+            toggleModal("action-result-message");
+          } else if (newTransaction) {
+            resetFormData();
+            toggleModal(modalId);
+            setActionResultMessage("La transaction a été ajoutée avec succès.");
+            toggleModal("action-result-message");
+            await delay({ milliseconds: 1000 });
+            toggleModal("action-result-message");
+          }
         }
-      } else {
-        const newTransaction = await addTransaction(transaction);
 
-        if (typeof newTransaction === "string") {
-          setActionResultMessage(newTransaction);
-          toggleModal("action-result-message");
-        } else if (newTransaction) {
-          resetFormData();
-          toggleModal(modalId);
-          setActionResultMessage("La transaction a été ajoutée avec succès.");
-          toggleModal("action-result-message");
-          await delay({ milliseconds: 1000 });
-          toggleModal("action-result-message");
-        }
+        fetchTransactions(searchValue);
+      } catch (error) {
+        console.error("Error handling form submission:", error);
       }
 
       setProcessing(false);

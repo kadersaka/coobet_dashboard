@@ -9,6 +9,7 @@ import { Moment } from "moment";
 import Championship from "@/models/championship.model";
 import Match from "@/models/match.model";
 import { SelectItemProps } from "../../components/widget/Form/Select";
+import useSearchStore from "@/store/useSearchStore.store";
 
 export const eventStatus: SelectItemProps[] = [
   {
@@ -30,7 +31,8 @@ export const eventStatus: SelectItemProps[] = [
 ];
 
 const useEventForm = (modalId: string, initialData?: Event) => {
-  const { addEvent, updateEvent, error } = useEventStore();
+  const { searchValue } = useSearchStore();
+  const { addEvent, updateEvent, fetchEvents } = useEventStore();
 
   const [formData, setFormData] = useState<EventFormData>({
     match: initialData?.match ?? null,
@@ -173,6 +175,8 @@ const useEventForm = (modalId: string, initialData?: Event) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchEvents(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

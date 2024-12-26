@@ -54,7 +54,7 @@ const useUsersStore = create<UserStore>()(
       setPageSize: (newPageSize: number) => set({ pageSize: newPageSize }),
 
       fetchUsers: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedUsers = await UserApi.findMany(
             searchField,

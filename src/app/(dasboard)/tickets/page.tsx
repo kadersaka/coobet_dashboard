@@ -33,13 +33,13 @@ const TicketsPage: FC<TicketsPageProps> = () => {
   } = useTicketStore();
 
   useEffect(() => {
-    fetchTickets(searchValue);
+    fetchTickets(searchValue, 1);
   }, [fetchTickets, searchValue]);
 
   return (
     <>
       <Breadcrumb
-        pageName="Tickets"
+        pageName="Coupons"
         onClick={() => {
           fetchTickets(searchValue);
         }}

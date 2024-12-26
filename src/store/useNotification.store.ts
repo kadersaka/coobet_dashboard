@@ -68,7 +68,7 @@ const useNotificationStore = create<NotificationStore>()(
       },
 
       fetchNotifications: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedNotifications = await NotificationApi.findMany(
             searchField,

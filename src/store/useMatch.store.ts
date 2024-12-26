@@ -62,7 +62,7 @@ const useMatchStore = create<MatchStore>()(
       },
 
       fetchMatches: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedMatches = await MatchApi.findMany(
             searchField,

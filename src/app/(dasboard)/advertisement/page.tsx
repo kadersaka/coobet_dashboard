@@ -31,7 +31,7 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
   } = useAdvertisementStore();
 
   useEffect(() => {
-    fetchAdvertisements(searchValue);
+    fetchAdvertisements(searchValue, 1);
   }, [fetchAdvertisements, searchValue]);
 
   return (

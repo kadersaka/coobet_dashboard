@@ -9,6 +9,7 @@ import {
 import Ticket from "@/models/ticket.model";
 import Event from "@/models/event.model";
 import { SelectItemProps } from "../../components/widget/Form/Select";
+import useSearchStore from "@/store/useSearchStore.store";
 
 export const ticketStatus: SelectItemProps[] = [
   {
@@ -37,7 +38,8 @@ export const ticketSubscriptions: SelectItemProps[] = [
 ];
 
 const useTicketForm = (modalId: string, initialData?: Ticket) => {
-  const { addTicket, updateTicket, error } = useTicketStore();
+  const { searchValue } = useSearchStore();
+  const { addTicket, updateTicket, fetchTickets } = useTicketStore();
 
   const [formData, setFormData] = useState<TicketFormData>({
     events: initialData?.events ?? [],
@@ -203,6 +205,8 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchTickets(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

@@ -1,11 +1,13 @@
 import User from "@/models/user.model";
 import useInterfaceStore from "@/store/useInterface.store";
+import useSearchStore from "@/store/useSearchStore.store";
 import useUsersStore from "@/store/useUser.store";
 import { delay, toggleModal } from "@/utils/functions.util";
 import { useState } from "react";
 
 const useAdminPassForm = (modalId: string, user: User) => {
-  const { deleteUser } = useUsersStore();
+  const { searchValue } = useSearchStore();
+  const { deleteUser, fetchUsers } = useUsersStore();
 
   const [passwordData, setPasswordData] = useState<string>("");
 
@@ -74,6 +76,8 @@ const useAdminPassForm = (modalId: string, user: User) => {
           toggleModal("action-result-message");
           await delay({ milliseconds: 1000 });
           toggleModal("action-result-message");
+
+          fetchUsers(searchValue);
         } else {
           setActionResultMessage("Une erreur s'est produite");
           toggleModal("action-result-message");

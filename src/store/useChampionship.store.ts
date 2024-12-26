@@ -68,7 +68,7 @@ const useChampionshipStore = create<ChampionshipStore>()(
       },
 
       fetchChampionships: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedChampionships = await ChampionshipApi.findMany(
             searchField,

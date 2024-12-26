@@ -62,7 +62,7 @@ const useSportStore = create<SportStore>()(
       },
 
       fetchSports: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedSports = await SportApi.findMany(
             searchField,

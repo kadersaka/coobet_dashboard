@@ -4,9 +4,11 @@ import useSportStore from "@/store/useSport.store";
 import useInterfaceStore from "@/store/useInterface.store";
 import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
+import useSearchStore from "@/store/useSearchStore.store";
 
 const useSportForm = (modalId: string, initialData?: Sport) => {
-  const { addSport, updateSport, error } = useSportStore();
+  const { searchValue } = useSearchStore();
+  const { addSport, updateSport, fetchSports } = useSportStore();
 
   const [formData, setFormData] = useState<SportFormData>({
     name: initialData?.name ?? "",
@@ -102,6 +104,8 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchSports(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

@@ -6,11 +6,14 @@ import Championship from "@/models/championship.model";
 import Sport from "@/models/sport.model";
 import useChampionshipStore from "@/store/useChampionship.store";
 import useInterfaceStore from "@/store/useInterface.store";
+import useSearchStore from "@/store/useSearchStore.store";
 import { delay, toggleModal } from "@/utils/functions.util";
 import { useEffect, useState } from "react";
 
 const useChampionshipForm = (modalId: string, initialData?: Championship) => {
-  const { addChampionship, updateChampionship, error } = useChampionshipStore();
+  const { searchValue } = useSearchStore();
+  const { addChampionship, updateChampionship, fetchChampionships } =
+    useChampionshipStore();
 
   const [formData, setFormData] = useState<ChampionshipFormData>({
     name: initialData?.name ?? "",
@@ -125,6 +128,8 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
             toggleModal("action-result-message");
           }
         }
+
+        fetchChampionships(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

@@ -37,7 +37,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
   } = useComplaintstore();
 
   useEffect(() => {
-    fetchComplaints(searchValue);
+    fetchComplaints(searchValue, 1);
   }, [fetchComplaints, searchValue]);
 
   return (

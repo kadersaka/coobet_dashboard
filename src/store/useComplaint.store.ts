@@ -60,7 +60,7 @@ const useComplaintStore = create<ComplaintStore>()(
       },
 
       fetchComplaints: async (searchField = "", page, pageSize) => {
-        set({ loading: true, error: null });
+        set({ loading: true, error: null, page: page ?? get().page });
         try {
           const paginatedComplaints = await ComplaintApi.findMany(
             searchField,
