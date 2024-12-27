@@ -91,6 +91,7 @@ const NotificationsPage: FC<NotificationsPageProps> = () => {
           totalPage={paginatedNotifications.count}
           currentPage={page}
           pageSize={pageSize}
+          fetchPage={(page) => fetchNotifications(searchValue, page)}
         />
 
         {paginatedNotifications.next ? (

@@ -17,7 +17,10 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
     championship: initialData?.championship ?? null,
     clubHome: initialData?.clubHome ?? null,
     clubForeign: initialData?.clubForeign ?? null,
-    startDate: new Date(),
+    startDate:
+      initialData?.startDate != null
+        ? new Date(initialData.startDate as Date)
+        : new Date(),
     clubHomeGoal: initialData?.clubHomeGoal ?? 0,
     clubForeignGoal: initialData?.clubForeignGoal ?? 0,
   });

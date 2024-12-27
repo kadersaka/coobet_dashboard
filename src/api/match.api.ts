@@ -46,9 +46,10 @@ class MatchApi {
   }
 
   static async update(match: Match): Promise<Match> {
+    console.log(" ==========> Update match", match.id);
     try {
       const matchJson = match.toJson();
-      const response = await api.put<MatchJson>(
+      const response = await api.pacth<MatchJson>(
         `${this.route}/${match.id}`,
         matchJson,
       );

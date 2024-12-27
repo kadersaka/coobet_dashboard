@@ -76,22 +76,22 @@ const UsersPage: FC<UsersPageProps> = () => {
                   className={` grid w-full grid-cols-3 items-center border-t border-[#EEEEEE] dark:border-strokedark md:grid-cols-4 xl:grid-cols-6  `}
                 >
                   {/* User Name */}
-                  <div className="flex-1  px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1  overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {user.lastname}
                   </div>
 
                   {/* User Firstname */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1 overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {user.firstname}
                   </div>
 
                   {/* User Email */}
-                  <div className="hidden flex-1 px-5 py-4 md:table-cell lg:px-7.5 2xl:px-11">
+                  <div className="hidden flex-1 overflow-hidden px-5 py-4 md:table-cell lg:px-7.5 2xl:px-11">
                     {user.email}
                   </div>
 
                   {/* User phone */}
-                  <div className="hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
+                  <div className="hidden overflow-hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
                     {user.phoneIndicative}
                     {user.phone}
                   </div>
@@ -157,7 +157,11 @@ const UsersPage: FC<UsersPageProps> = () => {
           <span className="w-1"></span>
         )}
 
-        <PageCounter totalPage={paginatedUsers.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedUsers.count}
+          fetchPage={(page) => fetchUsers(searchValue, page)}
+          currentPage={page}
+        />
 
         {paginatedUsers.next ? (
           <AppButton

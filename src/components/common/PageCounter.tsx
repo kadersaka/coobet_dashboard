@@ -4,12 +4,14 @@ interface PageCounterProps {
   totalPage: number;
   currentPage: number;
   pageSize?: number;
+  fetchPage: (page: number) => void;
 }
 
 const PageCounter: FC<PageCounterProps> = ({
   totalPage,
   currentPage,
   pageSize,
+  fetchPage,
 }) => {
   return (
     <div className="flex items-center text-boxdark dark:text-white ">
@@ -25,7 +27,11 @@ const PageCounter: FC<PageCounterProps> = ({
               {index + 1}
             </span>
           ) : (
-            <span key={index} className="mx-1.5 flex-1 font-normal">
+            <span
+              key={index}
+              className="mx-1.5 flex-1 font-normal hover:cursor-pointer"
+              onClick={() => fetchPage(index + 1)}
+            >
               {index + 1}
             </span>
           ),

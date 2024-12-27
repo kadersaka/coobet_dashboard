@@ -56,7 +56,7 @@ const NotificationCard: FC<NotificationProps> = ({
         key={id}
         className={`{isExpanded ?  "max-h-96" : "max-h-0"} mt-2 max-h-96 overflow-hidden duration-200`}
       >
-        <p className="">{isExpanded ? content : ""}</p>
+        <p className="overflow-hidden">{isExpanded ? content : ""}</p>
       </div>
     </div>
   );

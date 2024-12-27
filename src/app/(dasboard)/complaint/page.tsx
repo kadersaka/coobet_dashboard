@@ -85,19 +85,19 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
                   key={index}
                   className={` grid w-full grid-cols-3 items-center border-t border-[#EEEEEE] dark:border-strokedark lg:grid-cols-4 xl:grid-cols-5  `}
                 >
-                  <div className="flex-1  px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1  overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {complaint.user.lastname} {complaint.user.firstname}
                   </div>
 
-                  <div className="hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
+                  <div className="hidden overflow-hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
                     {complaint.email}
                   </div>
 
-                  <div className="flex px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {complaint.message}
                   </div>
 
-                  <div className="hidden px-5 py-4 lg:table-cell lg:px-7.5 2xl:px-11">
+                  <div className="hidden overflow-hidden px-5 py-4 lg:table-cell lg:px-7.5 2xl:px-11">
                     {complaint.response != null &&
                     complaint.response.response.length > 15
                       ? `${complaint.response.response.substring(0, 12)} ...`
@@ -157,7 +157,11 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
           <span className="w-1"></span>
         )}
 
-        <PageCounter totalPage={paginatedComplaints.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedComplaints.count}
+          currentPage={page}
+          fetchPage={(page) => fetchComplaints(searchValue, page)}
+        />
 
         {paginatedComplaints.next ? (
           <AppButton

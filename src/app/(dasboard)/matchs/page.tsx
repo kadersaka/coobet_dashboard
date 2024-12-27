@@ -20,7 +20,11 @@ interface MatchsPageProps {}
 
 const MatchsPage: FC<MatchsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useMatchForm("match-form");
+  const dateString = new Date().toISOString();
+  const { resetFormData, resetFormErrors } = useMatchForm(
+    `match-form-${dateString}`,
+  );
+
   const {
     paginatedMatches,
     page,
@@ -44,11 +48,11 @@ const MatchsPage: FC<MatchsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("match-form");
+            toggleModal(`match-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <MatchForm id="match-form" />
+      <MatchForm id={`match-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto' w-full ">
@@ -58,10 +62,10 @@ const MatchsPage: FC<MatchsPageProps> = () => {
             {[
               "Championnat",
               "Logo",
-              "Club",
+              "Club 1",
               "Score",
               "Score",
-              "Club",
+              "Club 2",
               "Logo",
               "",
             ].map((column, index) => (
@@ -94,7 +98,7 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                 >
                   {/* Championship */}
                   <div className="px-4 py-4">
-                    <span className="line-clamp-2">
+                    <span className="line-clamp-2 overflow-hidden">
                       {match.championship.name}
                     </span>
                   </div>
@@ -113,22 +117,24 @@ const MatchsPage: FC<MatchsPageProps> = () => {
 
                   {/* Home Team */}
                   <div className="px-4 py-4">
-                    <span className="line-clamp-2">{match.clubHome.name}</span>
+                    <span className="line-clamp-2 overflow-hidden">
+                      {match.clubHome.name}
+                    </span>
                   </div>
 
                   {/* Home Score */}
-                  <div className="hidden px-4 py-4 text-center font-medium lg:table-cell">
+                  <div className="hidden overflow-hidden px-4 py-4 text-center font-medium lg:table-cell">
                     {match.clubHomeGoal}
                   </div>
 
                   {/* Away Score */}
-                  <div className="hidden px-4 py-4 text-center font-medium lg:table-cell">
+                  <div className="hidden overflow-hidden px-4 py-4 text-center font-medium lg:table-cell">
                     {match.clubForeignGoal}
                   </div>
 
                   {/* Away Team */}
                   <div className="px-4 py-4">
-                    <span className="line-clamp-2">
+                    <span className="line-clamp-2 overflow-hidden">
                       {match.clubForeign.name}
                     </span>
                   </div>
@@ -191,7 +197,11 @@ const MatchsPage: FC<MatchsPageProps> = () => {
             />
           )}
 
-          <PageCounter totalPage={paginatedMatches.count} currentPage={page} />
+          <PageCounter
+            totalPage={paginatedMatches.count}
+            currentPage={page}
+            fetchPage={(page) => fetchMatches(searchValue, page)}
+          />
 
           {paginatedMatches.next && (
             <AppButton

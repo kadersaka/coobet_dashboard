@@ -137,33 +137,33 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
                   </div>
 
                   {/* Transaction Phone */}
-                  <div className=" hidden px-5 py-4 lg:table-cell lg:px-7.5 2xl:px-11">
+                  <div className=" hidden overflow-hidden px-5 py-4 lg:table-cell lg:px-7.5 2xl:px-11">
                     {transaction.phoneNumber}
                   </div>
 
                   {/* Transaction Mobile Reference */}
-                  <div className="hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
+                  <div className="hidden overflow-hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
                     {transactionMobileReference(transaction.mobileReference)}
                   </div>
 
                   {/* Transaction Name */}
-                  <div className=" px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className=" overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {transaction.user?.lastname ?? "Lastname"}{" "}
                     {transaction.user?.firstname ?? "Firstname"}
                   </div>
 
                   {/* Transaction Amount */}
-                  <div className=" px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className=" overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {transaction.amount}
                   </div>
 
                   {/* Transaction Type */}
-                  <div className="hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
+                  <div className="hidden overflow-hidden px-5 py-4 lg:px-7.5 xl:table-cell 2xl:px-11">
                     {transactionType(transaction.typeTrans)}
                   </div>
 
                   {/* Transaction Status */}
-                  <div className=" px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className=" overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {transactionStatus(transaction.status)}
                   </div>
                 </div>
@@ -191,6 +191,7 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
         <PageCounter
           totalPage={paginatedTransactions.count}
           currentPage={page}
+          fetchPage={(page) => fetchTransactions(searchValue, undefined, page)}
         />
 
         {paginatedTransactions.next ? (

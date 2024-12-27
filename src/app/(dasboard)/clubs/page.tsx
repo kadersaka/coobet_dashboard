@@ -84,7 +84,7 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                   className={` grid w-full grid-cols-3 items-center border-t border-[#EEEEEE] dark:border-strokedark  `}
                 >
                   {/* Club Name */}
-                  <div className="flex-1 px-5 py-4 lg:px-7.5 2xl:px-11">
+                  <div className="flex-1 overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
                     {club.name}
                   </div>
 
@@ -151,7 +151,11 @@ const ClubsPage: FC<ClubsPageProps> = () => {
           <span className="w-1"></span>
         )}
 
-        <PageCounter totalPage={paginatedClubs.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedClubs.count}
+          currentPage={page}
+          fetchPage={(page) => fetchClubs(searchValue, page)}
+        />
 
         {paginatedClubs.next ? (
           <AppButton

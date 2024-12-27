@@ -83,10 +83,9 @@ class UserApi {
   static async remove(userId: string, adminPassword: string): Promise<void> {
     const token = localStorage.getItem("access");
     try {
-      await axios.delete;
-      fetch(
-        "https://api.coobet.app/auth/delete_account",
-        // { password: adminPassword, user_id: userId },
+      await axios.post(
+        "https://api.coobet.app/auth/admin/user/delete",
+        { password: adminPassword, user_id: userId },
         {
           headers: {
             Authorization: `Bearer ${token}`,
