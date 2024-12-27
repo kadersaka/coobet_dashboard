@@ -40,7 +40,7 @@ class Advertisement {
       created_at:
         typeof this.createdAt === "string"
           ? this.createdAt
-          : this.createdAt?.toDateString(),
+          : this.createdAt?.toISOString(),
     };
   }
 }

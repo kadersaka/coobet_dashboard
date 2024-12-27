@@ -23,8 +23,10 @@ interface ChampionshipsPageProps {}
 
 const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } =
-    useChampionshipForm("championship-form");
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useChampionshipForm(
+    `championship-form-${dateString}`,
+  );
   const {
     paginatedChampionships,
     page,
@@ -51,11 +53,11 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("championship-form");
+            toggleModal(`championship-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <ChampionshipForm id="championship-form" />
+      <ChampionshipForm id={`championship-form-${dateString}`} />
       <ActionResult />
 
       <div className="flex max-w-full flex-col">
@@ -100,7 +102,9 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
                   >
                     <EditDeleteButton
                       onEdit={() =>
-                        toggleModal(`championship-form-${championship.id}`)
+                        toggleModal(
+                          `championship-form-${dateString}-${championship.id}`,
+                        )
                       }
                       onDelete={() => {
                         toggleModal(`delete-dialog-${championship.id}`);
@@ -110,8 +114,8 @@ const ChampionshipsPage: FC<ChampionshipsPageProps> = () => {
 
                   {/* Update Form*/}
                   <ChampionshipForm
-                    key={`championship-form-${championship.id}`}
-                    id={`championship-form-${championship.id}`}
+                    key={`championship-form-${dateString}-${championship.id}`}
+                    id={`championship-form-${dateString}-${championship.id}`}
                     championship={championship}
                   />
 

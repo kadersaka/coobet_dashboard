@@ -26,7 +26,7 @@ export async function downloadFile({ url }: { url: string }): Promise<File> {
       responseType: "blob",
     });
 
-    const fileName = `${new Date().toISOString()}.png`;
+    const fileName = `${new Date().toDateString()}.png`;
     const mimeType = `image/png`;
 
     return new File([response.data], fileName, {

@@ -55,7 +55,7 @@ const DeletionConfirmation: FC<DeletionConfirmationProps> = ({
                   toggleModal(id);
                   setActionResultMessage(successMessage);
                   toggleModal("action-result-message");
-                  await delay({ milliseconds: 1000 });
+                  await delay({ milliseconds: 500 });
                   toggleModal("action-result-message");
                 } else {
                   setActionResultMessage("Une erreur s'est produite");

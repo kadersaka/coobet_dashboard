@@ -47,7 +47,7 @@ const TicketCard: FC<TicketCardProps> = ({
           />
         </div>
       </div>
-      <div className="my-10 flex items-center justify-center">
+      <div className="my-10 flex items-center justify-center overflow-hidden">
         <p className="">
           <span className=" text-xl font-semibold">{ticket.events.length}</span>
           <span className="ml-3"> évènements</span>

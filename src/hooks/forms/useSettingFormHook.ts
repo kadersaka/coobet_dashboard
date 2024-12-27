@@ -227,7 +227,8 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
             toggleModal(modalId);
             setActionResultMessage("Le paramètre a été mis à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchSettings();
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -240,12 +241,11 @@ const useSettingForm = (modalId: string, initialData?: Setting) => {
             toggleModal(modalId);
             setActionResultMessage("Le paramètre a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchSettings();
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchSettings();
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

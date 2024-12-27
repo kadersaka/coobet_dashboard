@@ -51,7 +51,7 @@ class Ticket {
       status: this.status,
       abonnement: this.subscription ?? "",
       bet_amount: this.betAmount.toString(),
-      created_at: this.createdAt.toDateString(),
+      created_at: this.createdAt.toISOString(),
     };
   }
 }

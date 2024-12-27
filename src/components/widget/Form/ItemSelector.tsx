@@ -43,7 +43,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
 }) => {
   const [selectedItem, setSelectedItem] = useState<any | null>(item);
   const [currentItemPage, setCurrentItemPage] = useState(1);
-  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
+  const [dynamicKey, setDynamicKey] = useState(new Date().toDateString());
 
   const handleOpenModal = () => {
     return toggleModal(modalId);
@@ -160,7 +160,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
         id={modalId}
         onClose={() => {
           handleCloseModal();
-          setDynamicKey(new Date().toISOString());
+          setDynamicKey(new Date().toDateString());
         }}
       >
         <SelectAddItems
@@ -222,7 +222,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({
           }}
           onItemSelected={(item: any) => {
             handleItemSelect(item);
-            setDynamicKey(new Date().toISOString());
+            setDynamicKey(new Date().toDateString());
           }}
         />
       </Modal>

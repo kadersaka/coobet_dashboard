@@ -18,8 +18,10 @@ interface AdvertisementsPageProps {}
 
 const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } =
-    useAdvertisementForm("Advertisement-form");
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useAdvertisementForm(
+    `advertisement-form-${dateString}`,
+  );
   const {
     paginatedAdvertisements,
     page,
@@ -48,11 +50,11 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("advertisement-form");
+            toggleModal(`advertisement-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <AdvertisementForm id="advertisement-form" />
+      <AdvertisementForm id={`advertisement-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
@@ -72,7 +74,9 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
                   onEdit={() => {
                     resetFormData();
                     resetFormErrors();
-                    toggleModal(`advertisement-form-${advertisement.id}`);
+                    toggleModal(
+                      `advertisement-form-${dateString}-${advertisement.id}`,
+                    );
                   }}
                   onDelete={() => {
                     toggleModal(`delete-dialog-${advertisement.id}`);
@@ -80,8 +84,8 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
                 />
 
                 <AdvertisementForm
-                  key={`advertisement-form-${advertisement.id}-${index}`}
-                  id={`advertisement-form-${advertisement.id}`}
+                  key={`advertisement-form-${dateString}-${advertisement.id}-${index}`}
+                  id={`advertisement-form-${dateString}-${advertisement.id}`}
                   advertisement={advertisement}
                 />
 

@@ -24,7 +24,10 @@ interface ClubsPageProps {}
 
 const ClubsPage: FC<ClubsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useClubForm("club-form");
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useClubForm(
+    `club-form-${dateString}`,
+  );
   const {
     paginatedClubs,
     page,
@@ -48,11 +51,11 @@ const ClubsPage: FC<ClubsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("club-form");
+            toggleModal(`club-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <ClubForm id="club-form" />
+      <ClubForm id={`club-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
@@ -106,7 +109,9 @@ const ClubsPage: FC<ClubsPageProps> = () => {
                   >
                     <EditDeleteButton
                       key={club.id}
-                      onEdit={() => toggleModal(`club-form-${club.id}`)}
+                      onEdit={() =>
+                        toggleModal(`club-form-${dateString}-${club.id}`)
+                      }
                       onDelete={() => {
                         toggleModal(`delete-dialog-${club.id}`);
                       }}
@@ -115,8 +120,8 @@ const ClubsPage: FC<ClubsPageProps> = () => {
 
                   {/* Update Form*/}
                   <ClubForm
-                    key={`club-form-${club.id}`}
-                    id={`club-form-${club.id}`}
+                    key={`club-form-${dateString}-${club.id}`}
+                    id={`club-form-${dateString}-${club.id}`}
                     club={club}
                   />
 

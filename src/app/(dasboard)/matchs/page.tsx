@@ -20,10 +20,8 @@ interface MatchsPageProps {}
 
 const MatchsPage: FC<MatchsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const dateString = new Date().toISOString();
-  const { resetFormData, resetFormErrors } = useMatchForm(
-    `match-form-${dateString}`,
-  );
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useMatchForm(`match-form`);
 
   const {
     paginatedMatches,
@@ -155,15 +153,17 @@ const MatchsPage: FC<MatchsPageProps> = () => {
                   <div className="px-4' py-4 text-center  lg:text-start xl:text-center ">
                     <EditDeleteButton
                       key={match.id}
-                      onEdit={() => toggleModal(`match-form-${match.id}`)}
+                      onEdit={() =>
+                        toggleModal(`match-form-${dateString}-${match.id}`)
+                      }
                       onDelete={() => toggleModal(`delete-dialog-${match.id}`)}
                     />
                   </div>
 
                   {/* Forms and Dialogs */}
                   <MatchForm
-                    key={`match-form-${match.id}`}
-                    id={`match-form-${match.id}`}
+                    key={`match-form-${dateString}-${match.id}`}
+                    id={`match-form-${dateString}-${match.id}`}
                     match={match}
                   />
 

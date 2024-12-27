@@ -23,7 +23,7 @@ interface UsersPageProps {}
 
 const UsersPage: FC<UsersPageProps> = () => {
   const { searchValue } = useSearchStore();
-
+  const dateString = new Date().toDateString();
   const {
     paginatedUsers,
     page,

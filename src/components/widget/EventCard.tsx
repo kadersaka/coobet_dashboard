@@ -49,7 +49,7 @@ const EventCard: FC<EventCardProps> = ({
           </div>
         )}
       </div>
-      <div className="mb-12 flex items-center justify-center">
+      <div className="mb-12 flex items-center justify-center overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="ml-4 flex items-center justify-between">
             <div className=" flex items-center justify-between">

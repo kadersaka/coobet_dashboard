@@ -39,7 +39,7 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
 
   const { researchAddEvent, researchEvents } = useEventStore();
 
-  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
+  const [dynamicKey, setDynamicKey] = useState(new Date().toDateString());
 
   return (
     <Modal

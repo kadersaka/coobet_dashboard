@@ -110,7 +110,8 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
               "Le championnat a été mis à jour avec succès",
             );
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchChampionships(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -124,12 +125,11 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
             toggleModal(modalId);
             setActionResultMessage("Le championnat a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchChampionships(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchChampionships(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

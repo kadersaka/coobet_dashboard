@@ -120,7 +120,8 @@ const useClubForm = (modalId: string, initialData?: Club) => {
             toggleModal(modalId);
             setActionResultMessage("Le club a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchClubs(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -134,12 +135,11 @@ const useClubForm = (modalId: string, initialData?: Club) => {
             toggleModal(modalId);
             setActionResultMessage("Le club a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchClubs(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchClubs(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

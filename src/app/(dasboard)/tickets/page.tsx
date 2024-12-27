@@ -21,7 +21,10 @@ interface TicketsPageProps {}
 
 const TicketsPage: FC<TicketsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useTicketForm("ticket-form");
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useTicketForm(
+    `ticket-form-${dateString}`,
+  );
   const {
     paginatedTickets,
     page,
@@ -50,11 +53,11 @@ const TicketsPage: FC<TicketsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("ticket-form");
+            toggleModal(`ticket-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <TicketForm id="ticket-form" />
+      <TicketForm id={`ticket-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">
@@ -74,14 +77,14 @@ const TicketsPage: FC<TicketsPageProps> = () => {
                   onEdit={() => {
                     resetFormData();
                     resetFormErrors();
-                    toggleModal(`ticket-form-${ticket.id}`);
+                    toggleModal(`ticket-form-${dateString}-${ticket.id}`);
                   }}
                   onDelete={() => toggleModal(`delete-dialog-${ticket.id}`)}
                 />
 
                 <TicketForm
-                  key={`ticket-form-${ticket.id}`}
-                  id={`ticket-form-${ticket.id}`}
+                  key={`ticket-form-${dateString}-${ticket.id}`}
+                  id={`ticket-form-${dateString}-${ticket.id}`}
                   ticket={ticket}
                 />
 

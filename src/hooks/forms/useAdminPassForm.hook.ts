@@ -74,10 +74,9 @@ const useAdminPassForm = (modalId: string, user: User) => {
           toggleModal(modalId);
           setActionResultMessage("L'utilisateur a été supprimé avec succès");
           toggleModal("action-result-message");
-          await delay({ milliseconds: 1000 });
-          toggleModal("action-result-message");
-
           fetchUsers(searchValue);
+          await delay({ milliseconds: 500 });
+          toggleModal("action-result-message");
         } else {
           setActionResultMessage("Une erreur s'est produite");
           toggleModal("action-result-message");

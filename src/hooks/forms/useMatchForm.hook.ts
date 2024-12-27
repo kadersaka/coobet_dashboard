@@ -177,7 +177,8 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
             toggleModal(modalId);
             setActionResultMessage("Le match a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchMatches(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -191,12 +192,11 @@ const useMatchForm = (modalId: string, initialData?: Match) => {
             toggleModal(modalId);
             setActionResultMessage("Le match a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchMatches(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchMatches(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

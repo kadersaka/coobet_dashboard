@@ -86,7 +86,8 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
             toggleModal(modalId);
             setActionResultMessage("Le sport a été mis à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchSports(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -100,12 +101,11 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
             toggleModal(modalId);
             setActionResultMessage("Le sport a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchSports(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchSports(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

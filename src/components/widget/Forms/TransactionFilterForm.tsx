@@ -52,7 +52,9 @@ const TransactionFilterForm: FC<TransactionFilterFormProps> = ({
         transactionsData.types.find((type) => type.value === filter.type)
           ?.name ?? "",
       countryCodeCode: filter.countryCodeCode ?? "",
-      phoneNumber: filter.phoneNumber ?? "",
+      phoneNumber: filter.phoneNumber
+        ? filter.phoneNumber.replace(filter.countryCodeCode ?? "", "")
+        : "",
       userAppId: filter.userAppId ?? "",
       mobileReference:
         transactionsData.mobileReferences.find(

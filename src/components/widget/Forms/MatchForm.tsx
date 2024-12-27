@@ -36,7 +36,7 @@ const MatchForm: FC<MatchFormProps> = ({ id, match }) => {
   const { researchAddChampionship, researchChampionships } =
     useChampionshipStore();
 
-  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
+  const [dynamicKey, setDynamicKey] = useState(new Date().toDateString());
 
   return (
     <Modal

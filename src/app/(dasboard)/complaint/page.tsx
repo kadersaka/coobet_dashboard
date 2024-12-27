@@ -26,6 +26,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
   const { searchValue } = useSearchStore();
   // const { resetFormData, resetFormErrors } =
   //   useComplaintForm("complaint-form");
+  const dateString = new Date().toDateString();
   const {
     paginatedComplaints,
     page,
@@ -111,7 +112,9 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
                       <EditDeleteButton
                         editText="Répondre"
                         onEdit={() =>
-                          toggleModal(`complaint-response-form-${complaint.id}`)
+                          toggleModal(
+                            `complaint-response-form-${dateString}-${complaint.id}`,
+                          )
                         }
                         hideDelete
                         onDelete={() => {
@@ -122,7 +125,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
                   </div>
 
                   <ComplaintResponseForm
-                    key={`complaint-response-form-${complaint.id}`}
+                    key={`complaint-response-form-${dateString}-${complaint.id}`}
                     id={`complaint-response-form-${complaint.id}`}
                     complaint={complaint}
                   />

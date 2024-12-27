@@ -52,7 +52,7 @@ class Event {
       bet: this.bet,
       coast: this.coast,
 
-      created_at: this.createdAt.toDateString(),
+      created_at: this.createdAt.toISOString(),
     };
   }
 }

@@ -38,7 +38,7 @@ const EventForm: FC<EventFormProps> = ({ id, event }) => {
 
   const { researchAddMatch, researchMatches } = useMatchStore();
 
-  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
+  const [dynamicKey, setDynamicKey] = useState(new Date().toDateString());
 
   return (
     <Modal

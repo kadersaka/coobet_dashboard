@@ -23,7 +23,7 @@ const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
   const [formData, setFormData] = useState<AdvertisementFormData>({
     content: initialData?.content ?? "",
     image: initialData?.image ?? "",
-    enable: initialData?.enable ?? false,
+    enable: initialData?.enable ?? true,
   });
 
   const [formErrors, setFormErrors] = useState<AdvertisementFormErrors>({
@@ -56,8 +56,6 @@ const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
 
   const onInputDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
-
-    console.log(" ========> Value", value);
 
     setFormData({
       ...formData,
@@ -146,8 +144,10 @@ const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
             setActionResultMessage(
               "La publicité a été mise à jour avec succès",
             );
+
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchAdvertisements(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -161,12 +161,11 @@ const useAdvertisementForm = (modalId: string, initialData?: Advertisement) => {
             toggleModal(modalId);
             setActionResultMessage("La publicité a été ajoutée avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchAdvertisements(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchAdvertisements(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

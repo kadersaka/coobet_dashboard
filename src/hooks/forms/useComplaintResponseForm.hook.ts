@@ -95,7 +95,8 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
             toggleModal(modalId);
             setActionResultMessage("La réponse a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchComplaints(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -110,15 +111,14 @@ const useComplaintResponseForm = (modalId: string, initialData?: Complaint) => {
             toggleModal(modalId);
             setActionResultMessage("Le réponse a été ajoutée avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchComplaints(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           } else {
             setActionResultMessage("Une erreur s'est produite");
             toggleModal("action-result-message");
           }
         }
-
-        fetchComplaints(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

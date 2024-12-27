@@ -37,7 +37,7 @@ class Notification {
       id: this.id,
       title: this.title,
       content: this.content,
-      created_at: this.createdAt.toISOString(),
+      created_at: this.createdAt.toDateString(),
       is_read: this.isReaded,
     };
   }

@@ -22,6 +22,7 @@ interface SportsPageProps {}
 
 const SportsPage: FC<SportsPageProps> = () => {
   const { searchValue } = useSearchStore();
+  const dateString = new Date().toDateString();
   const { resetFormData, resetFormErrors } = useSportForm("sport-form");
   const {
     paginatedSports,
@@ -46,11 +47,11 @@ const SportsPage: FC<SportsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("Sport-form");
+            toggleModal(`Sport-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <SportForm id="Sport-form" />
+      <SportForm id={`Sport-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto' max-w-full">

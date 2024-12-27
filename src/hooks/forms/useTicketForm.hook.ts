@@ -187,7 +187,8 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             toggleModal(modalId);
             setActionResultMessage("Le coupon a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchTickets(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -201,12 +202,11 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
             toggleModal(modalId);
             setActionResultMessage("Le coupon a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchTickets(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchTickets(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

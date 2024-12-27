@@ -24,7 +24,10 @@ interface EventsPageProps {}
 
 const EventsPage: FC<EventsPageProps> = () => {
   const { searchValue } = useSearchStore();
-  const { resetFormData, resetFormErrors } = useEventForm("Event-form");
+  const dateString = new Date().toDateString();
+  const { resetFormData, resetFormErrors } = useEventForm(
+    `event-form-${dateString}`,
+  );
   const {
     paginatedEvents,
     page,
@@ -51,11 +54,11 @@ const EventsPage: FC<EventsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
-            toggleModal("event-form");
+            toggleModal(`event-form-${dateString}`);
           }}
         />
       </Breadcrumb>
-      <EventForm id="event-form" />
+      <EventForm id={`event-form-${dateString}`} />
       <ActionResult />
 
       <div className="overflow-x-auto'  max-w-full ">
@@ -74,15 +77,15 @@ const EventsPage: FC<EventsPageProps> = () => {
                   onEdit={() => {
                     resetFormData();
                     resetFormErrors();
-                    toggleModal(`event-form-${event.id}`);
+                    toggleModal(`event-form-${dateString}-${event.id}`);
                   }}
                   onDelete={() => toggleModal(`delete-dialog-${event.id}`)}
                 />
 
                 {/* Update Form*/}
                 <EventForm
-                  key={`event-form-${event.id}`}
-                  id={`event-form-${event.id}`}
+                  key={`event-form-${dateString}-${event.id}`}
+                  id={`event-form-${dateString}-${event.id}`}
                   event={event}
                 />
 

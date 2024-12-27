@@ -83,7 +83,7 @@ const AdvertisementForm: FC<AdvertisementFormProps> = ({
 
           <div className="mb-6">
             <AppCheckbox
-              key={`${formData.enable}-${new Date().toISOString()}`}
+              key={`${formData.enable}-${new Date().toDateString()}`}
               label="Statut"
               id="enable"
               name="enable"

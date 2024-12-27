@@ -157,7 +157,8 @@ const useEventForm = (modalId: string, initialData?: Event) => {
             toggleModal(modalId);
             setActionResultMessage("L'évènement a été mise à jour avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchEvents(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -171,12 +172,11 @@ const useEventForm = (modalId: string, initialData?: Event) => {
             toggleModal(modalId);
             setActionResultMessage("L'évènement a été ajouté avec succès");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchEvents(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchEvents(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

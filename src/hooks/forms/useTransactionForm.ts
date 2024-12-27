@@ -240,7 +240,8 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
               "La transaction a été mise à jour avec succès.",
             );
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchTransactions(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         } else {
@@ -254,12 +255,11 @@ const useTransactionForm = (modalId: string, initialData?: Transaction) => {
             toggleModal(modalId);
             setActionResultMessage("La transaction a été ajoutée avec succès.");
             toggleModal("action-result-message");
-            await delay({ milliseconds: 1000 });
+            fetchTransactions(searchValue);
+            await delay({ milliseconds: 500 });
             toggleModal("action-result-message");
           }
         }
-
-        fetchTransactions(searchValue);
       } catch (error) {
         console.error("Error handling form submission:", error);
       }

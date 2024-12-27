@@ -31,7 +31,7 @@ const ChampionshipForm: FC<ChampionshipFormProps> = ({ id, championship }) => {
 
   const { researchAddSport, researchSports } = useSportStore();
 
-  const [dynamicKey, setDynamicKey] = useState(new Date().toISOString());
+  const [dynamicKey, setDynamicKey] = useState(new Date().toDateString());
 
   return (
     <Modal
