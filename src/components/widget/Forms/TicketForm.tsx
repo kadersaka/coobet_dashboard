@@ -10,7 +10,7 @@ import Match from "@/models/match.model";
 import Sport from "@/models/sport.model";
 import Ticket from "@/models/ticket.model";
 import useEventStore from "@/store/useEvent.store";
-import { ArrowRightLeft } from "lucide-react";
+import { ArrowRightLeft, Trash, X } from "lucide-react";
 import { FC, useState } from "react";
 import EventCard from "../EventCard";
 import AppButton from "../Form/Button";
@@ -33,7 +33,7 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
     resetFormErrors,
     onInputDataChange,
     onEventChange,
-
+    removeEvent,
     onFormSubmit,
   } = useTicketForm(id, ticket);
 
@@ -89,7 +89,17 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
 
           <div className="mb-4">
             {formData?.events.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <div className="relative" key={event.id}>
+                <EventCard key={event.id} event={event} />
+                <X
+                  className="absolute left-3 top-3 text-red-500 hover:cursor-pointer"
+                  size={20}
+                  onClick={() => {
+                    console.log(" =========> Remove Event", event);
+                    return removeEvent(event);
+                  }}
+                />
+              </div>
             ))}
           </div>
 

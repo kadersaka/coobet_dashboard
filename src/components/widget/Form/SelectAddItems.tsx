@@ -121,7 +121,7 @@ const SelectAddItems: React.FC<SelectAddItemsProps> = ({
             className="rounded-sm px-2 py-2.5 text-black hover:cursor-pointer dark:text-white"
             onClick={() => {
               onItemSelected(item);
-              setSuggestions([]);
+              //  setSuggestions([]);
             }}
           >
             {item instanceof Match ? (

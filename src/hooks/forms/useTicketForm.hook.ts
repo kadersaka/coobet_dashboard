@@ -119,6 +119,13 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
       setFormData({ ...formData, [name]: [...formData.events, event] });
   };
 
+  const removeEvent: (event: Event) => void = (event: Event) => {
+    setFormData({
+      ...formData,
+      events: formData.events.filter((evt) => evt.id !== event.id),
+    });
+  };
+
   const validateForm = () => {
     const errors: TicketFormErrors = {
       events: null,
@@ -223,6 +230,7 @@ const useTicketForm = (modalId: string, initialData?: Ticket) => {
     resetFormErrors,
     onInputDataChange,
     onEventChange,
+    removeEvent,
     onFormSubmit,
   };
 };
