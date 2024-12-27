@@ -116,7 +116,11 @@ const EventsPage: FC<EventsPageProps> = () => {
           <span className="w-1"> </span>
         )}
 
-        <PageCounter totalPage={paginatedEvents.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedEvents.count}
+          currentPage={page}
+          fetchPage={(page) => fetchEvents(searchValue, page)}
+        />
 
         {paginatedEvents.next ? (
           <AppButton

@@ -117,6 +117,7 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
         <PageCounter
           totalPage={paginatedAdvertisements.count}
           currentPage={page}
+          fetchPage={(page) => fetchAdvertisements(searchValue, page)}
         />
 
         {paginatedAdvertisements.next ? (

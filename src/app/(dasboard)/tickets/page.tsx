@@ -114,7 +114,11 @@ const TicketsPage: FC<TicketsPageProps> = () => {
           <span className="w-1"> </span>
         )}
 
-        <PageCounter totalPage={paginatedTickets.count} currentPage={page} />
+        <PageCounter
+          totalPage={paginatedTickets.count}
+          currentPage={page}
+          fetchPage={(page) => fetchTickets(searchValue, page)}
+        />
 
         {paginatedTickets.next ? (
           <AppButton
