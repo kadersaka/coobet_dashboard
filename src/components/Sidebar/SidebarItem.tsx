@@ -3,8 +3,11 @@ import Link from "next/link";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
 import { toggleModal } from "@/utils/functions.util";
+import useSearchStore from "@/store/useSearchStore.store";
 
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
+  const { resetSearchValue } = useSearchStore();
+
   const handleClick = () => {
     if (item.route === "/logout") {
       toggleModal("logout-confirmation");
@@ -12,6 +15,11 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     } else {
       const updatedPageName =
         pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
+
+      if (item.label !== pageName) {
+        resetSearchValue();
+      }
+
       return setPageName(updatedPageName);
     }
   };
@@ -23,6 +31,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     if (item.children) {
       return item.children.some((child: any) => isActive(child));
     }
+
     return false;
   };
 

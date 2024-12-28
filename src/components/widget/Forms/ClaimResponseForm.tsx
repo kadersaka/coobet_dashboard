@@ -7,8 +7,6 @@ import useClubForm from "@/hooks/forms/useClubForm.hook";
 import Club from "@/models/club.model";
 import ProcessingLoader from "@/components/common/Loader/ProcessingLoader";
 import useComplaintResponseForm from "@/hooks/forms/useComplaintResponseForm.hook";
-import ItemSelector from "../Form/ItemSelector";
-import Sport from "@/models/sport.model";
 import useSportStore from "@/store/useSport.store";
 import Complaint from "@/models/complaint.model";
 import AppTextArea from "../Form/TextArea";
@@ -42,6 +40,17 @@ const ComplaintResponseForm: FC<ComplaintResponseFormProps> = ({
     >
       <div className=" dark:border-strokedark">
         <form onSubmit={onFormSubmit}>
+          <div className="mb-4">
+            <AppTextArea
+              label="Message"
+              id="complaint"
+              name="complaint"
+              disabled={true}
+              placeholder="Message"
+              value={complaint?.message}
+              onChange={() => {}}
+            />
+          </div>
           <div className="mb-4">
             <AppTextArea
               label="Réponse"

@@ -7,6 +7,7 @@ interface AppTextAreaProps {
   id: string;
   name: string;
   value?: string;
+
   placeholder: string;
   autoComplete?: string;
 
@@ -19,7 +20,6 @@ const AppTextArea: FC<AppTextAreaProps> = ({
   label,
   id,
   name,
-
   value,
   placeholder,
   autoComplete,
@@ -44,7 +44,7 @@ const AppTextArea: FC<AppTextAreaProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           onChange={onChange}
-          className={`w-full rounded-sm border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
+          className={`min-h-30 w-full rounded-sm border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary`}
         />
       </div>
     </div>

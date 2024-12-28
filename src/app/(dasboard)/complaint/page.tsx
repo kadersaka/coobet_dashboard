@@ -95,13 +95,15 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
                   </div>
 
                   <div className="flex overflow-hidden px-5 py-4 lg:px-7.5 2xl:px-11">
-                    {complaint.message}
+                    {complaint.message != null && complaint.message.length > 20
+                      ? `${complaint.message.substring(0, 15)} ...`
+                      : (complaint.message ?? "")}
                   </div>
 
                   <div className="hidden overflow-hidden px-5 py-4 lg:table-cell lg:px-7.5 2xl:px-11">
                     {complaint.response != null &&
-                    complaint.response.response.length > 15
-                      ? `${complaint.response.response.substring(0, 12)} ...`
+                    complaint.response.response.length > 20
+                      ? `${complaint.response.response.substring(0, 15)} ...`
                       : (complaint.response?.response ?? "")}
                   </div>
 
@@ -126,7 +128,7 @@ const ComplaintsPage: FC<ComplaintsPageProps> = () => {
 
                   <ComplaintResponseForm
                     key={`complaint-response-form-${dateString}-${complaint.id}`}
-                    id={`complaint-response-form-${complaint.id}`}
+                    id={`complaint-response-form-${dateString}-${complaint.id}`}
                     complaint={complaint}
                   />
 

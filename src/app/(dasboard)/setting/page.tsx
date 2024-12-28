@@ -208,7 +208,7 @@ const Settings = () => {
                         label="Dépôt minimum"
                         id="minimumDeposit"
                         name="minimumDeposit"
-                        type="number"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Dépôt minimum"
                         value={formData.minimumDeposit}
@@ -226,7 +226,7 @@ const Settings = () => {
                         label="Retrait minimum"
                         id="minimumWithdrawal"
                         name="minimumWithdrawal"
-                        type="number"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Retrait minimum"
                         value={formData.minimumWithdrawal}
@@ -244,7 +244,7 @@ const Settings = () => {
                         label="Pourcentage de bonus"
                         id="bonusPercent"
                         name="bonusPercent"
-                        type="number"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Pourcentage de bonus"
                         value={formData.bonusPercent}
@@ -334,7 +334,7 @@ const Settings = () => {
                         label="Lien MTN"
                         id="mtnUrl"
                         name="mtnUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Lien MTN"
                         value={formData.mtnUrl}
@@ -352,7 +352,7 @@ const Settings = () => {
                         label="Lien MOOV"
                         id="moovUrl"
                         name="moovUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Lien MOOV"
                         value={formData.moovUrl}
@@ -370,7 +370,7 @@ const Settings = () => {
                         label="Lien SBIN"
                         id="sbinUrl"
                         name="sbinUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Lien SBIN"
                         value={formData.sbinUrl}
@@ -388,7 +388,7 @@ const Settings = () => {
                         label="Lien Carte"
                         id="cardUrl"
                         name="cardUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Lien Carte"
                         value={formData.cardUrl}
@@ -406,7 +406,7 @@ const Settings = () => {
                         label="Hash"
                         id="hash"
                         name="hash"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Hash"
                         value={formData.hash}
@@ -424,7 +424,7 @@ const Settings = () => {
                         label="ID Cash Desk"
                         id="cashDeskId"
                         name="cashDeskId"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="ID Cash Desk"
                         value={formData.cashDeskId}
@@ -442,7 +442,7 @@ const Settings = () => {
                         label="Cashier Pass"
                         id="cashierPass"
                         name="cashierPass"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Cashier Pass"
                         value={formData.cashierPass}
@@ -460,7 +460,7 @@ const Settings = () => {
                         label="Client MOOV"
                         id="moovCustomer"
                         name="moovCustomer"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Client MOOV"
                         value={formData.moovCustomer}
@@ -478,7 +478,7 @@ const Settings = () => {
                         label="Client MTN"
                         id="mtnCustomer"
                         name="mtnCustomer"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Client MTN"
                         value={formData.mtnCustomer}
@@ -496,7 +496,7 @@ const Settings = () => {
                         label="Client SBIN"
                         id="sbinCustomer"
                         name="sbinCustomer"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Client SBIN"
                         value={formData.sbinCustomer}
@@ -514,7 +514,7 @@ const Settings = () => {
                         label="Client Card"
                         id="cardCustomer"
                         name="cardCustomer"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Client Card"
                         value={formData.cardCustomer}
@@ -532,7 +532,7 @@ const Settings = () => {
                         label="MOOV Distribution Url"
                         id="moovDisUrl"
                         name="moovDisUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="MOOV Distribution Url"
                         value={formData.moovDisUrl}
@@ -550,7 +550,7 @@ const Settings = () => {
                         label="MTN Distribution Url"
                         id="mtnDisUrl"
                         name="mtnDisUrl"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="MTN Distribution Url"
                         value={formData.mtnDisUrl}
@@ -568,7 +568,7 @@ const Settings = () => {
                         label="Minimum Retrait Récompense"
                         id="rewardMiniWithdrawal"
                         name="rewardMiniWithdrawal"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Minimum Retrait Récompense"
                         value={formData.rewardMiniWithdrawal}
@@ -586,7 +586,7 @@ const Settings = () => {
                         label="Nom d'utilisateur Qosic"
                         id="qosicUsername"
                         name="qosicUsername"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Nom d'utilisateur Qosic"
                         value={formData.qosicUsername}
@@ -604,7 +604,7 @@ const Settings = () => {
                         label="Indicatif Numéro Whatsapp"
                         id="whatsappPhoneIndi"
                         name="whatsappPhoneIndi"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Indicatif Numéro Whatsapp"
                         value={formData.whatsappPhoneIndi}
@@ -622,7 +622,7 @@ const Settings = () => {
                         label="Numéro Whatsapp"
                         id="whatsappPhone"
                         name="whatsappPhone"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Numéro Whatsapp"
                         value={formData.whatsappPhone}
@@ -640,7 +640,7 @@ const Settings = () => {
                         label="Prix Abonnement"
                         id="subscriptionPrice"
                         name="subscriptionPrice"
-                        type="text"
+                        type="password"
                         disabled={!editMode}
                         placeholder="Prix Abonnement"
                         value={formData.subscriptionPrice}

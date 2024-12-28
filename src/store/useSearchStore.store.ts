@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface SearchStore {
   searchValue: string;
   setSearchValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  resetSearchValue: () => void;
 }
 
 const useSearchStore = create<SearchStore>()(
@@ -12,6 +13,10 @@ const useSearchStore = create<SearchStore>()(
       searchValue: "",
       setSearchValue: (e: React.ChangeEvent<HTMLInputElement>) => {
         set({ searchValue: e.target.value });
+      },
+
+      resetSearchValue: () => {
+        set({ searchValue: "" });
       },
     }),
     {
