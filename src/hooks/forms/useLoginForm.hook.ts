@@ -98,17 +98,11 @@ const useLoginForm = () => {
           // store access token in local storage
           localStorage.setItem("access", response.access ?? "");
 
-          const user = User.fromJson(response?.data);
-
-          setActionResultMessage(
-            `Bienvenue M. | Mme ${user.firstname} ${user.lastname}`,
-          );
-
-          toggleModal("action-result-message");
+          // const user = User.fromJson(response?.data);
 
           setTimeout(() => {
             window.location.href = "/";
-          }, 1500);
+          }, 500);
         } else {
           setActionResultMessage("Erreur lors de l'authentification");
           toggleModal("action-result-message");

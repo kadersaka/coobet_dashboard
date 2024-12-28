@@ -41,7 +41,7 @@ class AuthAPI {
         },
       )
       .then((response) => {
-        promiseResponse = response.data;
+        promiseResponse = response?.data;
       })
       .catch((error) => {
         promiseResponse = error.response.data;

@@ -108,7 +108,7 @@ const AppInput: FC<AppInputProps> = ({
               setInputType(inputType === "password" ? "text" : "password")
             }
           >
-            {inputType === "password" ? <Eye /> : <EyeClosed />}
+            {inputType !== "password" ? <Eye /> : <EyeClosed />}
           </span>
         ) : (
           <>{icon && <span className="absolute right-4 top-4">{icon}</span>}</>

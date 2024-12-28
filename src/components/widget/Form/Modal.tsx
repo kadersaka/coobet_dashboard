@@ -14,7 +14,7 @@ const Modal: FC<ModalProps> = ({ id, children, onClose }) => {
   return (
     <dialog
       id={id}
-      className="relative max-h-[80%] w-[80%] rounded-sm bg-white p-6 shadow-2xl shadow-black/20 dark:bg-meta-4 dark:shadow-black/20 md:w-1/2 lg:w-[40%]"
+      className="relative max-h-[80%] w-[80%] rounded-sm bg-white p-6 shadow-2xl shadow-black/20 dark:bg-meta-4 dark:shadow-black/20 md:w-1/2 lg:w-3/4"
     >
       <div className="mb-4 flex justify-end">
         <X

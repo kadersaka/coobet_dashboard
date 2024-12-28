@@ -56,9 +56,6 @@ const useSportForm = (modalId: string, initialData?: Sport) => {
       errors.name = "Le nom du sport est requis";
     } else if (formData.name.length < 3) {
       errors.name = "Le nom doit contenir au moins trois caractères";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      errors.name =
-        "Le nom doit contenir uniquement des lettres et des espaces";
     }
 
     setFormErrors(errors);

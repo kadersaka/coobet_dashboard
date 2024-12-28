@@ -70,9 +70,6 @@ const useChampionshipForm = (modalId: string, initialData?: Championship) => {
       errors.name = "Le nom du championnat est requis";
     } else if (formData.name.length < 3) {
       errors.name = "Le nom doit contenir au moins trois caractères";
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
-      errors.name =
-        "Le nom doit contenir uniquement des lettres et des espaces";
     }
 
     if (!formData.sport) {
