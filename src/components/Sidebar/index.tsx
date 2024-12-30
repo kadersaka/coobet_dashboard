@@ -86,7 +86,7 @@ const menuGroups = [
       {
         icon: <Megaphone />,
         label: "Publicités",
-        route: "/advertisement",
+        route: "/adspubs",
       },
       {
         icon: <MessageCircleQuestion />,
