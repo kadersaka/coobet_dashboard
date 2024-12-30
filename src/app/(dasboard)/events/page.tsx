@@ -90,8 +90,8 @@ const EventsPage: FC<EventsPageProps> = () => {
                 <DeletionConfirmation
                   key={`deletion-confirmation-${event.id}`}
                   id={`delete-dialog-${event.id}`}
-                  message="Êtes-vous sûr de vouloir supprimer cet évènement"
-                  successMessage="L'évènement a été supprimé avec succès"
+                  message="Êtes-vous sûr de vouloir supprimer ce combiné ?"
+                  successMessage="Le combiné a été supprimé avec succès"
                   objectId={event.id!}
                   onDelete={deleteEvent}
                 />

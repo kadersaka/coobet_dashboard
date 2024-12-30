@@ -155,7 +155,7 @@ const useEventForm = (modalId: string, initialData?: Event) => {
           } else if (updatedEvent) {
             resetFormData();
             toggleModal(modalId);
-            setActionResultMessage("L'évènement a été mise à jour avec succès");
+            setActionResultMessage("Le combiné a été mise à jour avec succès");
             toggleModal("action-result-message");
             fetchEvents(searchValue);
             await delay({ milliseconds: 500 });
@@ -170,7 +170,7 @@ const useEventForm = (modalId: string, initialData?: Event) => {
           } else if (newEvent) {
             resetFormData();
             toggleModal(modalId);
-            setActionResultMessage("L'évènement a été ajouté avec succès");
+            setActionResultMessage("Le combiné a été ajouté avec succès");
             toggleModal("action-result-message");
             fetchEvents(searchValue);
             await delay({ milliseconds: 500 });

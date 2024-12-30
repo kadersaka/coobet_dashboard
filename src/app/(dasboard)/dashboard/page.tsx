@@ -220,7 +220,7 @@ const Dashboard: React.FC = () => {
               <Ticket className="fill-primary dark:fill-white" />
             </CardDataStats>
             <CardDataStats
-              title="Total Évènement"
+              title="Total combinés"
               total={`${dashboardData.allEvents ?? 0}`} // rate="0.43%" levelUp
             >
               <Calendar className="fill-primary dark:fill-white" />
