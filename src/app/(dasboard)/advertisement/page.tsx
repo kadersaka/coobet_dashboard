@@ -50,6 +50,7 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
           onClick={() => {
             resetFormErrors();
             resetFormData();
+            //  console.log("toggleModal", `advertisement-form-${dateString}`);
             toggleModal(`advertisement-form-${dateString}`);
           }}
         />
