@@ -76,7 +76,7 @@ const TicketForm: FC<TicketFormProps> = ({ id, ticket }) => {
               }
               addItemfn={researchAddEvent}
               getItemsfn={researchEvents}
-              itemName={"Évènements"}
+              itemName={"Combinés"}
               placeholder="Ajouter un évènement"
               item={formData.events}
             />

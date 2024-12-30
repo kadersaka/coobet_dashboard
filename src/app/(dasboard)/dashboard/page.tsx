@@ -226,19 +226,19 @@ const Dashboard: React.FC = () => {
               <Calendar className="fill-primary dark:fill-white" />
             </CardDataStats>
             <CardDataStats
-              title="Évènements en cours"
+              title="Combinés en cours"
               total={`${dashboardData.allEventPendings ?? 0}`} // rate="0.43%" levelUp
             >
               <Calendar className="fill-primary dark:fill-white" />
             </CardDataStats>
             <CardDataStats
-              title="Évènements perdus"
+              title="Combinés perdus"
               total={`${dashboardData.allEventLoses ?? 0}`} // rate="0.43%" levelUp
             >
               <Calendar className="fill-primary dark:fill-white" />
             </CardDataStats>
             <CardDataStats
-              title="Évènements gagnés"
+              title="Combinés gagnés"
               total={`${dashboardData.allEventWins ?? 0}`} // rate="0.43%" levelUp
             >
               <Calendar className="fill-primary dark:fill-white" />

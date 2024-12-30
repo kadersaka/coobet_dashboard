@@ -60,7 +60,7 @@ const menuGroups = [
       },
       {
         icon: <Calendar />,
-        label: "Évènements",
+        label: "Combinés",
         route: "/events",
       },
       {

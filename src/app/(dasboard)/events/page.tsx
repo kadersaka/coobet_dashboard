@@ -44,10 +44,7 @@ const EventsPage: FC<EventsPageProps> = () => {
 
   return (
     <>
-      <Breadcrumb
-        pageName="Évènements"
-        onClick={() => fetchEvents(searchValue)}
-      >
+      <Breadcrumb pageName="Combinés" onClick={() => fetchEvents(searchValue)}>
         <AppButton
           name="Ajouter"
           width="w-[150px]"
