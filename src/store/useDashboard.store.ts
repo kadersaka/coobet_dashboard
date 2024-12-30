@@ -24,7 +24,7 @@ const useDashboardStore = create<DashboardStore>()(
       period: "all",
       periods: [
         {
-          name: "Global",
+          name: "Tout",
           value: "all",
         },
         {
@@ -45,6 +45,8 @@ const useDashboardStore = create<DashboardStore>()(
         },
       ],
       dashboardData: new Dashboard(
+        0,
+        0,
         0,
         0,
         0,

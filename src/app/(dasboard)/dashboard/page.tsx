@@ -130,14 +130,14 @@ const Dashboard: React.FC = () => {
             </CardDataStats>
 
             <CardDataStats
-              title="Dépôts"
-              total={`${dashboardData.allTransDeposits ?? 0} F CFA`} // rate="0.43%" levelUp
+              title={`${dashboardData.allTransDeposits} ${dashboardData.allTransDeposits > 1 ? "Dépôts" : "Dépôt"}`}
+              total={`${dashboardData.depositsAmount ?? 0} F CFA`} // rate="0.43%" levelUp
             >
               <ArrowLeft className="fill-primary dark:fill-white" />
             </CardDataStats>
             <CardDataStats
-              title="Retraits"
-              total={`${dashboardData.allTransWithdrawals ?? 0} F CFA`} // rate="0.43%" levelUp
+              title={`${dashboardData.allTransWithdrawals} ${dashboardData.allTransWithdrawals > 1 ? "Retraits" : "Retrait"}`}
+              total={`${dashboardData.withdrawalsAmount ?? 0} F CFA`} // rate="0.43%" levelUp
             >
               <ArrowRight className="fill-primary dark:fill-white" />
             </CardDataStats>

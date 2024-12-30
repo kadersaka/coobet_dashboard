@@ -31,6 +31,8 @@ class Dashboard {
   allBonus: number;
   allServiceTransactions: number;
   allCoobetTransactions: number;
+  withdrawalsAmount: number;
+  depositsAmount: number;
 
   constructor(
     allUsers: number,
@@ -63,6 +65,8 @@ class Dashboard {
     allBonus: number,
     allServiceTransactions: number,
     allCoobetTransactions: number,
+    withdrawalsAmount: number,
+    depositsAmount: number,
   ) {
     this.allUsers = allUsers;
     this.allUsersActives = allUsersActives;
@@ -94,6 +98,8 @@ class Dashboard {
     this.allBonus = allBonus;
     this.allServiceTransactions = allServiceTransactions;
     this.allCoobetTransactions = allCoobetTransactions;
+    this.withdrawalsAmount = withdrawalsAmount;
+    this.depositsAmount = depositsAmount;
   }
 
   static fromJson(json: DashboardJson): Dashboard {
@@ -128,6 +134,8 @@ class Dashboard {
       json.all_bonus,
       json.all_service_transactions,
       json.all_coobet_transactions,
+      json.withdrawals_amount,
+      json.deposits_amount,
     );
   }
 
@@ -163,6 +171,8 @@ class Dashboard {
       all_bonus: this.allBonus,
       all_service_transactions: this.allServiceTransactions,
       all_coobet_transactions: this.allCoobetTransactions,
+      withdrawals_amount: this.withdrawalsAmount,
+      deposits_amount: this.depositsAmount,
     };
   }
 }

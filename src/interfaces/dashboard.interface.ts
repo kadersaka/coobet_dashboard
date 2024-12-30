@@ -29,4 +29,6 @@ export interface DashboardJson {
   all_bonus: number;
   all_service_transactions: number;
   all_coobet_transactions: number;
+  withdrawals_amount: number;
+  deposits_amount: number;
 }
