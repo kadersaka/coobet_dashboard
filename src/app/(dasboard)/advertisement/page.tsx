@@ -52,6 +52,7 @@ const AdvertisementsPage: FC<AdvertisementsPageProps> = () => {
             resetFormData();
             //  console.log("toggleModal", `advertisement-form-${dateString}`);
             toggleModal(`advertisement-form-${dateString}`);
+            //
           }}
         />
       </Breadcrumb>
