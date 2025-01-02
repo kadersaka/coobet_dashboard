@@ -46,7 +46,7 @@ export default function DefaultLayout({
               {/* <!-- ===== Header End ===== --> */}
               {/* <!-- ===== Main Content Start ===== --> */}
               <main>
-                <div className="min-h-screen  max-w-screen-2xl bg-whiter p-4  dark:bg-boxdark-2 md:p-6 2xl:p-10">
+                <div className="max-w-screen-2xl'  min-h-screen w-full bg-white p-4   dark:bg-boxdark-2 md:p-6 2xl:p-10">
                   {children}
                 </div>
               </main>

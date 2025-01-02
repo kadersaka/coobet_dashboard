@@ -81,18 +81,26 @@ const TransactionsPage: FC<TransactionsPageProps> = () => {
 
       <TransactionForm id="transaction-form" transaction={undefined} />
 
-      <div
-        className="my-10 hidden w-full  justify-end hover:cursor-pointer md:flex"
-        onClick={() => {
-          toggleModal("transaction-filter-form");
-        }}
-      >
-        <span className="mr-4 font-bold text-black dark:text-white">
-          {Object.values(filter).every((flt) => flt.length === 0)
-            ? "Filtre"
-            : "Filtré"}
-        </span>
-        <Filter className="fill-primary dark:fill-boxdark" />
+      <div className="flex items-center justify-end">
+        <div
+          className={`  my-10  hidden w-min justify-end  self-end hover:cursor-pointer md:flex ${
+            !Object.values(filter).every((flt) => flt.length === 0)
+              ? "bg-primary px-5 py-2 text-white "
+              : "text-black"
+          }`}
+          onClick={() => {
+            toggleModal("transaction-filter-form");
+          }}
+        >
+          <span className="mr-4 font-bold ">
+            {Object.values(filter).every((flt) => flt.length === 0)
+              ? "Filtre"
+              : "Filtré"}
+          </span>
+          <Filter
+            className={`fill-primary dark:fill-boxdark ${!Object.values(filter).every((flt) => flt.length === 0) ? "fill-white" : ""}`}
+          />
+        </div>
       </div>
 
       <ActionResult />
